@@ -1,6 +1,8 @@
 FROM ubuntu:20.04
+
 ENV LISTEN_PORT=5000
 EXPOSE 5000
+
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -y update && apt-get install -y \
@@ -26,7 +28,6 @@ RUN apt-get -y update && apt-get install -y \
 
 
 RUN python3.9 -m pip install flask gemmi biopython rich dataclasses-json
-
 
 WORKDIR /app
 
@@ -64,10 +65,6 @@ RUN wget https://mmseqs.com/latest/mmseqs-linux-sse41.tar.gz ;\
     rm mmseqs-linux-sse41.tar.gz
 
 
-
-
-
-
 RUN curl -s "ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/edirect.tar.gz" -o "edirect.tar.gz" ;\
     tar -xf edirect.tar.gz ;\
     rm edirect.tar.gz
@@ -83,14 +80,9 @@ RUN wget ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/xtract.Linux.gz ;\
     wget ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/rchive.Linux.gz ;\
     gunzip -f rchive.Linux.gz ;\
     chmod +x rchive.Linux 
-# RUN useradd -rm -d /home/ubuntu -s /bin/bash -G sudo -u 1001 ubuntu
-# USER ubuntu
-# add mmseqs2 to path
 
 WORKDIR /app
 COPY . /app
-
-# ENV PATH=/usr/local/ncbi/edirect:${PATH}
 
 RUN chmod +x run_epitopedia.py ; chmod +x generate_database.py
 

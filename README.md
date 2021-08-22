@@ -22,7 +22,8 @@ OR
 
 To download the only the PDB files present in Epitopedia DB(EPI-PDB) you can supply the pdb_id_list.txt to resync
 ```shell
-rsync -rlpt -v -z --delete --port=33444 --include-from=/path/to/pdb_id_list.txt rsync.rcsb.org::ftp_data/structures/divided/mmCIF/ ./mmCIF
+rsync -rlpt -v -z --delete --port=33444 --include-from=/path/to/pdb_id_list.txt \
+rsync.rcsb.org::ftp_data/structures/divided/mmCIF/ ./mmCIF
 ```
 
 
@@ -44,10 +45,12 @@ cbalbin/epitopedia run_epitopedia.py 6VXX_A
 
 Epitopedia will output the following files
 
+
+
 File Name | Description
 ------------ | -------------
-Content from cell 1 | Content from cell 2
-Content in the first column | Content in the second column
+Place holder | Place holder
+Place holder | Place holder
 
 
 
@@ -64,7 +67,7 @@ Flag | Description
 --span | Minimum span length for a hit to progress
 --rasa | Cutoff for relative accessible surface area
 --rasa_span | Minimum consecutive accesssible residues to consider a hit a SeqBMM
---taxid_filter | Taxid filter; example to filter out all Coronaviridae --taxid_filter 11118
+--taxid_filter | taxid filter; example to filter out all Coronaviridae --taxid_filter 11118
 
 
 ## Epitopedia database generation
