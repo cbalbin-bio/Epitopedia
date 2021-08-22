@@ -8,10 +8,10 @@ The quickest way to start using Epitopedia is by downloading the docker containe
 docker pull cbalbin/epitopedia
 ```
 
-Epitopedia requires the [PDB in mmCIF](https://www.wwpdb.org/ftp/pdb-ftp-sites) format, Epitopedia DB and EPI-SEQ DB. Epitopedia DB and EPI-SEQ DB can be downloaded [here](https://fiudit-my.sharepoint.com/:u:/g/personal/cbalbin_fiu_edu/EWW8XKxSx09CvWC2mhzp8_sBntrnXX9mju4SbA0_ygUFMA?e=zKcZvU)
+Epitopedia requires the [PDB in mmCIF](https://www.wwpdb.org/ftp/pdb-ftp-sites) format, Epitopedia DB and EPI-SEQ DB. Epitopedia DB and EPI-SEQ DB can be downloaded [here](https://fiudit-my.sharepoint.com/:u:/g/personal/cbalbin_fiu_edu/EWW8XKxSx09CvWC2mhzp8_sBntrnXX9mju4SbA0_ygUFMA?e=zKcZvU).
 
 
-To download the PDB DB
+To download PDB in mmCIF format
 ```shell
 rsync -rlpt -v -z --delete --port=33444 \
 rsync.rcsb.org::ftp_data/structures/divided/mmCIF/ ./mmCIF
@@ -20,14 +20,14 @@ rsync.rcsb.org::ftp_data/structures/divided/mmCIF/ ./mmCIF
 OR
 <br>
 
-To download the only the PDB files present in Epitopedia DB(EPI-PDB) you can supply the pdb_id_list.txt to resync
+To download the only the PDB files present in Epitopedia DB (EPI-PDB) you can supply the pdb_id_list.txt to resync
 ```shell
 rsync -rlpt -v -z --delete --port=33444 --include-from=/path/to/pdb_id_list.txt \
 rsync.rcsb.org::ftp_data/structures/divided/mmCIF/ ./mmCIF
 ```
 
 
-To run Epitopedia provide the paths to to the various directories as shown below.
+To run Epitopedia provide the paths to to the various directories discussed below.
 
 The data directory should contain Epitopedia DB (epitopedia.sqlite3) and EPI-SEQ (EPI-SEQ.fasta*) which can be downloaded [here](https://fiudit-my.sharepoint.com/:u:/g/personal/cbalbin_fiu_edu/EWW8XKxSx09CvWC2mhzp8_sBntrnXX9mju4SbA0_ygUFMA?e=zKcZvU).
 
@@ -59,7 +59,7 @@ Place holder | Place holder
 
 Epitopedia can run on multiple input structures to represent a conformational ensemble. To do so, simply provide a list of structures in the format PDBID_CHAINID as shown below.
 ```shell
-run_epitopedia.py 6VXX_A 6XR8_A
+run_epitopedia.py 6VXX_A 6XR8_A 
 ```
 
 Epitopedia defaults to a span length of 5, surface accesbility cutoff of 20% surface accesbility span legnth of 3, and no taxa filter, but these parameters can be set using the follow flags.
@@ -76,11 +76,11 @@ Flag | Description
 
 Epitopedia uses IEDB and PDB to generate Epitopedia DB, which is used in the molecular mimicry search.
 
-Generation of the database takes some time (~12 hours). Thus a pregenerated database is provided above.
+Generation of the database takes some time (~12 hours). Thus, a pregenerated database is provided above.
 
 To create the database, download [IEDB](https://www.iedb.org/downloader.php?file_name=doc/iedb_public.sql.gz) and a mmCIF version of PDB
 
-Point the container to the approriate path's for the IEDB, PDB DB (mmCIF format) and a data directory where the databases will be written to
+Point the container to the approriate path's for the IEDB, PDB (mmCIF format) and a data directory where the databases will be written to.
 
 
 ```shell
@@ -95,7 +95,7 @@ cbalbin/mimicrypipeline generate_database.py
 
 This software is released under the MIT License
 
-Software Epitopedia depends on may be released under a differing license
+Software Epitopedia depends on may be released under a various licenses
 
 Software:
 
