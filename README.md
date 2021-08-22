@@ -5,7 +5,7 @@
 The quickest way to start using Epitopedia is by downloading the docker container which contains all the dependencies preinstalled
 
 ```shell
-docker pull epitopedia
+docker pull cbalbin/epitopedia
 ```
 
 Epitopedia requires the [PDB in mmCIF](https://www.wwpdb.org/ftp/pdb-ftp-sites) format, Epitopedia DB and EPI-SEQ DB. Epitopedia DB and EPI-SEQ DB can be downloaded [here](https://fiudit-my.sharepoint.com/:u:/g/personal/cbalbin_fiu_edu/EWW8XKxSx09CvWC2mhzp8_sBntrnXX9mju4SbA0_ygUFMA?e=zKcZvU)
@@ -39,7 +39,7 @@ docker run --rm -it -p 5000:5000 \
 -v /Path/to/Data/Dir/:/app/data \
 -v /Path/to/PDBDB/Dir/:/app/mmcif \
 -v /Path/to/Output/Dir/:/app/output \
-epitopedia run_epitopedia.py 6VXX_A
+cbalbin/epitopedia run_epitopedia.py 6VXX_A
 ```
 
 Epitopedia will output the following files
@@ -83,6 +83,32 @@ docker run --rm -it \
 -v /Path/To/iedb_public.sql:/app/iedb \
 -v /Path/to/mmCIF/Dir/:/app/mmcif \
 -v /Path/to/Data/Dir/:/app/data \
-mimicrypipeline generate_database.py
+cbalbin/mimicrypipeline generate_database.py
 ```
 
+## License
+
+This software is released under the MIT License
+
+Software Epitopedia depends on may be released under a differing license
+
+Software:
+
+* [DSSP](https://github.com/cmbi/dssp/blob/master/COPYING)
+* [TM-align](https://zhanggroup.org/TM-align/TMalign.f)
+* [NCBI BLAST](https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/scripts/projects/blast/LICENSE)
+* [Entrez](https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/scripts/projects/blast/LICENSE)
+* [MMseqs2](https://github.com/soedinglab/MMseqs2/blob/master/LICENSE.md)
+* [mysql2sqlite](https://github.com/dumblob/mysql2sqlite/blob/master/LICENSE)
+* [sqlite](https://www.sqlite.org/copyright.html)
+* [Docker](https://github.com/docker/cli/blob/master/LICENSE)
+* [Flask](https://github.com/pallets/flask/blob/main/LICENSE.rst)
+* [gemmi](https://github.com/project-gemmi/gemmi/blob/master/LICENSE.txt)
+* [rich](https://github.com/willmcgugan/rich/blob/master/LICENSE)
+* [biopython](https://github.com/biopython/biopython/blob/master/LICENSE.rst)
+* [dataclasses-json](https://github.com/lidatong/dataclasses-json/blob/master/LICENSE)
+* [python](https://github.com/python/cpython/blob/main/LICENSE)
+
+Databases:
+* [IEDB](http://www.iedb.org/terms_of_use_v3.php)
+* [PDB](https://www.rcsb.org/pages/usage-policy)
