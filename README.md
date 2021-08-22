@@ -94,7 +94,7 @@ cbalbin/mimicrypipeline generate_database.py
 
 This software is released under the MIT License
 
-Software and databasesused in Epitopedia may be released under various licenses:
+Software and databases used in Epitopedia may be released under various licenses:
 
 Software:
 
