@@ -45,7 +45,7 @@ docker run --rm -it -p 5000:5000 \
 cbalbin/epitopedia run_epitopedia.py 6VXX_A
 ```
 
-Epitopedia will output the following files
+Epitopedia will output the following files:
 
 
 
@@ -78,7 +78,7 @@ Epitopedia uses IEDB and PDB to generate Epitopedia DB, which is used in the mol
 
 Generation of the database takes some time (~12 hours). Thus, a pregenerated database is provided above.
 
-To create the database, download [IEDB](https://www.iedb.org/downloader.php?file_name=doc/iedb_public.sql.gz) and a mmCIF version of PDB
+To create the EpitopediaDB, download [IEDB](https://www.iedb.org/downloader.php?file_name=doc/iedb_public.sql.gz) and a mmCIF version of PDB
 
 Point the container to the approriate path's for the IEDB, PDB (mmCIF format) and a data directory where the databases will be written to.
 
@@ -95,7 +95,7 @@ cbalbin/mimicrypipeline generate_database.py
 
 This software is released under the MIT License
 
-Software Epitopedia depends on may be released under a various licenses
+Software and databasesused in Epitopedia may be released under various licenses:
 
 Software:
 
