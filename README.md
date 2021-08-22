@@ -11,16 +11,16 @@ docker pull cbalbin/epitopedia
 Epitopedia requires the [PDB in mmCIF](https://www.wwpdb.org/ftp/pdb-ftp-sites) format, EpitopediaDB and EPI-SEQ DB. EpitopediaDB and EPI-SEQ DB can be downloaded [here](https://fiudit-my.sharepoint.com/:u:/g/personal/cbalbin_fiu_edu/EWW8XKxSx09CvWC2mhzp8_sBntrnXX9mju4SbA0_ygUFMA?e=zKcZvU).
 
 
-To download PDB in mmCIF format
+To download the entirety of PDB in mmCIF format
 ```shell
 rsync -rlpt -v -z --delete --port=33444 \
 rsync.rcsb.org::ftp_data/structures/divided/mmCIF/ ./mmCIF
 ```
 
-OR
+**OR**
 <br>
 
-To download the only the PDB files present in EpitopediaDB (EPI-PDB) you can supply the pdb_id_list.txt to resync
+To download the only the PDB files present in EpitopediaDB (EPI-PDB) you can supply the pdb_id_list.txt to rsync
 ```shell
 rsync -rlpt -v -z --delete --port=33444 --include-from=/path/to/pdb_id_list.txt \
 rsync.rcsb.org::ftp_data/structures/divided/mmCIF/ ./mmCIF
