@@ -69,7 +69,7 @@ Flag | Description
 --span | Minimum span length for a hit to progress
 --rasa | Cutoff for relative accessible surface area
 --rasa_span | Minimum consecutive accesssible residues to consider a hit a SeqBMM
---taxid_filter | taxid filter; example to filter out all Coronaviridae --taxid_filter 11118
+--taxid_filter | taxa filter; example to filter out all Coronaviridae --taxid_filter 11118
 
 
 ## Epitopedia database generation
