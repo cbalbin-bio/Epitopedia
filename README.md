@@ -75,7 +75,7 @@ Flag | Description
 
 Epitopedia uses IEDB and PDB to generate EpitopediaDB, which is used in the molecular mimicry search.
 
-Generation of the database takes some time (~12 hours). Thus, a EpitopediaDB is provided above.
+Generation of the database takes some time (~12 hours). Thus, the EpitopediaDB is provided above.
 
 To create the EpitopediaDB, download [IEDB](https://www.iedb.org/downloader.php?file_name=doc/iedb_public.sql.gz) and a mmCIF version of PDB
 
