@@ -60,9 +60,9 @@ RUN wget "https://raw.githubusercontent.com/dumblob/mysql2sqlite/d14d22ad7029cdf
     mv mysql2sqlite /usr/local/bin
 
 # get mmseqs2
-RUN wget https://mmseqs.com/latest/mmseqs-linux-sse41.tar.gz ;\
-    tar xvfz mmseqs-linux-sse41.tar.gz ;\
-    rm mmseqs-linux-sse41.tar.gz
+RUN wget https://mmseqs.com/latest/mmseqs-linux-avx2.tar.gz ;\
+    tar xvfz mmseqs-linux-avx2.tar.gz ;\
+    rm mmseqs-linux-avx2.tar.gz
 
 
 RUN curl -s "ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/edirect.tar.gz" -o "edirect.tar.gz" ;\
