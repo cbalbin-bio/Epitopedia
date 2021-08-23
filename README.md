@@ -49,7 +49,8 @@ docker run --rm -it -p 5000:5000 \
 cbalbin/epitopedia run_epitopedia.py 6VXX_A --taxid_filter 11118
 ```
 
-It is recommended to use a taxid_filter to prevent the input protein from finding itself as a StructBMM. For example, 6VXX is a SARS-CoV-2 protein and using a taxid_filter of 11118 will filter out all Coronaviridae.
+It is recommended to use the flag taxid_filter to prevent the input protein from finding itself or other versions of itself. For example, if we wnted to find mimics of the SARS-CoV-2 spike protien (6VXX) is a SARS-CoV-2 protein
+we could use a taxid_filter of 11118 to prevent finding mimics in other Coronaviridae. The [NCBI Taxonomy Browser](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi) will be helpful in determining what taxid to specify.
 
 
 Epitopedia will output the following files:
