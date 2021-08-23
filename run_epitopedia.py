@@ -202,6 +202,6 @@ if __name__ == "__main__":
     def main():
         return render_template("index.html", data=data.items())
 
-    app.run(host="0.0.0.0")
-
     print("[bold green]View results in browser at http://0.0.0.0:5000[/bold green]")
+
+    app.run(host="0.0.0.0")
