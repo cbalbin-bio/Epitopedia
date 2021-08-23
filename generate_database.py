@@ -371,51 +371,51 @@ con = sqlite3.connect("/app/data/epitopedia.sqlite3")
 cur = con.cursor()
 
 
-with console.status("[bold green]Generating EPI_PDB..."):
-    # generate fasta file of PDB sequences for MMseqs
-    with open("/app/data/mmCIF_seqs.fa", "w") as handle:
-        for row in cur.execute("SELECT pdb_id, seqres FROM mmCIF_seqs"):
-            handle.write(f">{row[0]}\n{row[1]}\n")
+console.log("Generating EPI_PDB...")
+# generate fasta file of PDB sequences for MMseqs
+with open("/app/data/mmCIF_seqs.fa", "w") as handle:
+    for row in cur.execute("SELECT pdb_id, seqres FROM mmCIF_seqs"):
+        handle.write(f">{row[0]}\n{row[1]}\n")
 
-    # generate fasta of epitope source sequence
-    with open("/app/data/IEDB_source_seqs.fa", "w") as handle:
-        for row in cur.execute("SELECT source_antigen_accession, sequence FROM IEDB_FILT"):
-            handle.write(f">{row[0]}\n{row[1]}\n")
-    con.close()
-    # run mmseqs iedb against pdb
-    subprocess.run(["mmseqs", "createdb", "/app/data/IEDB_source_seqs.fa", "/app/data/IEDB_source_seqs_DB"])
-    subprocess.run(["mmseqs", "createdb", "/app/data/mmCIF_seqs.fa", "/app/data/mmCIF_seqs_DB"])
-    os.makedirs("/app/data/tmp", exist_ok=True)
+# generate fasta of epitope source sequence
+with open("/app/data/IEDB_source_seqs.fa", "w") as handle:
+    for row in cur.execute("SELECT source_antigen_accession, sequence FROM IEDB_FILT"):
+        handle.write(f">{row[0]}\n{row[1]}\n")
+con.close()
+# run mmseqs iedb against pdb
+subprocess.run(["mmseqs", "createdb", "/app/data/IEDB_source_seqs.fa", "/app/data/IEDB_source_seqs_DB"])
+subprocess.run(["mmseqs", "createdb", "/app/data/mmCIF_seqs.fa", "/app/data/mmCIF_seqs_DB"])
+os.makedirs("/app/data/tmp", exist_ok=True)
 
-    subprocess.run(["mmseqs", "createindex", "/app/data/IEDB_source_seqs_DB", "/app/data/tmp"])
-    subprocess.run(["mmseqs", "createindex", "/app/data/mmCIF_seqs_DB", "/app/data/tmp"])
+subprocess.run(["mmseqs", "createindex", "/app/data/IEDB_source_seqs_DB", "/app/data/tmp"])
+subprocess.run(["mmseqs", "createindex", "/app/data/mmCIF_seqs_DB", "/app/data/tmp"])
 
-    subprocess.run(
-        [
-            "mmseqs",
-            "search",
-            "/app/data/IEDB_source_seqs_DB",
-            "/app/data/mmCIF_seqs_DB",
-            "/app/data/EPI_PDB_DB",
-            "/app/data/tmp",
-            "-a",
-            "-s",
-            "7.5",
-        ]
-    )
+subprocess.run(
+    [
+        "mmseqs",
+        "search",
+        "/app/data/IEDB_source_seqs_DB",
+        "/app/data/mmCIF_seqs_DB",
+        "/app/data/EPI_PDB_DB",
+        "/app/data/tmp",
+        "-a",
+        "-s",
+        "7.5",
+    ]
+)
 
-    subprocess.run(
-        [
-            "mmseqs",
-            "convertalis",
-            "/app/data/IEDB_source_seqs_DB",
-            "/app/data/mmCIF_seqs_DB",
-            "/app/data/EPI_PDB_DB",
-            "/app/data/EPI_PDB_DB.m8",
-            "--format-output",
-            "query,target,qcov,pident,evalue,cigar,qaln,taln",
-        ]
-    )
+subprocess.run(
+    [
+        "mmseqs",
+        "convertalis",
+        "/app/data/IEDB_source_seqs_DB",
+        "/app/data/mmCIF_seqs_DB",
+        "/app/data/EPI_PDB_DB",
+        "/app/data/EPI_PDB_DB.m8",
+        "--format-output",
+        "query,target,qcov,pident,evalue,cigar,qaln,taln",
+    ]
+)
 console.log("EPI_PDB generated")
 
 with open("/app/data/EPI_PDB_DB.m8") as input_handle, open(
