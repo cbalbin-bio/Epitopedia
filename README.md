@@ -41,8 +41,11 @@ docker run --rm -it -p 5000:5000 \
 -v /Path/to/Data/Dir/:/app/data \
 -v /Path/to/PDBDB/Dir/:/app/mmcif \
 -v /Path/to/Output/Dir/:/app/output \
-cbalbin/epitopedia run_epitopedia.py 6VXX_A
+cbalbin/epitopedia run_epitopedia.py 6VXX_A --taxid_filter 11118
 ```
+
+It is recommended to use a taxid_filter to prevent the input protein from finding itself as a StructBMM. For example, 6VXX is a SARS-CoV-2 protein and using a taxid_filter of 11118 will filter out all Coronaviridae.
+
 
 Epitopedia will output the following files:
 
