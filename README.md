@@ -32,9 +32,14 @@ The data directory should contain Epitopedia DB (epitopedia.sqlite3) and EPI-SEQ
 
 The mmcif directory should point to the sharded PDB directory in mmCIF format as downloaded above.
 
+NOTE: you may need to unzip the mmCIF directory
+```shell
+gunzip -r mmCIF
+```
+
 The output directory is where the output files will be written.
 
-Replace the the paths on the left side of the colon with the actual path on your local system. The paths on the right side of the colon are internal and should not be altered.
+Replace the the paths on the left side of the colon with the actual *absolute* path on your local system. The paths on the right side of the colon are internal and should not be altered.
 
 ```shell
 docker run --rm -it -p 5000:5000 \
@@ -90,7 +95,7 @@ docker run --rm -it \
 -v /Path/To/iedb_public.sql:/app/iedb \
 -v /Path/to/mmCIF/Dir/:/app/mmcif \
 -v /Path/to/Data/Dir/:/app/data \
-cbalbin/mimicrypipeline generate_database.py
+cbalbin/epitopedia generate_database.py
 ```
 
 ## License
