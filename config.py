@@ -1,5 +1,8 @@
 import sqlite3
 import os
+from rich.console import Console
+
+console = Console()
 
 PDB_DATABASE_DIR = "/app/mmcif"
 BLAST_DATABASE_DIR = "/app/data/EPI_SEQ.fasta"

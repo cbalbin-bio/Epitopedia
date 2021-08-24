@@ -6,6 +6,7 @@ from MMCIFMeta import PDBSeqs, AccAgree
 import os
 import subprocess
 from dataclasses_json import dataclass_json
+from config import console
 
 
 @dataclass_json
@@ -99,14 +100,17 @@ def hit_to_pdb(
             # ensure query structure dice has been generated, else generate
             query_pdb_filename = f"{config.DICE_DIR}/{query_structure_basename}_{query_pdb_chain}_{query_pdb_res_nums[0]}-{query_pdb_res_nums[-1]}.pdb"
             if not os.path.exists(query_pdb_filename):
-
-                extract(
-                    f"{config.PDB_DATABASE_DIR}/{query_structure_basename[1:3]}/{query_structure_basename}.cif",
-                    query_pdb_chain,
-                    query_pdb_res_nums[0],
-                    query_pdb_res_nums[-1],
-                    query_pdb_filename,
-                )
+                try:
+                    extract(
+                        f"{config.PDB_DATABASE_DIR}/{query_structure_basename[1:3]}/{query_structure_basename}.cif",
+                        query_pdb_chain,
+                        query_pdb_res_nums[0],
+                        query_pdb_res_nums[-1],
+                        query_pdb_filename,
+                    )
+                except FileNotFoundError:
+                    console.log(f"bold red] {query_structure_basename}.cif not Found")
+                    continue
 
                 # result = subprocess.run([f"pdb_selchain -{query_pdb_chain} {PDB_DATABASE_DIR}/{query_structure_basename[1:3]}/pdb{query_structure_basename}.ent | pdb_selres -{query_pdb_res_nums[0]}:{query_pdb_res_nums[-1]} > {query_pdb_filename}"],shell=True, capture_output=True)
 
@@ -155,14 +159,17 @@ def hit_to_pdb(
             # ensure target structure dice has been generated, else generate
             target_pdb_filename = f"{config.DICE_DIR}/{target_base_pdb_name}_{target_chain_pdb_name}_{pdbhit.motif_res_nums_target[0]}-{pdbhit.motif_res_nums_target[-1]}.pdb"
             if not os.path.exists(target_pdb_filename):
-
-                extract(
-                    f"{config.PDB_DATABASE_DIR}/{target_base_pdb_name[1:3]}/{target_base_pdb_name}.cif",
-                    target_chain_pdb_name,
-                    pdbhit.motif_res_nums_target[0],
-                    pdbhit.motif_res_nums_target[-1],
-                    target_pdb_filename,
-                )
+                try:
+                    extract(
+                        f"{config.PDB_DATABASE_DIR}/{target_base_pdb_name[1:3]}/{target_base_pdb_name}.cif",
+                        target_chain_pdb_name,
+                        pdbhit.motif_res_nums_target[0],
+                        pdbhit.motif_res_nums_target[-1],
+                        target_pdb_filename,
+                    )
+                except FileNotFoundError:
+                    console.log(f"bold red] {query_structure_basename}.cif not Found")
+                    continue
 
                 # result = subprocess.run([f"pdb_selchain -{target_chain_pdb_name} {PDB_DATABASE_DIR}/{target_base_pdb_name[1:3]}/pdb{target_base_pdb_name}.ent | pdb_selres -{pdbhit.motif_res_nums_target[0]}:{pdbhit.motif_res_nums_target[-1]} > {target_pdb_filename}"],shell=True, capture_output=True)
 

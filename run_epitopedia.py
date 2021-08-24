@@ -19,13 +19,11 @@ import json
 from dataclasses_json import dataclass_json
 import argparse
 from rich.progress import track
-from rich.console import Console
+
 from rich import print
 from flask import Flask, render_template
 import os
-
-
-console = Console()
+from config import console
 
 
 parser = argparse.ArgumentParser(description="Epitopedia")
