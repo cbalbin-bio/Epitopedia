@@ -53,15 +53,19 @@ It is recommended to use the flag taxid_filter to prevent the input protein from
 we could use a taxid_filter of 11118 to prevent finding mimics in other Coronaviridae. The [NCBI Taxonomy Browser](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi) will be helpful in determining what taxid to specify.
 
 
+## Intermediate Output
+
 Epitopedia will output the following files:
-
-
 
 File Name | Description
 ------------ | -------------
-Place holder | Place holder
-Place holder | Place holder
-
+EPI_SEQ_hits_{pdb_id(s)}.tsv  | Contains the raw results from the BLAST search of the input structure against EPI-SEQ
+EPI_SEQ_span_filt_hits_{pdb_id(s)}.tsv | Contains hits  with consecutive spans that meet the set minimum span length
+EPI_SEQ_span_filt_acc_hits_{pdb_id(s)}.tsv | Contains the above spans that contain the minimum span of accessible residues
+EPI_PDB_hits_{pdb_id(s)}.tsv" | Contains epitope source sequences against EPI_PDB hits
+EPI_PDB_fragment_pairs_{pdb_id(s)}.tsv | Contains structurally aligned fragment pairs consisting of spans of the input structure aligned against the structural representatives
+EPI_PDB_fragment_pairs_{pdb_id(s)}_ranked.tsv | Contains the above but ranked from best to worst RMSD
+EPI_PDB_fragment_pairs_{pdb_id(s)}_best.tsv | Contains only the best hit per epitope motif if there are redundant source sequences
 
 
 

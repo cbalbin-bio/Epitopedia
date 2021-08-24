@@ -22,6 +22,7 @@ from rich.progress import track
 from rich.console import Console
 from rich import print
 from flask import Flask, render_template
+import os
 
 
 console = Console()
@@ -119,11 +120,27 @@ def parseHit(hit, pdb_seq, query_pdb_base, query_pdb_chain, pdb_input_str):
         }
 
 
+def remove_previous_files(pdb_inputs):
+
+    try:
+        os.remove(f"{config.OUTPUT_DIR}/EPI_SEQ_hits_{pdb_inputs}.tsv")
+        os.remove(f"{config.OUTPUT_DIR}/EPI_SEQ_span_filt_hits_{pdb_inputs}.tsv")
+        os.remove(f"{config.OUTPUT_DIR}/EPI_SEQ_span_filt_acc_hits_{pdb_inputs}.tsv")
+        os.remove(f"{config.OUTPUT_DIR}/EPI_PDB_hits_{pdb_inputs}.tsv")
+        os.remove(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_inputs}.tsv")
+        os.remove(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_inputs}_ranked.tsv")
+        os.remove(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_inputs}_best.tsv")
+        os.remove(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_inputs}_best.json")
+    except OSError:
+        pass
+
+
 if __name__ == "__main__":
     con = sqlite3.connect(config.SQLITE_DATABASE_DIR)
 
     PDB_INPUTS = args.PDB_IDS
     pdb_input_str = "_".join(PDB_INPUTS)
+    remove_previous_files(pdb_input_str)
     data_m = []
 
     for PDB_INPUT in PDB_INPUTS:
@@ -156,17 +173,17 @@ if __name__ == "__main__":
         console.log("Query protein BLASTed against EPI-SEQ")
 
         console.log(f"Number of unfiltered hits for {PDB_INPUT}: {len(hits)}")
-        hits.tocsv(f"{config.OUTPUT_DIR}/Blast_episeq_{pdb_input_str}.tsv")
+        hits.tocsv(f"{config.OUTPUT_DIR}/EPI_SEQ_hits_{pdb_input_str}.tsv")
 
         with console.status("[bold green]Filtering hits by span length..."):
             hits = hits.filterbymatchlen(args.span)
-            hits.tocsv(f"{config.OUTPUT_DIR}/Blast_length_{pdb_input_str}.tsv")
+            hits.tocsv(f"{config.OUTPUT_DIR}/EPI_SEQ_span_filt_hits_{pdb_input_str}.tsv")
             console.log("Hits filtered by span length")
             console.log(f"Number of hits remaining after span length filter {PDB_INPUT}: {len(hits)}")
 
         with console.status("[bold green]Filtering hits by surface accessibility..."):
             hits = hits.filterbyacc(args.rasa_span, args.rasa)
-            hits.tocsv(f"{config.OUTPUT_DIR}/Blast_length_acc_{pdb_input_str}.tsv")
+            hits.tocsv(f"{config.OUTPUT_DIR}/EPI_SEQ_span_filt_acc_hits_{pdb_input_str}.tsv")
             console.log("Hits filtered by surface accessibility")
             console.log(f"Number of hits remaining after surface accessibility filter {PDB_INPUT}: {len(hits)}")
 
@@ -184,7 +201,7 @@ if __name__ == "__main__":
         data_m.append(data)
 
     data = [data for data in data_m if data]
-    with open(f"{config.OUTPUT_DIR}/EPISEQ_struct_fragment_{pdb_input_str}.json", "w") as output_handle:
+    with open(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}.json", "w") as output_handle:
         json.dump(data, output_handle)
 
     config.con.close()
@@ -192,9 +209,9 @@ if __name__ == "__main__":
     # console.log(f"Number of hits remaining after surface accessibility filter {PDB_INPUT}: {len(hits)}")
     # console.log(f"Number of unique SeqBMM's identified {PDB_INPUT}: {len(hits)}")
 
-    reduce_results(f"{config.OUTPUT_DIR}/EPISEQ_struct_fragment_{pdb_input_str}.json")
+    reduce_results(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}.json")
 
-    with open(f"{config.OUTPUT_DIR}/EPISEQ_struct_fragment_{pdb_input_str}_best_per_source_seq.json") as input_handle:
+    with open(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}_best.json") as input_handle:
         data = json.load(input_handle)
     app = Flask(__name__)
 

@@ -76,7 +76,7 @@ def reduce_results(path):
 
     motif_dict = {k: v for k, v in sorted(motif_dict.items(), key=lambda item: item[1][0]["TMalign_RMSD"])}
 
-    with open(f"{config.OUTPUT_DIR}/{basename}_all_ranked.tsv", "w") as outhandle:
+    with open(f"{config.OUTPUT_DIR}/{basename}_ranked.tsv", "w") as outhandle:
         outhandle.write("motif\t")
         w = csv.DictWriter(outhandle, list(motif_dict.items())[0][1][0].keys(), delimiter="\t")
         w.writeheader()
@@ -101,7 +101,7 @@ def reduce_results(path):
 
     # all dicts are ordered dicts in 3.7 +, this breaks if using lower version of python.
 
-    with open(f"{config.OUTPUT_DIR}/{basename}_best_per_source_seq.tsv", "w") as outhandle:
+    with open(f"{config.OUTPUT_DIR}/{basename}_best.tsv", "w") as outhandle:
         outhandle.write("motif\t")
         w = csv.DictWriter(outhandle, list(motif_dict.items())[0][1][0].keys(), delimiter="\t")
         w.writeheader()
@@ -111,5 +111,5 @@ def reduce_results(path):
                 outhandle.write(f"{motif}\t")
                 w.writerow(dat)
 
-    with open(f"{config.OUTPUT_DIR}/{basename}_best_per_source_seq.json", "w") as output_handle:
+    with open(f"{config.OUTPUT_DIR}/{basename}_best.json", "w") as output_handle:
         json.dump(motif_dict, output_handle)

@@ -80,7 +80,7 @@ def hit_to_pdb(
             continue
 
         hit_to_csv(
-            f"{config.OUTPUT_DIR}/EPISEQ_source_structures_{pdb_input_str}.tsv",
+            f"{config.OUTPUT_DIR}/EPI_PDB_hits_{pdb_input_str}.tsv",
             motif,
             query_pdb_res_nums,
             motif_acc,
@@ -226,7 +226,7 @@ def hit_to_pdb(
             # if pdbhit.TMalign_TMscore == -1:
             #     breakpoint()
             hit_to_csv(
-                f"{config.OUTPUT_DIR}/EPISEQ_struct_fragment_{pdb_input_str}.tsv",
+                f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}.tsv",
                 motif,
                 query_pdb_res_nums,
                 motif_acc,
