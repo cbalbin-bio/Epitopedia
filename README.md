@@ -39,7 +39,7 @@ gunzip -r mmCIF
 
 The output directory is where the output files will be written.
 
-Replace the the paths on the left side of the colon with the actual *absolute* path on your local system. The paths on the right side of the colon are internal and should not be altered.
+Replace the the paths on the left side of the colon with the actual **absolute** path on your local system. The paths on the right side of the colon are internal and should not be altered.
 
 ```shell
 docker run --rm -it -p 5000:5000 \
@@ -49,23 +49,11 @@ docker run --rm -it -p 5000:5000 \
 cbalbin/epitopedia run_epitopedia.py 6VXX_A --taxid_filter 11118
 ```
 
+NOTE: on some systems you may need to run docker with sudo
+
 It is recommended to use the flag taxid_filter to prevent the input protein from finding itself or other versions of itself. For example, if we wnted to find mimics of the SARS-CoV-2 spike protien (6VXX) is a SARS-CoV-2 protein
 we could use a taxid_filter of 11118 to prevent finding mimics in other Coronaviridae. The [NCBI Taxonomy Browser](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi) will be helpful in determining what taxid to specify.
 
-
-## Intermediate Output
-
-Epitopedia will output the following files:
-
-File Name | Description
------------- | -------------
-EPI_SEQ_hits_{pdb_id(s)}.tsv  | Contains the raw results from the BLAST search of the input structure against EPI-SEQ
-EPI_SEQ_span_filt_hits_{pdb_id(s)}.tsv | Contains hits  with consecutive spans that meet the set minimum span length
-EPI_SEQ_span_filt_acc_hits_{pdb_id(s)}.tsv | Contains the above spans that contain the minimum span of accessible residues
-EPI_PDB_hits_{pdb_id(s)}.tsv" | Contains epitope source sequences against EPI_PDB hits
-EPI_PDB_fragment_pairs_{pdb_id(s)}.tsv | Contains structurally aligned fragment pairs consisting of spans of the input structure aligned against the structural representatives
-EPI_PDB_fragment_pairs_{pdb_id(s)}_ranked.tsv | Contains the above but ranked from best to worst RMSD
-EPI_PDB_fragment_pairs_{pdb_id(s)}_best.tsv | Contains only the best hit per epitope motif if there are redundant source sequences
 
 
 
@@ -82,6 +70,21 @@ Flag | Description
 --rasa | Cutoff for relative accessible surface area
 --rasa_span | Minimum consecutive accesssible residues to consider a hit a SeqBMM
 --taxid_filter | taxa filter; example to filter out all Coronaviridae --taxid_filter 11118
+
+## Intermediate Output
+
+Epitopedia will output the following files:
+
+File Name | Description
+------------ | -------------
+EPI_SEQ_hits_{pdb_id(s)}.tsv  | Contains the raw results from the BLAST search of the input structure against EPI-SEQ
+EPI_SEQ_span_filt_hits_{pdb_id(s)}.tsv | Contains hits  with consecutive spans that meet the set minimum span length
+EPI_SEQ_span_filt_acc_hits_{pdb_id(s)}.tsv | Contains the above spans that contain the minimum span of accessible residues
+EPI_PDB_hits_{pdb_id(s)}.tsv" | Contains epitope source sequences against EPI_PDB hits
+EPI_PDB_fragment_pairs_{pdb_id(s)}.tsv | Contains structurally aligned fragment pairs consisting of spans of the input structure aligned against the structural representatives
+EPI_PDB_fragment_pairs_{pdb_id(s)}_ranked.tsv | Contains the above but ranked from best to worst RMSD
+EPI_PDB_fragment_pairs_{pdb_id(s)}_best.tsv | Contains only the best hit per epitope motif if there are redundant source sequences
+
 
 
 ## Epitopedia database generation
@@ -129,3 +132,6 @@ Software:
 Databases:
 * [IEDB](http://www.iedb.org/terms_of_use_v3.php)
 * [PDB](https://www.rcsb.org/pages/usage-policy)
+
+
+## Reference
