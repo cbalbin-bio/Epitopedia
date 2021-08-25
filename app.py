@@ -1,3 +1,7 @@
+# Copyright (c) 2021 Christian Balbin
+# This work is licensed under the terms of the MIT license.
+# For a copy, see <https://opensource.org/licenses/MIT>.
+
 from flask import Flask, render_template
 import json
 
@@ -6,6 +10,11 @@ with open("/Users/christianbalbin/bioinformatics/docker/6XR8_A_best_per_source_s
 
 
 app = Flask(__name__)
+
+
+def saveHTML(path):
+    with open(path, "w") as handle:
+        handle.write(render_template("index.html", data=data.items()))
 
 
 @app.get("/")

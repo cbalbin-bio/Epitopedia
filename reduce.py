@@ -62,7 +62,8 @@ def reduce_results(path):
                         "TMalign_png_file": os.path.basename(motif_type["TMalign_png_file"]),
                         "TMalign_RMSD": motif_type["TMalign_RMSD"],
                         "TMalign_TMscore": motif_type["TMalign_TMscore"],
-                        "mmseqs2_motif_res_nums_target": motif_type["motif_res_nums_target"],
+                        "motif_res_nums_query": motif_type["motif_res_nums_query"],
+                        "motif_res_nums_target": motif_type["motif_res_nums_target"],  # mmseqs2_motif_res_nums_target
                         "mmseqs2_qcov": motif_type["qcov"],
                         "mmseqs2_pident": motif_type["pident"],
                         "mmseqs2_evalue": motif_type["evalue"],

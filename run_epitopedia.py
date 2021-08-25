@@ -24,6 +24,7 @@ from rich import print
 from flask import Flask, render_template
 import os
 from config import console
+from jinja2 import Environment, FileSystemLoader
 
 
 parser = argparse.ArgumentParser(description="Epitopedia")
@@ -212,6 +213,13 @@ if __name__ == "__main__":
     with open(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}_best.json") as input_handle:
         data = json.load(input_handle)
     app = Flask(__name__)
+
+    with open(f"{config.OUTPUT_DIR}/Epitopedia_{pdb_input_str}_output.html", "w") as handle:
+
+        env = Environment(loader=FileSystemLoader("templates"))
+        template = env.get_template("index.html")
+        output_from_parsed_template = template.render(data=data.items())
+        handle.write(output_from_parsed_template)
 
     @app.get("/")
     def main():

@@ -8,7 +8,7 @@ The quickest way to start using Epitopedia is by downloading the docker containe
 docker pull cbalbin/epitopedia
 ```
 
-Epitopedia requires the [PDB in mmCIF](https://www.wwpdb.org/ftp/pdb-ftp-sites) format, EpitopediaDB and EPI-SEQ DB. EpitopediaDB and EPI-SEQ DB can be downloaded [here](https://fiudit-my.sharepoint.com/:u:/g/personal/cbalbin_fiu_edu/EWW8XKxSx09CvWC2mhzp8_sBntrnXX9mju4SbA0_ygUFMA?e=zKcZvU).
+Epitopedia requires the [PDB in mmCIF](https://www.wwpdb.org/ftp/pdb-ftp-sites) format, EpitopediaDB and EPI-SEQ DB. EpitopediaDB and EPI-SEQ DB can be downloaded [here](https://fiudit-my.sharepoint.com/:u:/g/personal/cbalbin_fiu_edu/Ef9AbZ1H3v9CqiNLjuhtnPUBZIteRWvNEIIJ0_X0hMUTcw?e=7PHowv).
 
 
 To download the entirety of PDB in mmCIF format
@@ -28,7 +28,7 @@ rsync.rcsb.org::ftp_data/structures/divided/mmCIF/ ./mmCIF
 
 To run Epitopedia provide the paths to the various directories discussed below.
 
-The data directory should contain Epitopedia DB (epitopedia.sqlite3) and EPI-SEQ (EPI-SEQ.fasta*) which can be downloaded [here](https://fiudit-my.sharepoint.com/:u:/g/personal/cbalbin_fiu_edu/EWW8XKxSx09CvWC2mhzp8_sBntrnXX9mju4SbA0_ygUFMA?e=zKcZvU).
+The data directory should contain Epitopedia DB (epitopedia.sqlite3) and EPI-SEQ (EPI-SEQ.fasta*) which can be downloaded [here](https://fiudit-my.sharepoint.com/:u:/g/personal/cbalbin_fiu_edu/Ef9AbZ1H3v9CqiNLjuhtnPUBZIteRWvNEIIJ0_X0hMUTcw?e=7PHowv).
 
 The mmcif directory should point to the sharded PDB directory in mmCIF format as downloaded above.
 

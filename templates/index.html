@@ -34,10 +34,11 @@
 
                 </div>
                 <div class="d-flex flex-row justify-content-between">
-                    <div>Query start-end: {{instances[0]['blast1_query_start']}}-{{instances[0]['blast1_query_end']}}
+                    <div>Query start-end:
+                        {{instances[0]['motif_res_nums_query'][0]}}-{{instances[0]['motif_res_nums_query'][-1]}}
                     </div>
                     <div>Target start-end:
-                        {{instances[0]['mmseqs2_motif_res_nums_target'][0]}}-{{instances[0]['mmseqs2_motif_res_nums_target'][-1]}}
+                        {{instances[0]['motif_res_nums_target'][0]}}-{{instances[0]['motif_res_nums_target'][-1]}}
                     </div>
 
                 </div>
@@ -105,9 +106,10 @@
                             </div>
                             <div class="d-flex flex-row justify-content-between">
                                 <div>Query start-end:
-                                    {{instance['blast1_query_start']}}-{{instance['blast1_query_end']}}</div>
+                                    {{instance['motif_res_nums_query'][0]}}-{{instance['motif_res_nums_query'][-1]}}
+                                </div>
                                 <div>Target start-end:
-                                    {{instance['mmseqs2_motif_res_nums_target'][0]}}-{{instance['mmseqs2_motif_res_nums_target'][-1]}}
+                                    {{instance['motif_res_nums_target'][0]}}-{{instance['motif_res_nums_target'][-1]}}
                                 </div>
 
                             </div>
