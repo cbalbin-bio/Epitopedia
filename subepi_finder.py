@@ -1,3 +1,7 @@
+# Copyright (c) 2021 Christian Balbin
+# This work is licensed under the terms of the MIT license.
+# For a copy, see <https://opensource.org/licenses/MIT>.
+
 from dataclasses import dataclass, field
 from make_dice_gemmi import extract
 import config
@@ -135,7 +139,7 @@ def hit_to_pdb(
             # TODO: implement surface acc on target side
             #
 
-            # you can get rid of this step later and just incoperate it into the pdb hit query against the sql db with another left join
+            # you can get rid of this step later and just incorporate it into the pdb hit query against the sql db with another left join
             # doing it this way to save dev time
             try:
                 target_pdb_seqs = PDBSeqs(target_base_pdb_name, target_chain_pdb_name, compute_acc=True)
@@ -148,8 +152,6 @@ def hit_to_pdb(
 
                 pdbhit.query_acc_motif = motif_acc
                 pdbhit.target_acc_motif = target_pdb_acc
-                if len(target_pdb_acc) == 0:
-                    breakpoint()
                 acc_agreement = AccAgree(motif_acc, target_pdb_acc)
 
                 pdbhit.query_perc_acc = acc_agreement.percentAccQuery
@@ -170,12 +172,6 @@ def hit_to_pdb(
                 except:
                     console.log(f"[bold red] {target_base_pdb_name}.cif not Found")
                     continue
-
-                # result = subprocess.run([f"pdb_selchain -{target_chain_pdb_name} {PDB_DATABASE_DIR}/{target_base_pdb_name[1:3]}/pdb{target_base_pdb_name}.ent | pdb_selres -{pdbhit.motif_res_nums_target[0]}:{pdbhit.motif_res_nums_target[-1]} > {target_pdb_filename}"],shell=True, capture_output=True)
-
-                # if result.stderr:
-
-                #     continue
 
             pdbhit.target_struc_dice_path = target_pdb_filename
 
@@ -222,16 +218,8 @@ def hit_to_pdb(
                         pdbhit.TMalign_TMscore = line[10:17]  # float(line[10:17])
                         break
 
-            # if pymol image of tmalign superposiiton has not been generated, generate it
-            # if not os.path.exists(f"{TMALIGN_DIR}/{TMalign_prefix}_atm.pdb.png"):
-            #     subprocess.run(["render-pymol.sh", f"{TMALIGN_DIR}/{TMalign_prefix}_atm.pdb"], capture_output=True)
-
             pdbhit.TMalign_PDB_file = f"{config.TMALIGN_DIR}/{TMalign_prefix}_atm.pdb"
-            # pdbhit.TMalign_png_file = f"{TMALIGN_DIR}/{TMalign_prefix}_atm.pdb.png"
 
-            ## remeber to remove later
-            # if pdbhit.TMalign_TMscore == -1:
-            #     breakpoint()
             hit_to_csv(
                 f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}.tsv",
                 motif,

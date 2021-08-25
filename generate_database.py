@@ -1,7 +1,11 @@
 #!/usr/bin/python3.9
 
+# Copyright (c) 2021 Christian Balbin
+# This work is licensed under the terms of the MIT license.
+# For a copy, see <https://opensource.org/licenses/MIT>.
+
+
 ### Steps to generate database used by pipeline written as one long monolithic procedural python script
-# docker run -v /Volumes/ssd/iedb/iedb_public.sql:/app/iedb -v /Volumes/ssd/mmCIF:/app/mmcif -v /Volumes/dss/data:/app/data -it mimicrypipeline bash
 import sqlite3
 import subprocess
 from dataclasses import dataclass
@@ -502,7 +506,7 @@ def parseDSSP(path):
 
 if __name__ == "__main__":
     paths = glob.glob("/app/mmcif/*/*.cif")
-    with Pool(8) as p:
+    with Pool(12) as p:
         data = list(
             track(
                 p.imap(runDSSP, paths, chunksize=1024),
@@ -517,7 +521,7 @@ if __name__ == "__main__":
     cur = con.cursor()
 
     dssp_files = glob.glob("/app/data/dssp/*")
-    with Pool(8) as p:
+    with Pool(12) as p:
         data = list(
             track(
                 p.imap(parseDSSP, dssp_files, chunksize=1024),

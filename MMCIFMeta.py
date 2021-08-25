@@ -1,12 +1,16 @@
+# Copyright (c) 2021 Christian Balbin
+# This work is licensed under the terms of the MIT license.
+# For a copy, see <https://opensource.org/licenses/MIT>.
+
+
 # _pdbx_poly_seq_scheme.asym_id asym_id used in mmcif
 # _pdbx_poly_seq_scheme.mon_id sequences studied
 # _pdbx_poly_seq_scheme.pdb_mon_id amino acids in structure studied
 # _pdbx_poly_seq_scheme.pdb_strand_id  classic strand id
 
-# autth seq num _pdbx_poly_seq_scheme.auth_seq_num
+# auth seq num _pdbx_poly_seq_scheme.auth_seq_num
 
-# from Bio.PDB.MMCIF2Dict import MMCIF2Dict
-# from Bio.PDB import DSSP
+
 from dataclasses import dataclass, field
 import sqlite3
 import config

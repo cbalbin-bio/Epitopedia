@@ -1,3 +1,7 @@
+# Copyright (c) 2021 Christian Balbin
+# This work is licensed under the terms of the MIT license.
+# For a copy, see <https://opensource.org/licenses/MIT>.
+
 import sqlite3
 import os
 from rich.console import Console
@@ -10,13 +14,6 @@ SQLITE_DATABASE_DIR = "/app/data/epitopedia.sqlite3"
 OUTPUT_DIR = "/app/output"
 DICE_DIR = "/app/output/dices"
 TMALIGN_DIR = "/app/output/TMalign_results"
-
-# PDB_DATABASE_DIR = "/Volumes/ssd/mmCIF"
-# BLAST_DATABASE_DIR = "/Users/christianbalbin/bioinformatics/data/EPI_SEQ.fasta"
-# SQLITE_DATABASE_DIR = "/Users/christianbalbin/bioinformatics/data/epitopedia.sqlite3"
-# OUTPUT_DIR = "/Users/christianbalbin/bioinformatics/output"
-# DICE_DIR = "/Users/christianbalbin/bioinformatics/epitope-molecular-mimicry-pipeline/dices"
-# TMALIGN_DIR = "/Users/christianbalbin/bioinformatics/epitope-molecular-mimicry-pipeline/TMalign_results"
 
 
 os.makedirs(DICE_DIR, exist_ok=True)

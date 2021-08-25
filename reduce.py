@@ -1,3 +1,7 @@
+# Copyright (c) 2021 Christian Balbin
+# This work is licensed under the terms of the MIT license.
+# For a copy, see <https://opensource.org/licenses/MIT>.
+
 import json
 import os
 from collections import defaultdict

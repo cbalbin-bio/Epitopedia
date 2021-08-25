@@ -108,7 +108,7 @@ cbalbin/epitopedia generate_database.py
 
 ## License
 
-This software is released under the MIT License
+This software is released under the [MIT License](LICENSE)
 
 Software and databases used in Epitopedia may be released under various licenses:
 

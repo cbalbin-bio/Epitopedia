@@ -1,9 +1,9 @@
 #!/usr/bin/python3.9
 
-# docker run -p 8888:8888 -v /Users/christianbalbin/bioinformatics/data:/app/data -v /Volumes/ssd/mmCIF:/app/mmcif -v /Users/christianbalbin/bioinformatics/output:/app/output -it mimicrypipeline bash
+# Copyright (c) 2021 Christian Balbin
+# This work is licensed under the terms of the MIT license.
+# For a copy, see <https://opensource.org/licenses/MIT>.
 
-# docker run -p 5000:5000 -v /Users/christianbalbin/bioinformatics/data:/app/data -v /Volumes/ssd/mmCIF:/app/mmcif -v /Users/christianbalbin/bioinformatics/output:/app/output -it mimicrypipeline bash
-# move tmalign and dices to data folder
 
 import tempfile
 
