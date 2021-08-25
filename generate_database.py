@@ -374,12 +374,12 @@ cur = con.cursor()
 console.log("Generating EPI_PDB...")
 # generate fasta file of PDB sequences for MMseqs
 with open("/app/data/mmCIF_seqs.fa", "w") as handle:
-    for row in cur.execute("SELECT pdb_id, seqres FROM mmCIF_seqs"):
+    for row in cur.execute("SELECT DISTINCT pdb_id, seqres FROM mmCIF_seqs"):
         handle.write(f">{row[0]}\n{row[1]}\n")
 
 # generate fasta of epitope source sequence
 with open("/app/data/IEDB_source_seqs.fa", "w") as handle:
-    for row in cur.execute("SELECT source_antigen_accession, sequence FROM IEDB_FILT"):
+    for row in cur.execute("SELECT DISTINCT source_antigen_accession, sequence FROM IEDB_FILT"):
         handle.write(f">{row[0]}\n{row[1]}\n")
 con.close()
 # run mmseqs iedb against pdb

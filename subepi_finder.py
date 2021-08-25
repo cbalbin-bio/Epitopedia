@@ -108,8 +108,8 @@ def hit_to_pdb(
                         query_pdb_res_nums[-1],
                         query_pdb_filename,
                     )
-                except FileNotFoundError:
-                    console.log(f"bold red] {query_structure_basename}.cif not Found")
+                except:
+                    console.log(f"[bold red] {query_structure_basename}.cif not Found")
                     continue
 
                 # result = subprocess.run([f"pdb_selchain -{query_pdb_chain} {PDB_DATABASE_DIR}/{query_structure_basename[1:3]}/pdb{query_structure_basename}.ent | pdb_selres -{query_pdb_res_nums[0]}:{query_pdb_res_nums[-1]} > {query_pdb_filename}"],shell=True, capture_output=True)
@@ -167,8 +167,8 @@ def hit_to_pdb(
                         pdbhit.motif_res_nums_target[-1],
                         target_pdb_filename,
                     )
-                except FileNotFoundError:
-                    console.log(f"bold red] {query_structure_basename}.cif not Found")
+                except:
+                    console.log(f"[bold red] {target_base_pdb_name}.cif not Found")
                     continue
 
                 # result = subprocess.run([f"pdb_selchain -{target_chain_pdb_name} {PDB_DATABASE_DIR}/{target_base_pdb_name[1:3]}/pdb{target_base_pdb_name}.ent | pdb_selres -{pdbhit.motif_res_nums_target[0]}:{pdbhit.motif_res_nums_target[-1]} > {target_pdb_filename}"],shell=True, capture_output=True)
