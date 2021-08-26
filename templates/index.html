@@ -21,24 +21,24 @@
 
 
                 <div class="d-flex flex-row justify-content-between">
-                    <div>{{instances[0]["epitope_name"]}} {{instances[0]["epitope_organism_name"]}}</div>
-                    <div>Epitope ID: {{instances[0]["epitope_id"][:-2]}}</div>
+                    <div>{{instances[0]["IEDB_FILT Source Title"]}} {{instances[0]["IEDB_FILT Source Org"]}}</div>
+                    <div>Epitope ID: {{instances[0]["EPI_SEQ Epitope ID"][:-2]}}</div>
                 </div>
                 <div></div>
                 <div></div>
 
 
                 <div class="d-flex flex-row justify-content-between">
-                    <div>Query: {{instances[0]['blast1_query_accession']}}</div>
-                    <div>Target: {{instances[0]["mmseqs2_target"]}}</div>
+                    <div>Query: {{instances[0]["EPI_SEQ Input Structure"]}}</div>
+                    <div>Target: {{instances[0]["EPI_PDB Rep PDB"]}}</div>
 
                 </div>
                 <div class="d-flex flex-row justify-content-between">
                     <div>Query start-end:
-                        {{instances[0]['motif_res_nums_query'][0]}}-{{instances[0]['motif_res_nums_query'][-1]}}
+                        {{instances[0]["SeqBMM Input Struc Res Nums"][0]}}-{{instances[0]["SeqBMM Input Struc Res Nums"][-1]}}
                     </div>
                     <div>Target start-end:
-                        {{instances[0]['motif_res_nums_target'][0]}}-{{instances[0]['motif_res_nums_target'][-1]}}
+                        {{instances[0]["EPI_PDB Rep Res Nums"][0]}}-{{instances[0]["EPI_PDB Rep Res Nums"][-1]}}
                     </div>
 
                 </div>
@@ -46,19 +46,19 @@
                 <div class="mt-2 d-flex flex-row justify-content-between">
                     <div>
                         <div>
-                            RMSD: {{"%.2f"|format(instances[0]["TMalign_RMSD"]|float)}}
+                            RMSD: {{"%.2f"|format(instances[0]["EPI_PDB TMalign RMSD"]|float)}}
                         </div>
                         <div>
-                            TM-score: {{"%.2f"|format(instances[0]["TMalign_TMscore"]|float)}}
+                            TM-score: {{"%.2f"|format(instances[0]["EPI_PDB TMalign TMscore"]|float)}}
                         </div>
                         <div>
-                            Query % ACC: {{"%.2f"|format(instances[0]["query_perc_acc"]|float)}}
+                            Query % ACC: {{"%.2f"|format(instances[0]["EPI_PDB Input Motif Perc Acc"]|float)}}
                         </div>
                         <div>
-                            Target % ACC: {{"%.2f"|format(instances[0]["target_perc_acc"]|float)}}
+                            Target % ACC: {{"%.2f"|format(instances[0]["EPI_PDB Rep Motif Perc Acc"]|float)}}
                         </div>
                         <div>
-                            % ACC Agree: {{"%.2f"|format(instances[0]["perc_acc_agree"]|float)}}
+                            % ACC Agree: {{"%.2f"|format(instances[0]["EPI_PDB Perc Acc Agree"]|float)}}
                         </div>
 
 
@@ -92,24 +92,24 @@
 
 
                             <div class="d-flex flex-row justify-content-between">
-                                <div>{{instance["epitope_name"]}} {{instance["epitope_organism_name"]}}</div>
-                                <div>Epitope ID: {{instance["epitope_id"][:-2]}}</div>
+                                <div>{{instance["IEDB_FILT Source Title"]}} {{instance["IEDB_FILT Source Org"]}}</div>
+                                <div>Epitope ID: {{instance["EPI_SEQ Epitope ID"][:-2]}}</div>
                             </div>
                             <div></div>
                             <div></div>
 
 
                             <div class="d-flex flex-row justify-content-between">
-                                <div>Query: {{instance["blast1_query_accession"]}}</div>
-                                <div>Target: {{instance["mmseqs2_target"]}}</div>
+                                <div>Query: {{instance["EPI_SEQ Input Structure"]}}</div>
+                                <div>Target: {{instance["EPI_PDB Rep PDB"]}}</div>
 
                             </div>
                             <div class="d-flex flex-row justify-content-between">
                                 <div>Query start-end:
-                                    {{instance['motif_res_nums_query'][0]}}-{{instance['motif_res_nums_query'][-1]}}
+                                    {{instance["SeqBMM Input Struc Res Nums"][0]}}-{{instance["SeqBMM Input Struc Res Nums"][-1]}}
                                 </div>
                                 <div>Target start-end:
-                                    {{instance['motif_res_nums_target'][0]}}-{{instance['motif_res_nums_target'][-1]}}
+                                    {{instance["EPI_PDB Rep Res Nums"][0]}}-{{instance["EPI_PDB Rep Res Nums"][-1]}}
                                 </div>
 
                             </div>
@@ -117,19 +117,19 @@
                             <div class="mt-2 d-flex flex-row justify-content-between">
                                 <div>
                                     <div>
-                                        RMSD: {{"%.2f"|format(instance["TMalign_RMSD"]|float)}}
+                                        RMSD: {{"%.2f"|format(instance["EPI_PDB TMalign RMSD"]|float)}}
                                     </div>
                                     <div>
-                                        TM-score: {{"%.2f"|format(instance["TMalign_TMscore"]|float)}}
+                                        TM-score: {{"%.2f"|format(instance["EPI_PDB TMalign TMscore"]|float)}}
                                     </div>
                                     <div>
-                                        Query % ACC: {{"%.2f"|format(instance["query_perc_acc"]|float)}}
+                                        Query % ACC: {{"%.2f"|format(instance["EPI_PDB Input Motif Perc Acc"]|float)}}
                                     </div>
                                     <div>
-                                        Target % ACC: {{"%.2f"|format(instance["target_perc_acc"]|float)}}
+                                        Target % ACC: {{"%.2f"|format(instance["EPI_PDB Rep Motif Perc Acc"]|float)}}
                                     </div>
                                     <div>
-                                        % ACC Agree: {{"%.2f"|format(instance["perc_acc_agree"]|float)}}
+                                        % ACC Agree: {{"%.2f"|format(instance["EPI_PDB Perc Acc Agree"]|float)}}
                                     </div>
 
                                 </div>

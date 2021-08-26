@@ -95,7 +95,7 @@ class HitsDataContainer(list):
         if not os.path.exists(file_path):
             with open(file_path, "a") as output_handle:
                 output_handle.write(
-                    f"EPI_SEQ Input Structure\tEPI_SEQ Epitope ID\tEPI_SEQ Input Structure Seq Start Pos\tEPI_SEQ Input Structure Seq End Pos\tEPI_SEQ Epitope Start Pos\tEPI_SEQ Epitope End Pos\tEPI_SEQ Aln Input Struc Seq\tEPI_SEQ Aln Epitope Seq\tEPI_SEQ Evalue\tEPI_SEQ Qcov\tEPI_SEQ Pident\tEPI_SEQ Epitope Taxid\tEPI_SEQ Span Ranges\tEPI_SEQ Aln Cigar\tEPI_SEQ Span Lengths\tEPI_SEQ Span Seqs\tEPI_SEQ Input Struc ASA\tEPI_SEQ Input Struc Solv Seq\tEPI_SEQ Input Struc Res Nums\n"
+                    f"EPI_SEQ Input Structure\tEPI_SEQ Epitope ID\tEPI_SEQ Input Structure Seq Start Pos\tEPI_SEQ Input Structure Seq Stop Pos\tEPI_SEQ Epitope Start Pos\tEPI_SEQ Epitope End Pos\tEPI_SEQ Aln Input Struc Seq\tEPI_SEQ Aln Epitope Seq\tEPI_SEQ Evalue\tEPI_SEQ Qcov\tEPI_SEQ Pident\tEPI_SEQ Epitope Taxid\tEPI_SEQ Span Ranges\tEPI_SEQ Aln Cigar\tEPI_SEQ Span Lengths\tEPI_SEQ Span Seqs\tPDB_DSSP Input Struc ASA\tmmCIF_SEQ Input Struc Solv Seq\tmmCIF_SEQ Input Struc Res Nums\n"
                 )
 
         with open(file_path, "a") as output_handle:

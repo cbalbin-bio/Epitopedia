@@ -37,52 +37,66 @@ def reduce_results(path):
                 # print(motif_type["TMalign_RMSD"])
                 motif_dict[motif_type["motif_seq"]].append(
                     {
-                        "epitope_id": epitope["epitope_id"],
-                        "epitope_database": epitope["database"],
-                        "source_antigen_accession": epitope["source_antigen_accession"],
-                        "epitope_starting_position": epitope["starting_position"],
-                        "epitope_ending_position": epitope["ending_position"],
-                        "epitope_name": epitope["name"],
-                        "epitope_organism_name": epitope["organism_name"],
-                        "epitope_organism_id": epitope["organism_id"],
-                        "epitope_internal_source_seq_acc": epitope["internal_source_seq_acc"],
-                        "blast1_query_accession": blasthit["query_accession"],
-                        "blast1_subject_accession": blasthit["subject_accession"],
-                        "blast1_match_ranges": blasthit["match_ranges"],
-                        "blast1_match_lengths": blasthit["match_lengths"],
-                        "blast1_query_start": blasthit["query_start"],
-                        "blast1_aln_query_seq": blasthit["aln_query_seq"],
-                        "blast1_query_end": blasthit["query_end"],
-                        "blast1_cigar": blasthit["cigar"],
-                        "blast1_subject_start": blasthit["subject_start"],
-                        "blast1_aln_subject_seq": blasthit["aln_subject_seq"],
-                        "blast1_subject_end": blasthit["subject_end"],
-                        "mmseqs2_query": motif_type["query"],
-                        "mmseqs2_target": motif_type["target"],
-                        "TMalign_png_file": os.path.basename(motif_type["TMalign_png_file"]),
-                        "TMalign_RMSD": motif_type["TMalign_RMSD"],
-                        "TMalign_TMscore": motif_type["TMalign_TMscore"],
-                        "motif_res_nums_query": motif_type["motif_res_nums_query"],
-                        "motif_res_nums_target": motif_type["motif_res_nums_target"],  # mmseqs2_motif_res_nums_target
-                        "mmseqs2_qcov": motif_type["qcov"],
-                        "mmseqs2_pident": motif_type["pident"],
-                        "mmseqs2_evalue": motif_type["evalue"],
-                        "TMalign_PDB_file": motif_type["TMalign_PDB_file"],
-                        "query_acc_motif": motif_type["query_acc_motif"],
-                        "target_acc_motif": motif_type["target_acc_motif"],
-                        "query_perc_acc": motif_type["query_perc_acc"],
-                        "target_perc_acc": motif_type["target_perc_acc"],
-                        "perc_acc_agree": motif_type["perc_acc_agree"],
+                        "SeqBMM Input Struc Res Nums": motif_type["motif_res_nums_query"],
+                        "SeqBMM Acc": motif_type["query_acc_motif"],
+                        "EPI_PDB Epi Source Acc": motif_type["query"],
+                        "EPI_PDB Rep PDB": motif_type["target"],
+                        "EPI_PDB Qcov": motif_type["qcov"],
+                        "EPI_PDB Pident": motif_type["pident"],
+                        "EPI_PDB Evalue": motif_type["evalue"],
+                        "mmCIF_SEQ Rep Res": motif_type["seqres"],
+                        "mmCIF_SEQ Rep Solv": motif_type["seqsolv"],
+                        "mmCIF_SEQ Rep Num": motif_type["seqnums"],
+                        "EPI_PDB Rep Res Nums": motif_type["motif_res_nums_target"],
+                        "EPI_PDB Input Dice Path": motif_type["query_struc_dice_path"],
+                        "EPI_PDB Rep Dice Path": motif_type["target_struc_dice_path"],
+                        "EPI_PDB TMalign RMSD": motif_type["TMalign_RMSD"],
+                        "EPI_PDB TMalign TMscore": motif_type["TMalign_TMscore"],
+                        "EPI_PDB TMalign PDB": motif_type["TMalign_PDB_file"],
+                        "EPI_PDB Rep Acc": motif_type["target_acc_motif"],
+                        "EPI_PDB Input Motif Perc Acc": motif_type["query_perc_acc"],
+                        "EPI_PDB Rep Motif Perc Acc": motif_type["target_perc_acc"],
+                        "EPI_PDB Perc Acc Agree": motif_type["perc_acc_agree"],
+                        "IEDB_FILT Epitope ID": epitope["epitope_id"],
+                        "IEDB_FILT Epitope Seq": epitope["linear_peptide_seq"],
+                        "IEDB_FILT Source Seq Acc": epitope["source_antigen_accession"],
+                        "IEDB_FILT Start Pos": epitope["starting_position"],
+                        "IEDB_FILT Stop Pos": epitope["ending_position"],
+                        "IEDB_FILT Source DB": epitope["database"],
+                        "IEDB_FILT Source Title": epitope["name"],
+                        "IEDB_FILT Source Taxid": epitope["organism_id"],
+                        "IEDB_FILT Source Org": epitope["organism_name"],
+                        "IEDB_FILT Source Seq": epitope["sequence"],
+                        "IEDB_FILT Iacc": epitope["internal_source_seq_acc"],
+                        "EPI_SEQ Input Structure": blasthit["query_accession"],
+                        "EPI_SEQ Epitope ID": blasthit["subject_accession"],
+                        "EPI_SEQ Input Structure Seq Start Pos": blasthit["query_start"],
+                        "EPI_SEQ Input Structure Seq Stop Pos": blasthit["query_end"],
+                        "EPI_SEQ Epitope Start Pos": blasthit["subject_start"],
+                        "EPI_SEQ Epitope End Pos": blasthit["subject_end"],
+                        "EPI_SEQ Aln Input Struc Seq": blasthit["aln_query_seq"],
+                        "EPI_SEQ Aln Epitope Seq": blasthit["aln_subject_seq"],
+                        "EPI_SEQ Evalue": blasthit["evalue"],
+                        "EPI_SEQ Qcov": blasthit["qcovs"],
+                        "EPI_SEQ Pident": blasthit["pident"],
+                        "EPI_SEQ Epitope Taxid": blasthit["staxid"],
+                        "EPI_SEQ Span Ranges": blasthit["match_ranges"],
+                        "EPI_SEQ Aln Cigar": blasthit["cigar"],
+                        "EPI_SEQ Span Lengths": blasthit["match_lengths"],
+                        "EPI_SEQ Span Seqs": blasthit["submatch_seqs"],
+                        "PDB_DSSP Input Struc ASA": blasthit["acc_seq"],
+                        "mmCIF_SEQ Input Struc Solv Seq": blasthit["pdb_seqsolv"],
+                        "mmCIF_SEQ Input Struc Res Nums": blasthit["pdb_seqnums"],
                     }
                 )
 
     for motif, data in motif_dict.items():
-        motif_dict[motif] = sorted(data, key=lambda x: x["TMalign_RMSD"])
+        motif_dict[motif] = sorted(data, key=lambda x: x["EPI_PDB TMalign RMSD"])
 
-    motif_dict = {k: v for k, v in sorted(motif_dict.items(), key=lambda item: item[1][0]["TMalign_RMSD"])}
+    motif_dict = {k: v for k, v in sorted(motif_dict.items(), key=lambda item: item[1][0]["EPI_PDB TMalign RMSD"])}
 
     with open(f"{config.OUTPUT_DIR}/{basename}_ranked.tsv", "w") as outhandle:
-        outhandle.write("motif\t")
+        outhandle.write("SeqBMM Motif\t")
         w = csv.DictWriter(outhandle, list(motif_dict.items())[0][1][0].keys(), delimiter="\t")
         w.writeheader()
         for motif, data in motif_dict.items():
@@ -95,7 +109,7 @@ def reduce_results(path):
         filtered_instacnes = []
         acc_visited = []
         for instance in instances:
-            i_acc = int(instance["epitope_internal_source_seq_acc"])
+            i_acc = int(instance["IEDB_FILT Iacc"])
             if i_acc in acc_visited:
                 continue
             else:
@@ -107,7 +121,7 @@ def reduce_results(path):
     # all dicts are ordered dicts in 3.7 +, this breaks if using lower version of python.
 
     with open(f"{config.OUTPUT_DIR}/{basename}_best.tsv", "w") as outhandle:
-        outhandle.write("motif\t")
+        outhandle.write("SeqBMM Motif\t")
         w = csv.DictWriter(outhandle, list(motif_dict.items())[0][1][0].keys(), delimiter="\t")
         w.writeheader()
         for motif, data in motif_dict.items():

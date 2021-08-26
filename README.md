@@ -74,7 +74,8 @@ Flag | Description
 
 ## Output
 
-Example output files 6VXX_A with a taxid_filt of 11118 as an input can be found [here]()
+Example output files 6VXX_A with a taxid_filt of 11118 as an input can be found [here](example_output)
+<br>
 Definitions for the output file headers can be found [here](headers.md)
 ### Intermediate Output
 
