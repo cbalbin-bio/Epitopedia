@@ -71,9 +71,14 @@ Flag | Description
 --rasa_span | Minimum consecutive accesssible residues to consider a hit a SeqBMM
 --taxid_filter | taxa filter; example to filter out all Coronaviridae --taxid_filter 11118
 
-## Intermediate Output
 
-Epitopedia will output the following files:
+## Output
+
+Example output files 6VXX_A with a taxid_filt of 11118 as an input can be found [here]()
+Definitions for the output file headers can be found [here](headers.md)
+### Intermediate Output
+
+Epitopedia will output the following files at various stages of execution:
 
 File Name | Description
 ------------ | -------------
@@ -84,10 +89,10 @@ EPI_PDB_hits_{pdb_id(s)}.tsv" | Contains epitope source sequences against EPI_PD
 EPI_PDB_fragment_pairs_{pdb_id(s)}.tsv | Contains structurally aligned fragment pairs consisting of spans of the input structure aligned against the structural representatives
 EPI_PDB_fragment_pairs_{pdb_id(s)}_ranked.tsv | Contains the above but ranked from best to worst RMSD
 
+### Final Output
 
-## Output
 
-Epitopedia will show the best hit per epitope motif if there are redundant source sequences at the final stage of the pipeline. There results can be viewed in a tsv file (EPI_PDB_fragment_pairs_{pdb_id(s)}_best.tsv) or a more legible HTML file (epitopedia_6VXX_A_output.html).
+Epitopedia will show the best hit per epitope motif if there are redundant source sequences at the final stage of the execution. There results can be viewed in a tsv file (EPI_PDB_fragment_pairs_{pdb_id(s)}_best.tsv) or a more legible HTML file (epitopedia_6VXX_A_output.html).
 
 [**Click here**](https://cbalbin-fiu.github.io/) for an example of the HTML output using input structure 6VXX_A with a taxid_filt of 11118.
 

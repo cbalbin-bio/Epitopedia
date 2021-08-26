@@ -164,9 +164,18 @@ if __name__ == "__main__":
                     config.BLAST_DATABASE_DIR,
                     acc_seq=query_pdb_seq.rasa,
                     taxids=args.taxid_filter,
+                    pdb_seqnums=query_pdb_seq.seqnums,
+                    pdb_seqsolv=query_pdb_seq.seqsolv,
                 )
             else:
-                bp = BLASTParser(file_path, PDB_INPUT, config.BLAST_DATABASE_DIR, acc_seq=query_pdb_seq.rasa)
+                bp = BLASTParser(
+                    file_path,
+                    PDB_INPUT,
+                    config.BLAST_DATABASE_DIR,
+                    acc_seq=query_pdb_seq.rasa,
+                    pdb_seqnums=query_pdb_seq.seqnums,
+                    pdb_seqsolv=query_pdb_seq.seqsolv,
+                )
 
         hits = bp.gethits()
         console.log("Query protein BLASTed against EPI-SEQ")
