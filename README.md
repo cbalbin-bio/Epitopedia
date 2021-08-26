@@ -2,7 +2,7 @@
 
 ## Getting started
 
-The quickest way to start using Epitopedia is by downloading the docker container which contains all the dependencies preinstalled
+The quickest way to start using Epitopedia is by downloading the docker container which contains all the dependencies preinstalled:
 
 ```shell
 docker pull cbalbin/epitopedia
@@ -11,7 +11,7 @@ docker pull cbalbin/epitopedia
 Epitopedia requires the [PDB in mmCIF](https://www.wwpdb.org/ftp/pdb-ftp-sites) format, EpitopediaDB and EPI-SEQ DB. EpitopediaDB and EPI-SEQ DB can be downloaded [here](https://fiudit-my.sharepoint.com/:u:/g/personal/cbalbin_fiu_edu/Ef9AbZ1H3v9CqiNLjuhtnPUBZIteRWvNEIIJ0_X0hMUTcw?e=7PHowv).
 
 
-To download the entirety of PDB in mmCIF format
+To download the entirety of PDB in mmCIF format:
 ```shell
 rsync -rlpt -v -z --delete --port=33444 \
 rsync.rcsb.org::ftp_data/structures/divided/mmCIF/ ./mmCIF
@@ -20,7 +20,7 @@ rsync.rcsb.org::ftp_data/structures/divided/mmCIF/ ./mmCIF
 **OR**
 <br>
 
-To download the only the PDB files present in EpitopediaDB (EPI-PDB) you can supply the pdb_id_list.txt to rsync
+To download the only the PDB files present in EpitopediaDB (EPI-PDB) you can supply the pdb_id_list.txt to rsync:
 ```shell
 rsync -rlpt -v -z --delete --port=33444 --include-from=/path/to/pdb_id_list.txt \
 rsync.rcsb.org::ftp_data/structures/divided/mmCIF/ ./mmCIF
@@ -32,7 +32,7 @@ The data directory should contain Epitopedia DB (epitopedia.sqlite3) and EPI-SEQ
 
 The mmcif directory should point to the sharded PDB directory in mmCIF format as downloaded above.
 
-NOTE: you may need to unzip the mmCIF directory
+NOTE: you may need to unzip the mmCIF directory:
 ```shell
 gunzip -r mmCIF
 ```
@@ -49,7 +49,7 @@ docker run --rm -it -p 5000:5000 \
 cbalbin/epitopedia run_epitopedia.py 6VXX_A --taxid_filter 11118
 ```
 
-NOTE: on some systems you may need to run docker with sudo
+NOTE: on some systems you may need to run docker with sudo.
 
 It is recommended to use the flag taxid_filter to prevent the input protein from finding itself or other versions of itself. For example, if we wnted to find mimics of the SARS-CoV-2 spike protien (6VXX) is a SARS-CoV-2 protein
 we could use a taxid_filter of 11118 to prevent finding mimics in other Coronaviridae. The [NCBI Taxonomy Browser](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi) will be helpful in determining what taxid to specify.
@@ -89,7 +89,7 @@ EPI_PDB_fragment_pairs_{pdb_id(s)}_ranked.tsv | Contains the above but ranked fr
 
 Epitopedia will show the best hit per epitope motif if there are redundant source sequences at the final stage of the pipeline. There results can be viewed in a tsv file (EPI_PDB_fragment_pairs_{pdb_id(s)}_best.tsv) or a more legible HTML file (epitopedia_6VXX_A_output.html).
 
-[**Click here**](https://cbalbin-fiu.github.io/) for an example of the HTML output
+[**Click here**](https://cbalbin-fiu.github.io/) for an example of the HTML output.
 
 
 
@@ -99,7 +99,7 @@ Epitopedia uses IEDB and PDB to generate EpitopediaDB, which is used in the mole
 
 Generation of the database takes some time (~12 hours). Thus, the EpitopediaDB is provided above.
 
-To create the EpitopediaDB, download [IEDB](https://www.iedb.org/downloader.php?file_name=doc/iedb_public.sql.gz) and a mmCIF version of PDB
+To create the EpitopediaDB, download [IEDB](https://www.iedb.org/downloader.php?file_name=doc/iedb_public.sql.gz) and a mmCIF version of PDB.
 
 Point the container to the approriate paths for the IEDB, PDB (mmCIF format) and a data directory where the databases will be written.
 
@@ -114,7 +114,7 @@ cbalbin/epitopedia generate_database.py
 
 ## License
 
-This software is released under the [MIT License](LICENSE)
+This software is released under the [MIT License](LICENSE).
 
 Software and databases used in Epitopedia may be released under various licenses:
 
