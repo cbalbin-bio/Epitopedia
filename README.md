@@ -93,9 +93,9 @@ EPI_PDB_fragment_pairs_{pdb_id(s)}_ranked.tsv | Contains the above but ranked fr
 ### Final Output
 
 
-Epitopedia will show the best hit per epitope motif if there are redundant source sequences at the final stage of the execution. There results can be viewed in a tsv file (EPI_PDB_fragment_pairs_{pdb_id(s)}_best.tsv) or a more legible HTML file (epitopedia_6VXX_A_output.html).
+Epitopedia will show the best hit per epitope motif if there are redundant source sequences at the final stage of the execution. There results can be viewed in a tsv file ([**Example**](example_output/EPI_PDB_fragment_pairs_6VXX_A_best.tsv)) or a more legible HTML file ([**Example**](https://cbalbin-fiu.github.io/)).
 
-[**Click here**](https://cbalbin-fiu.github.io/) for an example of the HTML output using input structure 6VXX_A with a taxid_filt of 11118.
+<!-- [**Click here**](https://cbalbin-fiu.github.io/) for an example of the HTML output using input structure 6VXX_A with a taxid_filt of 11118. -->
 
 
 

@@ -64,6 +64,6 @@ IEDB_FILT Source Org | Organism name the source sequence is associated with
 IEDB_FILT Source Seq | Epitope Source sequence
 IEDB_FILT Iacc | Internal acession number
 
-[For remaining headers in this file see EPI-SEQ headers](###EPI-SEQ Headers)
+[For remaining headers in this file see EPI-SEQ headers](#EPI-SEQ Headers)
 
 
