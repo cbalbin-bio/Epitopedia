@@ -83,7 +83,13 @@ EPI_SEQ_span_filt_acc_hits_{pdb_id(s)}.tsv | Contains the above spans that conta
 EPI_PDB_hits_{pdb_id(s)}.tsv" | Contains epitope source sequences against EPI_PDB hits
 EPI_PDB_fragment_pairs_{pdb_id(s)}.tsv | Contains structurally aligned fragment pairs consisting of spans of the input structure aligned against the structural representatives
 EPI_PDB_fragment_pairs_{pdb_id(s)}_ranked.tsv | Contains the above but ranked from best to worst RMSD
-EPI_PDB_fragment_pairs_{pdb_id(s)}_best.tsv | Contains only the best hit per epitope motif if there are redundant source sequences
+
+
+## Output
+
+Epitopedia will show the best hit per epitope motif if there are redundant source sequences at the final stage of the pipeline. There results can be viewed in a tsv file (EPI_PDB_fragment_pairs_{pdb_id(s)}_best.tsv) or a more legible HTML file (epitopedia_6VXX_A_output.html).
+
+[**Click here**](https://cbalbin-fiu.github.io/) for an example of the HTML output
 
 
 
