@@ -1,5 +1,10 @@
 # Epitopedia
 
+
+
+[![DOI](https://img.shields.io/badge/DOI-10.1101%2F2021.08.26.457577%20-blue)](https://doi.org/10.1101/2021.08.26.457577)
+
+
 ## Getting started
 
 The quickest way to start using Epitopedia is by downloading the docker container which contains all the dependencies preinstalled:
