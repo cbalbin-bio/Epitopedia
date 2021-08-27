@@ -152,3 +152,10 @@ Databases:
 
 
 ## Reference
+
+If you use Epitopedia in your work, please cite:
+```
+Epitopedia: identifying molecular mimicry of known immune epitopes
+Christian Andrew Balbin, Janelle Nunez-Castilla, Jessica Siltberg-Liberles
+bioRxiv 2021.08.26.457577; doi: https://doi.org/10.1101/2021.08.26.457577
+```
