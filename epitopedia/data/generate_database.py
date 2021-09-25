@@ -9,13 +9,23 @@
 import sqlite3
 import subprocess
 from dataclasses import dataclass
-
+from functools import partial
 import os
 import glob
 from Bio.PDB.DSSP import make_dssp_dict
 from multiprocessing import Pool
 from rich.progress import track
 from rich.console import Console
+from dssp import runDSSP, parseDSSP
+from parse_cif import extract_data, extract_plddt, write_cif_data_csv
+import argparse
+
+
+parser = argparse.ArgumentParser(description="Epitopedia")
+parser.add_argument("--use-afdb", action='store_true', help="Include AFDB in database generation")
+args = parser.parse_args()
+
+
 
 console = Console()
 # convert mysql into sqlite3 db
@@ -260,104 +270,20 @@ protein_3to1 = {
 }
 
 
+
 paths = glob.glob("/app/mmcif/*/*.cif")
+with open("/app/data/mmCIF_seqs.csv", "a") as f_cif_seq_dat:
+    f_cif_seq_dat.write("pdb_id,pdb_id_asym_id,seqres,seqsolv,seqnums,asym_id,icode,lplddt,gplddt,AF\n")
+    for path in paths:
+        write_cif_data_csv(extract_data(path), f_cif_seq_dat,os.path.basename(path).removesuffix(".cif").lower())
 
-with open("/app/data/mmCIF_seqs.csv", "w") as f_cif_seq_dat:
-    f_cif_seq_dat.write("pdb_id,pdb_id_asym_id,seqres,seqsolv,seqnums,asym_id,icode\n")
-    for path in track(paths, description="Extracting sequences from mmCIF files for EPI_PDB generation"):
-        name = os.path.basename(path).split(".")[0]
-        in_data = False
-        chain = []
-        asym_id = []
-        seqres = []
-        seqsolv = []
-        icode = []
-        auth_seq_nums = []
-        with open(path) as cif_file:
-            for line in cif_file:
-                if "_pdbx_poly_seq_scheme.asym_id" in line:
-                    in_data = True
+    if args.use_afdb:
+        paths = glob.glob("/app/afdb/*.cif")
+        for path in paths:
+            write_cif_data_csv(extract_data(path), f_cif_seq_dat,os.path.basename(path).removesuffix(".cif").lower(),plddt=extract_plddt(path))
 
-                if in_data:
-                    if line.startswith("#"):
-                        break
-                    elif line.startswith("_"):
-                        continue
 
-                    line = line.split()
-                    chain.append(line[9])
-                    asym_id.append(line[0])
-                    seqres.append(line[3])
-                    icode.append(line[10])
-                    auth_seq_nums.append(line[6])
-                    seqsolv.append(line[7])
-
-        if len(chain) == 0:
-            continue
-
-        cur_chain_id = chain[0]
-        cur_asym_id = []
-        cur_seqres = []
-        cur_seqsolv = []
-        cur_icode = []
-        cur_auth_seq_nums = []
-
-        for i, chain_ident in enumerate(chain):
-            if chain_ident == cur_chain_id:
-                cur_asym_id.append(asym_id[i])
-                cur_seqres.append(seqres[i])
-                cur_seqsolv.append(seqsolv[i])
-                cur_icode.append(icode[i])
-                cur_auth_seq_nums.append(auth_seq_nums[i])
-            else:
-                try:
-                    cur_asym_id = " ".join(cur_asym_id)
-                    cur_seqres = "".join([protein_3to1[res] for res in cur_seqres])
-                    cur_seqsolv = "".join([protein_3to1[res] for res in cur_seqsolv])
-                    cur_auth_seq_nums = " ".join(cur_auth_seq_nums)
-                    cur_icode = " ".join(cur_icode)
-                except KeyError:
-                    cur_chain_id = chain_ident
-                    cur_asym_id = []
-                    cur_seqres = []
-                    cur_seqsolv = []
-                    cur_icode = []
-                    cur_auth_seq_nums = []
-                    cur_asym_id.append(asym_id[i])
-                    cur_seqres.append(seqres[i])
-                    cur_seqsolv.append(seqsolv[i])
-                    cur_icode.append(icode[i])
-                    cur_auth_seq_nums.append(auth_seq_nums[i])
-                    continue
-
-                f_cif_seq_dat.write(
-                    f"{name}_{cur_chain_id},{name}_{cur_asym_id[0]},{cur_seqres},{cur_seqsolv},{cur_auth_seq_nums},{cur_asym_id},{cur_icode}\n"
-                )
-
-                cur_chain_id = chain_ident
-                cur_asym_id = []
-                cur_seqres = []
-                cur_seqsolv = []
-                cur_icode = []
-                cur_auth_seq_nums = []
-                cur_asym_id.append(asym_id[i])
-                cur_seqres.append(seqres[i])
-                cur_seqsolv.append(seqsolv[i])
-                cur_icode.append(icode[i])
-                cur_auth_seq_nums.append(auth_seq_nums[i])
-
-        try:
-            cur_asym_id = " ".join(cur_asym_id)
-            cur_seqres = "".join([protein_3to1[res] for res in cur_seqres])
-            cur_seqsolv = "".join([protein_3to1[res] for res in cur_seqsolv])
-            cur_auth_seq_nums = " ".join(cur_auth_seq_nums)
-            cur_icode = " ".join(cur_icode)
-        except KeyError:
-            continue
-
-        f_cif_seq_dat.write(
-            f"{name}_{cur_chain_id},{name}_{cur_asym_id[0]},{cur_seqres},{cur_seqsolv},{cur_auth_seq_nums},{cur_asym_id},{cur_icode}\n"
-        )
+    
 
 
 console.log("Sequences from mmCIF files extracted for EPI_PDB generation")
@@ -446,66 +372,14 @@ console.log("EPI_PDB written to DB")
 os.makedirs("/app/data/dssp", exist_ok=True)
 
 
-def runDSSP(path):
-    basename = os.path.basename(path).split(".")[0]
 
-    subprocess.run(f"mkdssp {path} > /app/data/dssp/{basename}.dssp", shell=True, capture_output=True)
-
-
-def parseDSSP(path):
-
-    basename = os.path.basename(path).split(".")[0]
-
-    chains_acc = []
-
-    try:
-
-        dssp_dict = make_dssp_dict(path)
-        chains = {key[0] for key in dssp_dict[0].keys()}
-    except:
-        return chains_acc
-
-    for chain in chains:
-
-        try:
-
-            cur.execute(
-                f'SELECT seqnums, icode, asym_id, pdb_id FROM mmCIF_seqs WHERE pdb_id_asym_id = "{basename}_{chain}"'
-            )
-            row = cur.fetchone()
-            if row == None:
-                continue
-            seq_nums = row[0].split(" ")
-            icodes = row[1].split(" ")
-            asym_ids = row[2].split(" ")
-            pdb_id = row[3]
-
-            chain_acc = []
-            for seq_num, icode, asym_id in zip(seq_nums, icodes, asym_ids):
-                if seq_num != "?":
-                    try:
-                        if icode != ".":
-
-                            chain_acc.append(str(dssp_dict[0][(asym_id, (" ", int(seq_num), icode))][2]))
-                        else:
-                            chain_acc.append(str(dssp_dict[0][(asym_id, (" ", int(seq_num), " "))][2]))
-                    except KeyError:
-                        chain_acc.append("?")  # this should fix issue with weird residues
-                else:
-                    chain_acc.append("?")
-
-            chain_acc = " ".join(chain_acc)
-
-        except:
-            continue
-
-        chains_acc.append(f"{pdb_id},{chain_acc}\n")
-
-    return chains_acc
 
 
 if __name__ == "__main__":
+    
     paths = glob.glob("/app/mmcif/*/*.cif")
+    if args.use_afdb:
+        paths += glob.glob("/app/afdb/*.cif")
     with Pool(12) as p:
         data = list(
             track(
@@ -522,6 +396,7 @@ if __name__ == "__main__":
 
     dssp_files = glob.glob("/app/data/dssp/*")
     with Pool(12) as p:
+        parseDSSP = partial(parseDSSP, cur)
         data = list(
             track(
                 p.imap(parseDSSP, dssp_files, chunksize=1024),

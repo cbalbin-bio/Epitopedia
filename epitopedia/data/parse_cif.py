@@ -88,12 +88,3 @@ def write_cif_data_csv(data: dict[str, dict[str, list[str]]], handle: TextIOWrap
             except KeyError:
                 continue
 
-
-def write_cif_data_csv_af(data: dict[str, dict[str, list[str]]], plddt: list[str], handle: TextIOWrapper, pdb_id: str):
-    for chain, chain_data in data.items():
-        try:
-            handle.write(
-                f'{pdb_id}_{chain}, {"".join([protein_3to1[res] for res in chain_data["mon_id"]])},{" ".join(plddt)}'
-            )
-        except KeyError:
-            continue
