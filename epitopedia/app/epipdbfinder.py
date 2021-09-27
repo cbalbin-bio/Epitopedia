@@ -2,15 +2,16 @@
 # This work is licensed under the terms of the MIT license.
 # For a copy, see <https://opensource.org/licenses/MIT>.
 
-from dataclasses import dataclass, field
-from make_dice_gemmi import extract
-import config
-
-from MMCIFMeta import PDBSeqs, AccAgree
 import os
 import subprocess
+from dataclasses import dataclass, field
+
 from dataclasses_json import dataclass_json
-from config import console
+from epitopedia.app import config
+from epitopedia.app.config import console
+from epitopedia.utils.make_dice_gemmi import extract
+
+from MMCIFSeqs import AccAgree, MMCIFSeqs
 
 
 @dataclass_json
@@ -24,6 +25,7 @@ class PDBHit:
     seqres: str
     seqsolv: str
     seqnums: str
+    isAF: bool
     motif_seq: str = None
     motif_res_nums_query: list[int] = field(default_factory=list)
     motif_res_nums_target: list[int] = field(default_factory=list)
@@ -38,6 +40,8 @@ class PDBHit:
     query_perc_acc: float = -1
     target_perc_acc: float = -1
     perc_acc_agree: float = -1
+    gPLDDT: float = -1
+    lPLDDT: list[float] = field(default_factory=list)
 
     def __post_init__(self):
         self.qcov = float(self.qcov)
@@ -142,7 +146,7 @@ def hit_to_pdb(
             # you can get rid of this step later and just incorporate it into the pdb hit query against the sql db with another left join
             # doing it this way to save dev time
             try:
-                target_pdb_seqs = PDBSeqs(target_base_pdb_name, target_chain_pdb_name, compute_acc=True)
+                target_pdb_seqs = MMCIFSeqs(target_base_pdb_name, target_chain_pdb_name, compute_acc=True)
             except:
                 # print(target_base_pdb_name, target_chain_pdb_name)
                 continue

@@ -2,8 +2,9 @@
 # This work is licensed under the terms of the MIT license.
 # For a copy, see <https://opensource.org/licenses/MIT>.
 
-import sqlite3
 import os
+import sqlite3
+
 from rich.console import Console
 
 console = Console()

@@ -1,4 +1,3 @@
-
 # Copyright (c) 2021 Christian Balbin
 # This work is licensed under the terms of the MIT license.
 # For a copy, see <https://opensource.org/licenses/MIT>.
@@ -6,8 +5,8 @@
 from collections import defaultdict
 from io import TextIOWrapper
 from typing import Union
-from gemmi import cif
 
+from gemmi import cif
 
 protein_3to1 = {
     "ALA": "A",
@@ -34,7 +33,7 @@ protein_3to1 = {
 }
 
 
-def extract_data(path: str, use_auth : bool=True) -> dict[str, dict[str, list[str]]]:
+def extract_data(path: str, use_auth: bool = True) -> dict[str, dict[str, list[str]]]:
 
     # Create defaultdict with default type of another defaultdict with list default
     data = defaultdict(lambda: defaultdict(list))
@@ -57,25 +56,30 @@ def extract_data(path: str, use_auth : bool=True) -> dict[str, dict[str, list[st
             for key in scheme.keys():
                 data[asym_id][key].append(scheme[key][index])
 
-
     return data
 
 
 def extract_plddt(path: str) -> tuple[list[str], str]:
     doc = cif.read_file(path)
     block = doc.sole_block()
-    return list(block.find_values("_ma_qa_metric_local.metric_value")), block.find_value("_ma_qa_metric_global.metric_value")
+    return list(block.find_values("_ma_qa_metric_local.metric_value")), block.find_value(
+        "_ma_qa_metric_global.metric_value"
+    )
 
 
-def write_cif_data_csv(data: dict[str, dict[str, list[str]]], handle: TextIOWrapper, pdb_id: str, plddt: Union[bool, tuple[list[str], str]] = False):
+def write_cif_data_csv(
+    data: dict[str, dict[str, list[str]]],
+    handle: TextIOWrapper,
+    pdb_id: str,
+    plddt: Union[bool, tuple[list[str], str]] = False,
+):
     if plddt:
         # writing af prediction
 
-
         try:
             handle.write(
-            f'{pdb_id}_A,{pdb_id}_A,{"".join([protein_3to1[res] for res in data["A"]["mon_id"]])},NULL,{" ".join(data["A"]["auth_seq_num"])},{" ".join(data["A"]["asym_id"])},{" ".join(data["A"]["pdb_ins_code"])},{" ".join(plddt[0])},{plddt[1]},TRUE\n'
-        )
+                f'{pdb_id}_A,{pdb_id}_A,{"".join([protein_3to1[res] for res in data["A"]["mon_id"]])},NULL,{" ".join(data["A"]["auth_seq_num"])},{" ".join(data["A"]["asym_id"])},{" ".join(data["A"]["pdb_ins_code"])},{" ".join(plddt[0])},{plddt[1]},TRUE\n'
+            )
         except KeyError:
             return
     else:
@@ -87,4 +91,3 @@ def write_cif_data_csv(data: dict[str, dict[str, list[str]]], handle: TextIOWrap
                 )
             except KeyError:
                 continue
-

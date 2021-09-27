@@ -2,11 +2,12 @@
 # This work is licensed under the terms of the MIT license.
 # For a copy, see <https://opensource.org/licenses/MIT>.
 
+import os
 import subprocess
 import tempfile
 from dataclasses import dataclass, field
+
 from dataclasses_json import dataclass_json
-import os
 
 
 @dataclass_json

@@ -84,7 +84,7 @@ RUN wget ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/xtract.Linux.gz ;\
 WORKDIR /app
 COPY . /app
 
-RUN chmod +x run_epitopedia.py ; chmod +x epitopedia/data/generate_database.py
+RUN chmod +x run_epitopedia.py ; chmod +x generate_database.py
 
 ENV PATH=/app/edirect:/app/mmseqs/bin/:/app/ncbi-blast-2.12.0+/bin:/app/:$PATH
 

@@ -2,12 +2,13 @@
 # This work is licensed under the terms of the MIT license.
 # For a copy, see <https://opensource.org/licenses/MIT>.
 
+import csv
 import json
 import os
-from collections import defaultdict
 import sys
-import csv
-import config
+from collections import defaultdict
+
+from epitopedia.app import config
 
 
 def reduce_results(path):

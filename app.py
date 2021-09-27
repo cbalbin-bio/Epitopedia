@@ -2,8 +2,9 @@
 # This work is licensed under the terms of the MIT license.
 # For a copy, see <https://opensource.org/licenses/MIT>.
 
-from flask import Flask, render_template
 import json
+
+from flask import Flask, render_template
 
 with open("/Users/christianbalbin/bioinformatics/docker/6XR8_A_best_per_source_seq.json") as input_handle:
     data = json.load(input_handle)
