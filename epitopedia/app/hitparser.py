@@ -59,7 +59,7 @@ def parseHit(hit, span, pdb_seq, query_pdb_base, query_pdb_chain, pdb_input_str,
     # get mmseqs results for this hits source sequence against pdb, looking for representative structures
 
     cur.execute(
-        f'SELECT query, target, qcov, pident, evalue, seqres, seqsolv, seqnums FROM EPI_PDB LEFT JOIN mmCIF_seqs ON EPI_PDB.target = mmCIF_seqs.pdb_id WHERE EPI_PDB.query = "{epitope.source_antigen_accession}";'
+        f'SELECT query, target, qcov, pident, evalue, seqres, seqsolv, seqnums, lplddt, gplddt, AF FROM EPI_PDB LEFT JOIN mmCIF_seqs ON EPI_PDB.target = mmCIF_seqs.pdb_id WHERE EPI_PDB.query = "{epitope.source_antigen_accession}";'
     )
     mmseq_db_rows = cur.fetchall()
 

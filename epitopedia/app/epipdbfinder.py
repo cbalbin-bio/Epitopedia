@@ -25,10 +25,13 @@ class PDBHit:
     seqres: str
     seqsolv: str
     seqnums: str
-    isAF: bool = False
+    lplddt: str
+    gplddt: float
+    isAF: bool
     motif_seq: str = None
     motif_res_nums_query: list[int] = field(default_factory=list)
     motif_res_nums_target: list[int] = field(default_factory=list)
+    motif_lplddt: list[int] = field(default_factory=list)
     query_struc_dice_path: str = ""
     target_struc_dice_path: str = ""
     TMalign_RMSD: float = -1.0
@@ -40,13 +43,17 @@ class PDBHit:
     query_perc_acc: float = -1
     target_perc_acc: float = -1
     perc_acc_agree: float = -1
-    gPLDDT: float = -1
-    lPLDDT: list[float] = field(default_factory=list)
 
     def __post_init__(self):
         self.qcov = float(self.qcov)
         self.pident = float(self.pident)
         self.evalue = float(self.evalue)
+
+        if self.isAF == "TRUE":
+            self.isAF = True
+            self.gplddt = float(self.gplddt)
+        else:
+            self.isAF = False
 
 
 def hit_to_csv(file_path, motif, query_pdb_res_nums, motif_acc, pdbhit, epitope, hit):
@@ -89,8 +96,6 @@ def hit_to_pdb(
         if pdbhit.pident < min_pident:
             continue
 
-        if pdbhit.target.startswith("AF-"):
-            pdbhit.isAF = True
         if pdbhit.isAF and not use_afdb:
             continue
 
@@ -152,6 +157,9 @@ def hit_to_pdb(
 
             # get the residue numbers that correspond to the motif in the pdb structure
             pdbhit.motif_res_nums_target = pdbhit.seqnums.split(" ")[idx : idx + len(motif)]
+
+            if pdbhit.isAF:
+                pdbhit.motif_lplddt = pdbhit.seqnums.split(" ")[idx : idx + len(motif)]
 
             target_base_pdb_name = pdbhit.target.rsplit("_", 1)[0].lower()
             target_chain_pdb_name = pdbhit.target.rsplit("_", 1)[1]

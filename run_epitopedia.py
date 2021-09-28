@@ -111,7 +111,7 @@ if __name__ == "__main__":
                 pdb_input_str=pdb_input_str,
                 use_afdb=args.use_afdb,
             )
-            with Pool(1) as p:
+            with Pool(12) as p:
                 data = list(
                     track(
                         p.imap(parseHit, hits),
