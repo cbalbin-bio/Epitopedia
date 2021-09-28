@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/ngl"></script>
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <title>Viz</title>
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class="viewport" id="viewport1"></div>
+        <div class="viewport" id="viewport2"></div>
+        <div class="viewport" id="viewport3"></div>
+        <div class="viewport" id="viewport4">
+            <div class=sequence>
+                <div>
+                    <!-- <svg width="120" height="20">
+                    <text y="12" font-size=16 dominant-baseline="middle">Query </text>
+                    <text y="12" x="60" font-size=16 dominant-baseline="middle">{{hit.query_start}}</text>
+                </svg>
+                <svg class="hit_graphic" width="{{ hit.aln_query_seq|length * 20}}" height="20">
+                    {% for res in hit.aln_query_seq %}
+                    <rect x="{{loop.index0 *20 }}" y=0 width="20" height="20" fill="{{ taylor_colors[res] }}" />
+                    <text fill="white" x="{{loop.index0 *20 + 10}}" y="12" font-size=20
+                        dominant-baseline="middle" text-anchor="middle">{{res}}</text>
+                    {% endfor %}
+                </svg>
+                <svg width="10" height="20">
+                </svg>
+                <svg width="60" height="20">
+                    <text y="12" x=0 font-size=16 dominant-baseline="middle">{{hit.query_end}}</text>
+                </svg> -->
+
+
+                    <svg width="80" height="40">
+                        <text fill="white" y="24" font-size=32 dominant-baseline="middle">Motif </text>
+                        <!-- <text y="12" x="60" font-size=16 dominant-baseline="middle">22</text> -->
+                    </svg>
+                    <svg class="hit_graphic" width="200" height="40">
+
+                        <g class=residue data-resnum-query="22" data-chain-query="A" data-resnum-mimic="110"
+                            data-chain-mimic="X">
+                            <rect x="0" y=0 width="40" height="40" fill="blue" />
+                            <text fill="white" x="20" y="24" font-size=40 dominant-baseline="middle"
+                                text-anchor="middle">T</text>
+                        </g>
+
+
+                        <g class=residue data-resnum-query="23" data-chain-query="A" data-resnum-mimic="111"
+                            data-chain-mimic="X">
+                            <rect x="40" y=0 width="40" height="40" fill="blue" />
+                            <text fill="white" x="60" y="24" font-size=40 dominant-baseline="middle"
+                                text-anchor="middle">Q</text>
+
+                        </g>
+
+                        <g class=residue data-resnum-query="24" data-chain-query="A" data-resnum-mimic="112"
+                            data-chain-mimic="X">
+
+                            <rect x="80" y=0 width="40" height="40" fill="blue" />
+                            <text fill="white" x="100" y="24" font-size=40 dominant-baseline="middle"
+                                text-anchor="middle">L</text>
+
+                        </g>
+
+
+                        <g class=residue data-resnum-query="25" data-chain-query="A" data-resnum-mimic="113"
+                            data-chain-mimic="X">
+                            <rect x="120" y=0 width="40" height="40" fill="blue" />
+                            <text fill="white" x="140" y="24" font-size=40 dominant-baseline="middle"
+                                text-anchor="middle">P</text>
+
+                        </g>
+
+
+                        <g class=residue data-resnum-query="26" data-chain-query="A" data-resnum-mimic="114"
+                            data-chain-mimic="X">
+                            <rect x="160" y=0 width="40" height="40" fill="blue" />
+                            <text fill="white" x="180" y="24" font-size=40 dominant-baseline="middle"
+                                text-anchor="middle">P</text>
+
+                        </g>
+
+                    </svg>
+                    <!-- <svg width="10" height="20">
+                    </svg>
+                    <svg width="60" height="20">
+                        <text y="12" x=0 font-size=16 dominant-baseline="middle">26</text>
+                    </svg> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
