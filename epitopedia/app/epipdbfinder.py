@@ -10,8 +10,8 @@ from dataclasses_json import dataclass_json
 from epitopedia.app import config
 from epitopedia.app.config import console
 from epitopedia.utils.make_dice_gemmi import extract
-
-from MMCIFSeqs import AccAgree, MMCIFSeqs
+from epitopedia.utils.utils import obtain_lock, release_lock, wait_unlock
+from epitopedia.app.MMCIFSeqs import AccAgree, MMCIFSeqs
 
 
 @dataclass_json
@@ -25,7 +25,7 @@ class PDBHit:
     seqres: str
     seqsolv: str
     seqnums: str
-    isAF: bool
+    isAF: bool = False
     motif_seq: str = None
     motif_res_nums_query: list[int] = field(default_factory=list)
     motif_res_nums_target: list[int] = field(default_factory=list)
@@ -72,6 +72,7 @@ def hit_to_pdb(
     epitope,
     hit,
     pdb_input_str,
+    use_afdb,
     min_pident=95.0,
 ):
 
@@ -88,6 +89,11 @@ def hit_to_pdb(
         if pdbhit.pident < min_pident:
             continue
 
+        if pdbhit.target.startswith("AF-"):
+            pdbhit.isAF = True
+        if pdbhit.isAF and not use_afdb:
+            continue
+
         hit_to_csv(
             f"{config.OUTPUT_DIR}/EPI_PDB_hits_{pdb_input_str}.tsv",
             motif,
@@ -98,7 +104,6 @@ def hit_to_pdb(
             hit,
         )
 
-        # look for motif from epitope blast in solv seq of pdb structure
         idx = pdbhit.seqsolv.find(motif)
 
         if idx != -1:
@@ -107,7 +112,15 @@ def hit_to_pdb(
 
             # ensure query structure dice has been generated, else generate
             query_pdb_filename = f"{config.DICE_DIR}/{query_structure_basename}_{query_pdb_chain}_{query_pdb_res_nums[0]}-{query_pdb_res_nums[-1]}.pdb"
-            if not os.path.exists(query_pdb_filename):
+
+            # if file doesnt eixist and not locked
+            # obtain lock
+            # generate file
+            # release lock
+            # if file is locked
+            # sleep until it exists and isnt locked
+
+            if not os.path.exists(query_pdb_filename) and obtain_lock(query_pdb_filename):
                 try:
                     extract(
                         f"{config.PDB_DATABASE_DIR}/{query_structure_basename[1:3]}/{query_structure_basename}.cif",
@@ -116,10 +129,13 @@ def hit_to_pdb(
                         query_pdb_res_nums[-1],
                         query_pdb_filename,
                     )
+                    release_lock(query_pdb_filename)
                 except:
+                    release_lock(query_pdb_filename)
                     console.log(f"[bold red] {query_structure_basename}.cif not Found")
                     continue
-
+            else:
+                wait_unlock(query_pdb_filename)
                 # result = subprocess.run([f"pdb_selchain -{query_pdb_chain} {PDB_DATABASE_DIR}/{query_structure_basename[1:3]}/pdb{query_structure_basename}.ent | pdb_selres -{query_pdb_res_nums[0]}:{query_pdb_res_nums[-1]} > {query_pdb_filename}"],shell=True, capture_output=True)
 
                 # if result.stderr:
@@ -137,8 +153,8 @@ def hit_to_pdb(
             # get the residue numbers that correspond to the motif in the pdb structure
             pdbhit.motif_res_nums_target = pdbhit.seqnums.split(" ")[idx : idx + len(motif)]
 
-            target_base_pdb_name = pdbhit.target.split("_")[0].lower()
-            target_chain_pdb_name = pdbhit.target.split("_")[1]
+            target_base_pdb_name = pdbhit.target.rsplit("_", 1)[0].lower()
+            target_chain_pdb_name = pdbhit.target.rsplit("_", 1)[1]
 
             # TODO: implement surface acc on target side
             #
@@ -164,25 +180,33 @@ def hit_to_pdb(
 
             # ensure target structure dice has been generated, else generate
             target_pdb_filename = f"{config.DICE_DIR}/{target_base_pdb_name}_{target_chain_pdb_name}_{pdbhit.motif_res_nums_target[0]}-{pdbhit.motif_res_nums_target[-1]}.pdb"
-            if not os.path.exists(target_pdb_filename):
+            if not os.path.exists(target_pdb_filename) and obtain_lock(target_pdb_filename):
                 try:
                     extract(
-                        f"{config.PDB_DATABASE_DIR}/{target_base_pdb_name[1:3]}/{target_base_pdb_name}.cif",
+                        f"{config.AFDB_DIR}/{target_base_pdb_name}.cif"
+                        if pdbhit.isAF
+                        else f"{config.PDB_DATABASE_DIR}/{target_base_pdb_name[1:3]}/{target_base_pdb_name}.cif",
                         target_chain_pdb_name,
                         pdbhit.motif_res_nums_target[0],
                         pdbhit.motif_res_nums_target[-1],
                         target_pdb_filename,
                     )
+                    release_lock(target_pdb_filename)
                 except:
+                    release_lock(target_pdb_filename)
                     console.log(f"[bold red] {target_base_pdb_name}.cif not Found")
                     continue
+            else:
+                wait_unlock(target_pdb_filename)
 
             pdbhit.target_struc_dice_path = target_pdb_filename
 
             TMalign_prefix = f"{query_structure_basename}_{query_pdb_chain}_{query_pdb_res_nums[0]}-{query_pdb_res_nums[-1]}___{target_base_pdb_name}_{target_chain_pdb_name}_{pdbhit.motif_res_nums_target[0]}-{pdbhit.motif_res_nums_target[-1]}"
 
             # ensure TM align has been gernerated, else run
-            if not os.path.exists(f"{config.TMALIGN_DIR}/{TMalign_prefix}.stdout"):
+            if not os.path.exists(f"{config.TMALIGN_DIR}/{TMalign_prefix}.stdout") and obtain_lock(
+                f"{config.TMALIGN_DIR}/{TMalign_prefix}.stdout"
+            ):
 
                 # force TM to properly align using  motif sequence alignment
                 with open(f"{config.TMALIGN_DIR}/{TMalign_prefix}.fa", "w") as tmfasta:
@@ -206,10 +230,14 @@ def hit_to_pdb(
                 )
 
                 if result.stderr:
+                    release_lock(f"{config.TMALIGN_DIR}/{TMalign_prefix}.stdout")
                     # print(result.stderr)
                     continue
                 with open(f"{config.TMALIGN_DIR}/{TMalign_prefix}.stdout", "w") as output_handle:
                     output_handle.write(result.stdout)
+                release_lock(f"{config.TMALIGN_DIR}/{TMalign_prefix}.stdout")
+            else:
+                wait_unlock(f"{config.TMALIGN_DIR}/{TMalign_prefix}.stdout")
 
             # read in tmalign output
 

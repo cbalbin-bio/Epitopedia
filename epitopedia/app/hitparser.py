@@ -29,7 +29,7 @@ class Epitope:
     internal_source_seq_acc: int
 
 
-def parseHit(hit, span, pdb_seq, query_pdb_base, query_pdb_chain, pdb_input_str):
+def parseHit(hit, span, pdb_seq, query_pdb_base, query_pdb_chain, pdb_input_str, use_afdb):
     # looping through each hit in the inital blast search of the query structure sequence against the short IEDB epitope sequences
 
     con = sqlite3.connect(config.SQLITE_DATABASE_DIR)
@@ -78,6 +78,7 @@ def parseHit(hit, span, pdb_seq, query_pdb_base, query_pdb_chain, pdb_input_str)
             epitope,
             hit,
             pdb_input_str,
+            use_afdb,
         )
         if pdb_hits:
             # if data is returned ( succefully mapped to representative pdb structures), sort it by TMscore

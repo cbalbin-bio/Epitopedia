@@ -270,7 +270,7 @@ protein_3to1 = {
 paths = glob.glob("/app/mmcif/*/*.cif")
 with open("/app/data/mmCIF_seqs.csv", "a") as f_cif_seq_dat:
     f_cif_seq_dat.write("pdb_id,pdb_id_asym_id,seqres,seqsolv,seqnums,asym_id,icode,lplddt,gplddt,AF\n")
-    for path in paths:
+    for path in track(paths, description="Parsing PDB mmCIF files"):
         try:
             write_cif_data_csv(extract_data(path), f_cif_seq_dat, os.path.basename(path).removesuffix(".cif"))
         except IndexError:
@@ -278,7 +278,7 @@ with open("/app/data/mmCIF_seqs.csv", "a") as f_cif_seq_dat:
 
     if args.use_afdb:
         paths = glob.glob("/app/afdb/*.cif")
-        for path in paths:
+        for path in track(paths, description="Parsing AFDB mmCIF files"):
             try:
                 write_cif_data_csv(
                     extract_data(path),

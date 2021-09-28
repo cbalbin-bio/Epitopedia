@@ -23,14 +23,17 @@ def remove_previous_files(config, pdb_inputs):
 
 
 def obtain_lock(resource):
-    locked = False
-    while not locked:
-        try:
-            Path(resource + ".lock").touch(exist_ok=False)
-            locked = True
-        except FileExistsError:
-            time.sleep(0.1)
+    try:
+        Path(resource + ".lock").touch(exist_ok=False)
+        return True
+    except FileExistsError:
+        return False
 
 
 def release_lock(resource):
     os.remove(resource + ".lock")
+
+
+def wait_unlock(resource):
+    while os.path.exists(resource + ".lock"):
+        time.sleep(0.1)

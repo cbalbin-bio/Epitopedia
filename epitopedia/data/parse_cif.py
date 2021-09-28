@@ -78,7 +78,7 @@ def write_cif_data_csv(
 
         try:
             handle.write(
-                f'{pdb_id}_A,{pdb_id}_A,{"".join([protein_3to1[res] for res in data["A"]["mon_id"]])},NULL,{" ".join(data["A"]["auth_seq_num"])},{" ".join(data["A"]["asym_id"])},{" ".join(data["A"]["pdb_ins_code"])},{" ".join(plddt[0])},{plddt[1]},TRUE\n'
+                f'{pdb_id}_A,{pdb_id}_A,{"".join([protein_3to1[res] for res in data["A"]["mon_id"]])},{"".join([protein_3to1[res] for res in data["A"]["mon_id"]])},{" ".join(data["A"]["auth_seq_num"])},{" ".join(data["A"]["asym_id"])},{" ".join(data["A"]["pdb_ins_code"])},{" ".join(plddt[0])},{plddt[1]},TRUE\n'
             )
         except KeyError:
             return

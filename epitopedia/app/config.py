@@ -15,6 +15,7 @@ SQLITE_DATABASE_DIR = "/app/data/epitopedia.sqlite3"
 OUTPUT_DIR = "/app/output"
 DICE_DIR = "/app/output/dices"
 TMALIGN_DIR = "/app/output/TMalign_results"
+AFDB_DIR = "/app/afdb"
 
 
 os.makedirs(DICE_DIR, exist_ok=True)

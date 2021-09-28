@@ -29,10 +29,11 @@ parser = argparse.ArgumentParser(description="Epitopedia")
 parser.add_argument("PDB_IDS", type=str, nargs="+", help="List of PDB_IDS formatted as PDBID_CHAIN. e.g. 6xr8_A")
 parser.add_argument("--span", type=int, default=5, help="Minimum span length to consider a mimic")
 parser.add_argument("--rasa", type=float, default=0.20, help="Relative accessible surface area cutoff")
-parser.add_argument("--rasa_span", type=int, default=3, help="Minimum span length for surface accessibility filter")
-parser.add_argument("--taxid_filter", type=str, help="Filter all taxaony at or below the level described by this taxid")
+parser.add_argument("--rasa-span", type=int, default=3, help="Minimum span length for surface accessibility filter")
+parser.add_argument("--taxid-filter", type=str, help="Filter all taxaony at or below the level described by this taxid")
 parser.add_argument("--view", type=str, help="View results from a previous run")
 parser.add_argument("--use-afdb", action="store_true", help="Include AFDB in database generation")
+parser.add_argument("--headless", action="store_true", help="Do not start up webserver")
 
 
 args = parser.parse_args()
@@ -108,11 +109,12 @@ if __name__ == "__main__":
                 query_pdb_base=query_pdb_base,
                 query_pdb_chain=query_pdb_chain,
                 pdb_input_str=pdb_input_str,
+                use_afdb=args.use_afdb,
             )
-            with Pool(12) as p:
+            with Pool(1) as p:
                 data = list(
                     track(
-                        p.imap(parseHit, hits, chunksize=8),
+                        p.imap(parseHit, hits),
                         total=len(hits),
                         description="Searching and aligning SeqBMM structural representatives",
                     )
@@ -143,13 +145,15 @@ if __name__ == "__main__":
             output_from_parsed_template = template.render(data=data.items())
             handle.write(output_from_parsed_template)
 
-        @app.get("/")
-        def main():
-            return render_template("index.html", data=data.items())
+        if not args.headless:
 
-        print("[bold green]View results in browser at http://0.0.0.0:5000[/bold green]")
+            @app.get("/")
+            def main():
+                return render_template("index.html", data=data.items())
 
-        app.run(host="0.0.0.0")
+            print("[bold green]View results in browser at http://0.0.0.0:5000[/bold green]")
+
+            app.run(host="0.0.0.0")
     else:
         with open(args.view) as input_handle:
             data = json.load(input_handle)
