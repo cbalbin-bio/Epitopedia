@@ -92,6 +92,9 @@ def hit_to_pdb(
     for row in mmseqs_db_rows:
         # if row_count >= 10:
         #     break
+
+
+
         pdbhit = PDBHit(*row)
         if pdbhit.pident < min_pident:
             continue
@@ -159,9 +162,9 @@ def hit_to_pdb(
             pdbhit.motif_res_nums_target = pdbhit.seqnums.split(" ")[idx : idx + len(motif)]
 
             if pdbhit.isAF:
-                pdbhit.motif_lplddt = pdbhit.seqnums.split(" ")[idx : idx + len(motif)]
+                pdbhit.motif_lplddt = pdbhit.lplddt.split(" ")[idx : idx + len(motif)]
 
-            target_base_pdb_name = pdbhit.target.rsplit("_", 1)[0].lower()
+            target_base_pdb_name = pdbhit.target.rsplit("_", 1)[0]
             target_chain_pdb_name = pdbhit.target.rsplit("_", 1)[1]
 
             # TODO: implement surface acc on target side

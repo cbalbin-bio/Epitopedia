@@ -56,7 +56,7 @@ def reduce_results(path):
                         "EPI_PDB Rep Dice Path": motif_type["target_struc_dice_path"],
                         "EPI_PDB TMalign RMSD": motif_type["TMalign_RMSD"],
                         "EPI_PDB TMalign TMscore": motif_type["TMalign_TMscore"],
-                        "EPI_PDB TMalign PDB": motif_type["TMalign_PDB_file"],
+                        "EPI_PDB TMalign PDB": os.path.basename(motif_type["TMalign_PDB_file"]),
                         "EPI_PDB Rep Acc": motif_type["target_acc_motif"],
                         "EPI_PDB Input Motif Perc Acc": motif_type["query_perc_acc"],
                         "EPI_PDB Rep Motif Perc Acc": motif_type["target_perc_acc"],

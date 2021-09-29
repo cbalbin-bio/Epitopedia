@@ -35,5 +35,5 @@ if args.taxid_filter:
 if args.headless:
     commands += ["--headless"]
 
-
+print(mounts + commands)
 subprocess.run(["docker", "run", "--rm", "-it"] + mounts + commands)

@@ -2,13 +2,13 @@
 
 
 var schemeIdQuery = NGL.ColormakerRegistry.addSelectionScheme([
-    ["red", "22-26:A"],
+    ["red", `${query_nums.at(0)}-${query_nums.at(-1)}:${query.replace(".cif", "").split("_").at(-1)}`],
     ["#cc955d", "*"]
 ], "motif");
 
 
 var schemeIdMimic = NGL.ColormakerRegistry.addSelectionScheme([
-    ["red", "110-114:X"],
+    ["red", `${target_nums.at(0)}-${target_nums.at(-1)}:${target.replace(".cif", "").split("_").at(-1)}`],
     ["#7899d2", "*"]
 ], "motif");
 
@@ -20,14 +20,14 @@ var schemeIdAln = NGL.ColormakerRegistry.addSelectionScheme([
 
 
 document.addEventListener("DOMContentLoaded", function () {
-
+    console.log(query)
 
 
     var stage1 = new NGL.Stage("viewport1", { backgroundColor: "black" });
-    stage1.loadFile("6XR8.cif").then(function (o) {
+    stage1.loadFile("cif/" + query).then(function (o) {
         o.addRepresentation("cartoon", { color: schemeIdQuery });
-        o.addRepresentation("ball+stick", { sele: "22-26:A", color: schemeIdQuery });
-        o.autoView("22-26:A");
+        o.addRepresentation("ball+stick", { sele: `${query_nums.at(0)}-${query_nums.at(-1)}:${query.replace(".cif", "").split("_").at(-1)}`, color: schemeIdQuery });
+        o.autoView(`${query_nums.at(0)}-${query_nums.at(-1)}:${query.replace(".cif", "").split("_").at(-1)}`);
         //o.autoView("22-26:A");
 
     })
@@ -52,10 +52,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     var stage2 = new NGL.Stage("viewport2", { backgroundColor: "black" });
-    stage2.loadFile("1v7m.cif",).then(function (o) {
+    stage2.loadFile("cif/" + target).then(function (o) {
         o.addRepresentation("cartoon", { color: schemeIdMimic });  // pass schemeId here
-        o.addRepresentation("ball+stick", { sele: "110-114:X", color: schemeIdMimic });
-        o.autoView("110-114:X");
+        o.addRepresentation("ball+stick", { sele: `${target_nums.at(0)}-${target_nums.at(-1)}:${query.replace(".cif", "").split("_").at(-1)}`, color: schemeIdMimic });
+        o.autoView(`${target_nums.at(0)}-${target_nums.at(-1)}:${target.replace(".cif", "").split("_").at(-1)}`);
     });
 
 
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     var stage4 = new NGL.Stage("viewport3", { backgroundColor: "black" });
-    stage4.loadFile("6xr8_A_22-26___1v7m_X_110-114_all_atm.pdb",).then(function (o) {
+    stage4.loadFile("aln/" + aln).then(function (o) {
         o.addRepresentation("ball+stick", { color: schemeIdAln });  // pass schemeId here
         o.autoView();
     });
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
             for (const repr of stage1.compList[0].reprList) {
                 repr.setColor(NGL.ColormakerRegistry.addSelectionScheme([
                     ["green", event.target.dataset.resnumQuery + ":" + event.target.dataset.chainQuery],
-                    ["red", "22-26:A"],
+                    ["red", `${query_nums.at(0)}-${query_nums.at(-1)}:${query.replace(".cif", "").split("_").at(-1)}`],
 
                     ["#cc955d", "*"]
                 ], "highlight"));
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
             for (const repr of stage2.compList[0].reprList) {
                 repr.setColor(NGL.ColormakerRegistry.addSelectionScheme([
                     ["green", event.target.dataset.resnumMimic + ":" + event.target.dataset.chainMimic],
-                    ["red", "110-114:X"],
+                    ["red", `${target_nums.at(0)}-${target_nums.at(-1)}:${target.replace(".cif", "").split("_").at(-1)}`],
 
                     ["#7899d2", "*"]
                 ], "highlight"));
@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
             for (const repr of stage1.compList[0].reprList) {
                 repr.setColor(NGL.ColormakerRegistry.addSelectionScheme([
                     ["red", event.target.dataset.resnumQuery + ":" + event.target.dataset.chainQuery],
-                    ["red", "22-26:A"],
+                    ["red", `${query_nums.at(0)}-${query_nums.at(-1)}:${query.replace(".cif", "").split("_").at(-1)}`],
 
                     ["#cc955d", "*"]
 
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
             for (const repr of stage2.compList[0].reprList) {
                 repr.setColor(NGL.ColormakerRegistry.addSelectionScheme([
                     ["red", event.target.dataset.resnumMimic + ":" + event.target.dataset.chainMimic],
-                    ["red", "110-114:X"],
+                    ["red", `${target_nums.at(0)}-${target_nums.at(-1)}:${target.replace(".cif", "").split("_").at(-1)}`],
 
                     ["#7899d2", "*"]
                 ], "highlight"));

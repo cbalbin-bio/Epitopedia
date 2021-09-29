@@ -36,7 +36,7 @@ class MMCIFSeqs:
     def __init__(self, pdbid, chain, compute_acc=False, threshold=0.25):
         con = sqlite3.connect(config.SQLITE_DATABASE_DIR)
         cur = con.cursor()
-        cur.execute(f'SELECT seqres, seqsolv, seqnums FROM mmCIF_seqs WHERE pdb_id = "{pdbid.lower()}_{chain}"')
+        cur.execute(f'SELECT seqres, seqsolv, seqnums FROM mmCIF_seqs WHERE pdb_id = "{pdbid}_{chain}"')
         row = cur.fetchone()
 
         self.seqres = row[0]
@@ -44,7 +44,7 @@ class MMCIFSeqs:
         self.seqnums = row[2].split(" ")
 
         if compute_acc:
-            cur.execute(f'SELECT acc FROM PDB_DSSP WHERE pdb_id = "{pdbid.lower()}_{chain}"')
+            cur.execute(f'SELECT acc FROM PDB_DSSP WHERE pdb_id = "{pdbid}_{chain}"')
             row = cur.fetchone()
             if row == None:
                 self.acc = None

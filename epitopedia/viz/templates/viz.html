@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript">
+        var query = "{{data["EPI_SEQ Input Structure"]}}" +".cif";
+        var query_nums = {{data["SeqBMM Input Struc Res Nums"]|tojson}};
+        var target_nums = {{data["EPI_PDB Rep Res Nums"]|tojson}};
+        var target = "{{ data["EPI_PDB Rep PDB"]}}" + ".cif";
+        var aln = "{{data["EPI_PDB TMalign PDB"]}}";
+    </script>
+
+    <script src="https://unpkg.com/ngl"></script>
+    <script src="static/index.js"></script>
+    <link rel="stylesheet" href="static/style.css">
+
+    <title>Viz</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="viewport" id="viewport1"></div>
+        <div class="viewport" id="viewport2"></div>
+        <div class="viewport" id="viewport3"></div>
+        <div class="viewport" id="viewport4">
+            <div class=sequence>
+                <div>
+
+
+
+                    <svg width="80" height="40">
+                        <text fill="white" y="24" font-size=32 dominant-baseline="middle">Motif </text>
+
+                    </svg>
+                    <svg class="hit_graphic" width={{ data["SeqBMM Input Struc Res Nums"]|length * 40}} height="40">
+                        {% for res,query_num,mimic_num in motif_data%}
+
+                        <g class=residue data-resnum-query="{{query_num}}" data-chain-query="{{query_chain}}" data-resnum-mimic="{{mimic_num}}"
+                            data-chain-mimic="{{target_chain}}">
+                            <rect x="{{loop.index0 *40 }}" y=0 width="40" height="40" fill="blue" />
+                            <text fill="white" x="{{loop.index0 *40 + 20}}" y="24" font-size=40 dominant-baseline="middle"
+                                text-anchor="middle">{{res}}</text>
+                        </g>
+
+
+                     
+                        {% endfor %}
+
+                    </svg>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

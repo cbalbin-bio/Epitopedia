@@ -12,9 +12,6 @@ import tempfile
 from functools import partial
 from multiprocessing import Pool
 
-from flask import Flask, render_template
-from jinja2 import Environment, FileSystemLoader
-from rich import print
 from rich.progress import track
 
 from epitopedia.app import config
@@ -24,9 +21,10 @@ from epitopedia.app.hitparser import parseHit
 from epitopedia.app.MMCIFSeqs import MMCIFSeqs
 from epitopedia.app.reduce import reduce_results
 from epitopedia.utils.utils import remove_previous_files
+from epitopedia.viz.serve import write_html, serve_html
 
 parser = argparse.ArgumentParser(description="Epitopedia")
-parser.add_argument("PDB_IDS", type=str, nargs="+", help="List of PDB_IDS formatted as PDBID_CHAIN. e.g. 6xr8_A")
+parser.add_argument("--PDB-IDS", type=str, nargs="+", help="List of PDB_IDS formatted as PDBID_CHAIN. e.g. 6xr8_A")
 parser.add_argument("--span", type=int, default=5, help="Minimum span length to consider a mimic")
 parser.add_argument("--rasa", type=float, default=0.20, help="Relative accessible surface area cutoff")
 parser.add_argument("--rasa-span", type=int, default=3, help="Minimum span length for surface accessibility filter")
@@ -120,6 +118,8 @@ if __name__ == "__main__":
                     )
                 )
 
+            # data = [parseHit(hit) for hit in track(hits)]
+
             data = [datum for datum in data if datum]
             data_m.append(data)
 
@@ -136,34 +136,14 @@ if __name__ == "__main__":
 
         with open(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}_best.json") as input_handle:
             data = json.load(input_handle)
-        app = Flask(__name__)
-
-        with open(f"{config.OUTPUT_DIR}/Epitopedia_{pdb_input_str}_output.html", "w") as handle:
-
-            env = Environment(loader=FileSystemLoader("templates"))
-            template = env.get_template("index.html")
-            output_from_parsed_template = template.render(data=data.items())
-            handle.write(output_from_parsed_template)
+        
+        write_html(f"{config.OUTPUT_DIR}/Epitopedia_{pdb_input_str}_output.html", data)
 
         if not args.headless:
 
-            @app.get("/")
-            def main():
-                return render_template("index.html", data=data.items())
-
-            print("[bold green]View results in browser at http://0.0.0.0:5000[/bold green]")
-
-            app.run(host="0.0.0.0")
+            serve_html(data)
     else:
         with open(args.view) as input_handle:
             data = json.load(input_handle)
 
-        app = Flask(__name__)
-
-        @app.get("/")
-        def main():
-            return render_template("index.html", data=data.items())
-
-        print("[bold green]View results in browser at http://0.0.0.0:5000[/bold green]")
-
-        app.run(host="0.0.0.0")
+        serve_html(data)

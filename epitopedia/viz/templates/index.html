@@ -64,6 +64,22 @@
 
 
                     </div>
+                    <div>
+                        <div>
+                            Query Cov: {{"%.2f"|format(instances[0]["EPI_PDB Qcov"]|float)}}
+                        </div>
+                        <div>
+                            % Ident: {{"%.2f"|format(instances[0]["EPI_PDB Pident"]|float)}}
+                        </div>
+                        <div>
+                            evalue: {{"%.2f"|format(instances[0]["EPI_PDB Evalue"]|float)}}
+                        </div>
+                        <a href="/viz/{{motif}},0">visualize</a>
+
+
+
+                    </div>
+
 
 
                     <!-- <img src="static/{{instances[0]['TMalign_png_file']}}" alt="" style="width:100px;height:100px;"> -->
