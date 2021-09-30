@@ -20,7 +20,7 @@ var schemeIdAln = NGL.ColormakerRegistry.addSelectionScheme([
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log(query)
+
 
 
     var stage1 = new NGL.Stage("viewport1", { backgroundColor: "black" });
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var stage2 = new NGL.Stage("viewport2", { backgroundColor: "black" });
     stage2.loadFile("cif/" + target).then(function (o) {
         o.addRepresentation("cartoon", { color: schemeIdMimic });  // pass schemeId here
-        o.addRepresentation("ball+stick", { sele: `${target_nums.at(0)}-${target_nums.at(-1)}:${query.replace(".cif", "").split("_").at(-1)}`, color: schemeIdMimic });
+        o.addRepresentation("ball+stick", { sele: `${target_nums.at(0)}-${target_nums.at(-1)}:${target.replace(".cif", "").split("_").at(-1)}`, color: schemeIdMimic });
         o.autoView(`${target_nums.at(0)}-${target_nums.at(-1)}:${target.replace(".cif", "").split("_").at(-1)}`);
     });
 
