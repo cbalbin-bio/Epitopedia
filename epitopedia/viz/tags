@@ -1,0 +1,19 @@
+_entity_src_gen.pdbx_gene_src_scientific_name PDB
+Homo Sapiens
+", ".join(set(block.find_values("_entity_src_gen.pdbx_gene_src_scientific_name")))
+
+
+
+_ma_target_ref_db_details.organism_scientific AFDB 
+Homo Sapiens
+list(block.find_values("_ma_target_ref_db_details.organism_scientific"))[0]
+
+
+
+
+pdb title
+_struct.title 'Human TLR8 bound to the potent agonist, GS-9688 (Selgantolimod)'
+list(block.find_values("_struct.title"))[0]
+AF 
+_entity.pdbx_description AFDB 'Toll-like receptor 8' 
+list(block.find_values("_entity.pdbx_description"))[0]
