@@ -6,10 +6,60 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Epitope Molecular Mimicry</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
+
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid text-light">
+            <span class="navbar-brand mb-0 h1">Epitopedia</span>
+            
+            
+        </div>
+    </nav>
 <div class="m-3">
+    <div class="container">
+        <div class="row">
+          <div class="col ">
+            Input Structure(s): {{parameters["PDB_IDS"]|join(" ")}}
+          </div>
+          <div class="col">
+
+            Span length: {{parameters["span"]}}
+          </div>
+          <div class="col">
+            Acc. Span length: {{parameters["rasa_span"]}}
+          </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                RASA cutoff: {{parameters["rasa"]}}
+            </div>
+            <div class="col">
+                RMSD limit: {{parameters["rmsd"]}}
+            </div>
+            <div class="col">
+                Taxid filter: {{parameters["taxid_filter"]}}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+                Use AlpfaFold: {{parameters["use_afdb"]}}
+            </div>
+            <div class="col">
+                AF gPLDDT: {{parameters["gplddt"]}}
+            </div>
+            <div class="col">
+              AF lPLDDT: {{parameters["lplddt"]}}
+            </div>
+          </div>
+
+
+      </div>
+    </div>
+
 
     {%for motif, instances in data%}
     <div class="d-flex flex-row justify-content-center">
@@ -21,7 +71,7 @@
 
 
                 <div class="d-flex flex-row justify-content-between">
-                    <div>{{instances[0]["IEDB_FILT Source Title"]}} {{instances[0]["IEDB_FILT Source Org"]}}</div>
+                    <div>Epitope: {{instances[0]["IEDB_FILT Source Title"]}} - {{instances[0]["IEDB_FILT Source Org"]}}</div>
                     <div>Epitope ID: {{instances[0]["EPI_SEQ Epitope ID"][:-2]}}</div>
                 </div>
                 <div></div>
@@ -29,15 +79,15 @@
 
 
                 <div class="d-flex flex-row justify-content-between">
-                    <div>Query: {{instances[0]["EPI_SEQ Input Structure"]}}</div>
-                    <div>Target: {{instances[0]["EPI_PDB Rep PDB"]}}</div>
+                    <div>Input: {{instances[0]["EPI_SEQ Input Structure"]}}</div>
+                    <div>Representative: {{instances[0]["EPI_PDB Rep PDB"]}}</div>
 
                 </div>
                 <div class="d-flex flex-row justify-content-between">
-                    <div>Query start-end:
+                    <div>Input start-end:
                         {{instances[0]["SeqBMM Input Struc Res Nums"][0]}}-{{instances[0]["SeqBMM Input Struc Res Nums"][-1]}}
                     </div>
-                    <div>Target start-end:
+                    <div>Representative start-end:
                         {{instances[0]["EPI_PDB Rep Res Nums"][0]}}-{{instances[0]["EPI_PDB Rep Res Nums"][-1]}}
                     </div>
 
@@ -46,11 +96,47 @@
                 <div class="mt-2 d-flex flex-row justify-content-between">
                     <div>
                         <div>
+                            Representative title: {{instances[0]["mmCIF_SEQ title"]}}
+                        </div>
+                        <div>
+                            Representative species: {{instances[0]["mmCIF_SEQ species"]}}
+                        </div>
+                        <div>
                             RMSD: {{"%.2f"|format(instances[0]["EPI_PDB TMalign RMSD"]|float)}}
                         </div>
                         <div>
                             TM-score: {{"%.2f"|format(instances[0]["EPI_PDB TMalign TMscore"]|float)}}
                         </div>
+
+
+
+
+
+                    </div>
+                    <div>
+                        <div>
+                            Query cov: {{"%.2f"|format(instances[0]["EPI_PDB Qcov"]|float)}}
+                        </div>
+                        <div>
+                            % Ident: {{"%.2f"|format(instances[0]["EPI_PDB Pident"]|float)}}
+                        </div>
+                        <div>
+                            Evalue: {{"%.2f"|format(instances[0]["EPI_PDB Evalue"]|float)}}
+                        </div>
+                      
+                        
+
+
+
+                    </div>
+
+
+
+                    <!-- <img src="static/{{instances[0]['TMalign_png_file']}}" alt="" style="width:100px;height:100px;"> -->
+                </div>
+
+                <div class="mt-2 d-flex flex-row justify-content-between">
+                    <div>
                         <div>
                             Query % ACC: {{"%.2f"|format(instances[0]["EPI_PDB Input Motif Perc Acc"]|float)}}
                         </div>
@@ -60,29 +146,27 @@
                         <div>
                             % ACC Agree: {{"%.2f"|format(instances[0]["EPI_PDB Perc Acc Agree"]|float)}}
                         </div>
-
-
-
                     </div>
+
+
                     <div>
+                        {% if instances[0]["mmCIF_SEQ AF"]%}
                         <div>
-                            Query Cov: {{"%.2f"|format(instances[0]["EPI_PDB Qcov"]|float)}}
+                            <b>Predicted Representative</b>
                         </div>
                         <div>
-                            % Ident: {{"%.2f"|format(instances[0]["EPI_PDB Pident"]|float)}}
+                            Global pLDDT: {{"%.2f"|format(instances[0]["mmCIF_SEQ gplddt"]|float)}}
                         </div>
                         <div>
-                            evalue: {{"%.2f"|format(instances[0]["EPI_PDB Evalue"]|float)}}
+                            Motif avg local pLDDT: {{"%.2f"|format(instances[0]["mmCIF_SEQ motif lplddt"]|float)}}
                         </div>
-                        <a class="btn btn-primary" href="/viz/{{motif}},0">Visualize</a>
 
-
-
+                        {%endif%}    
+                        
                     </div>
-
-
-
-                    <!-- <img src="static/{{instances[0]['TMalign_png_file']}}" alt="" style="width:100px;height:100px;"> -->
+                </div>
+                <div class="mt-2 d-flex flex-row justify-content-end">
+                    <a class="btn btn-primary" href="/viz/{{motif}},0">Visualize</a>
                 </div>
             </div>
 
@@ -93,67 +177,119 @@
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingOne">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            data-bs-target="#flush-collapse{{motif}}" aria-expanded="false" aria-controls="flush-collapse{{motif}}">
                             <h6>Other Mimics for this Motif</h6>
                         </button>
                     </h2>
-                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                    <div id="flush-collapse{{motif}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                         data-bs-parent="#accordionFlushExample">
                         {%for instance in instances[1:]%}
 
 
                         <div class="mt-3">
-                            <h5>Motif: {{motif}}</h5>
+                            
+                                <h5>Motif: {{motif}}</h5>
 
-
-
-                            <div class="d-flex flex-row justify-content-between">
-                                <div>{{instance["IEDB_FILT Source Title"]}} {{instance["IEDB_FILT Source Org"]}}</div>
-                                <div>Epitope ID: {{instance["EPI_SEQ Epitope ID"][:-2]}}</div>
-                            </div>
-                            <div></div>
-                            <div></div>
-
-
-                            <div class="d-flex flex-row justify-content-between">
-                                <div>Query: {{instance["EPI_SEQ Input Structure"]}}</div>
-                                <div>Target: {{instance["EPI_PDB Rep PDB"]}}</div>
-
-                            </div>
-                            <div class="d-flex flex-row justify-content-between">
-                                <div>Query start-end:
-                                    {{instance["SeqBMM Input Struc Res Nums"][0]}}-{{instance["SeqBMM Input Struc Res Nums"][-1]}}
+                
+                
+                                <div class="d-flex flex-row justify-content-between">
+                                    <div>Epitope: {{instance["IEDB_FILT Source Title"]}} - {{instance["IEDB_FILT Source Org"]}}</div>
+                                    <div>Epitope ID: {{instance["EPI_SEQ Epitope ID"][:-2]}}</div>
                                 </div>
-                                <div>Target start-end:
-                                    {{instance["EPI_PDB Rep Res Nums"][0]}}-{{instance["EPI_PDB Rep Res Nums"][-1]}}
+                                <div></div>
+                                <div></div>
+                
+                
+                                <div class="d-flex flex-row justify-content-between">
+                                    <div>Input: {{instance["EPI_SEQ Input Structure"]}}</div>
+                                    <div>Representative: {{instance["EPI_PDB Rep PDB"]}}</div>
+                
                                 </div>
-
-                            </div>
-
-                            <div class="mt-2 d-flex flex-row justify-content-between">
-                                <div>
-                                    <div>
-                                        RMSD: {{"%.2f"|format(instance["EPI_PDB TMalign RMSD"]|float)}}
+                                <div class="d-flex flex-row justify-content-between">
+                                    <div>Input start-end:
+                                        {{instance["SeqBMM Input Struc Res Nums"][0]}}-{{instance["SeqBMM Input Struc Res Nums"][-1]}}
                                     </div>
-                                    <div>
-                                        TM-score: {{"%.2f"|format(instance["EPI_PDB TMalign TMscore"]|float)}}
+                                    <div>Representative start-end:
+                                        {{instance["EPI_PDB Rep Res Nums"][0]}}-{{instance["EPI_PDB Rep Res Nums"][-1]}}
                                     </div>
-                                    <div>
-                                        Query % ACC: {{"%.2f"|format(instance["EPI_PDB Input Motif Perc Acc"]|float)}}
-                                    </div>
-                                    <div>
-                                        Target % ACC: {{"%.2f"|format(instance["EPI_PDB Rep Motif Perc Acc"]|float)}}
-                                    </div>
-                                    <div>
-                                        % ACC Agree: {{"%.2f"|format(instance["EPI_PDB Perc Acc Agree"]|float)}}
-                                    </div>
-
+                
                                 </div>
-
-
-                                <!-- <img src="static/{{instance['TMalign_png_file']}}" alt=""
-                                    style="width:100px;height:100px;"> -->
-                            </div>
+                
+                                <div class="mt-2 d-flex flex-row justify-content-between">
+                                    <div>
+                                        <div>
+                                            Representative title: {{instance["mmCIF_SEQ title"]}}
+                                        </div>
+                                        <div>
+                                            Representative species: {{instance["mmCIF_SEQ species"]}}
+                                        </div>
+                                        <div>
+                                            RMSD: {{"%.2f"|format(instance["EPI_PDB TMalign RMSD"]|float)}}
+                                        </div>
+                                        <div>
+                                            TM-score: {{"%.2f"|format(instance["EPI_PDB TMalign TMscore"]|float)}}
+                                        </div>
+                
+                
+                
+                
+                
+                                    </div>
+                                    <div>
+                                        <div>
+                                            Query cov: {{"%.2f"|format(instance["EPI_PDB Qcov"]|float)}}
+                                        </div>
+                                        <div>
+                                            % Ident: {{"%.2f"|format(instance["EPI_PDB Pident"]|float)}}
+                                        </div>
+                                        <div>
+                                            Evalue: {{"%.2f"|format(instance["EPI_PDB Evalue"]|float)}}
+                                        </div>
+                                      
+                                        
+                
+                
+                
+                                    </div>
+                
+                
+                
+                                    <!-- <img src="static/{{instances[0]['TMalign_png_file']}}" alt="" style="width:100px;height:100px;"> -->
+                                </div>
+                
+                                <div class="mt-2 d-flex flex-row justify-content-between">
+                                    <div>
+                                        <div>
+                                            Query % ACC: {{"%.2f"|format(instance["EPI_PDB Input Motif Perc Acc"]|float)}}
+                                        </div>
+                                        <div>
+                                            Target % ACC: {{"%.2f"|format(instance["EPI_PDB Rep Motif Perc Acc"]|float)}}
+                                        </div>
+                                        <div>
+                                            % ACC Agree: {{"%.2f"|format(instance["EPI_PDB Perc Acc Agree"]|float)}}
+                                        </div>
+                                    </div>
+                
+                
+                                    <div>
+                                        {% if instance["mmCIF_SEQ AF"]%}
+                                        <div>
+                                            <b>Predicted Representative</b>
+                                        </div>
+                                        <div>
+                                            Global pLDDT: {{"%.2f"|format(instance["mmCIF_SEQ gplddt"]|float)}}
+                                        </div>
+                                        <div>
+                                            Motif avg local pLDDT: {{"%.2f"|format(instance["mmCIF_SEQ motif lplddt"]|float)}}
+                                        </div>
+                
+                                        {%endif%}    
+                                        
+                                    </div>
+                                </div>
+                                <div class="mt-2 d-flex flex-row justify-content-end">
+                                    <a class="btn btn-primary" href="/viz/{{motif}},0">Visualize</a>
+                                </div>
                         </div>
                         {% endfor %}
 
@@ -188,9 +324,8 @@
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-    crossorigin="anonymous"></script>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 </html>

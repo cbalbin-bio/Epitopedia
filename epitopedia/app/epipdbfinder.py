@@ -12,6 +12,7 @@ from epitopedia.app.config import console
 from epitopedia.utils.make_dice_gemmi import extract
 from epitopedia.utils.utils import obtain_lock, release_lock, wait_unlock
 from epitopedia.app.MMCIFSeqs import AccAgree, MMCIFSeqs
+from epitopedia.app.args import args
 
 
 @dataclass_json
@@ -28,10 +29,13 @@ class PDBHit:
     lplddt: str
     gplddt: float
     isAF: bool
+    pdb_title: str
+    pdb_species: str
     motif_seq: str = None
     motif_res_nums_query: list[int] = field(default_factory=list)
     motif_res_nums_target: list[int] = field(default_factory=list)
     motif_lplddt: list[int] = field(default_factory=list)
+    avg_motif_lplddt: float = -1
     query_struc_dice_path: str = ""
     target_struc_dice_path: str = ""
     TMalign_RMSD: float = -1.0
@@ -79,7 +83,6 @@ def hit_to_pdb(
     epitope,
     hit,
     pdb_input_str,
-    use_afdb,
     min_pident=95.0,
 ):
 
@@ -93,13 +96,14 @@ def hit_to_pdb(
         # if row_count >= 10:
         #     break
 
-
-
         pdbhit = PDBHit(*row)
         if pdbhit.pident < min_pident:
             continue
 
-        if pdbhit.isAF and not use_afdb:
+        if pdbhit.isAF and not args.use_afdb:
+            continue
+
+        if pdbhit.isAF and pdbhit.gplddt < args.gplddt:
             continue
 
         hit_to_csv(
@@ -163,6 +167,11 @@ def hit_to_pdb(
 
             if pdbhit.isAF:
                 pdbhit.motif_lplddt = pdbhit.lplddt.split(" ")[idx : idx + len(motif)]
+                pdbhit.motif_lplddt = [float(val) for val in pdbhit.motif_lplddt]
+                pdbhit.avg_motif_lplddt = (sum(pdbhit.motif_lplddt) / len(pdbhit.motif_lplddt)) /100
+
+                if pdbhit.avg_motif_lplddt < args.lplddt:
+                    continue
 
             target_base_pdb_name = pdbhit.target.rsplit("_", 1)[0]
             target_chain_pdb_name = pdbhit.target.rsplit("_", 1)[1]
@@ -263,6 +272,9 @@ def hit_to_pdb(
 
             pdbhit.TMalign_PDB_file = f"{config.TMALIGN_DIR}/{TMalign_prefix}_atm.pdb"
 
+
+            if float(pdbhit.TMalign_RMSD) >= args.rmsd:
+                continue
             hit_to_csv(
                 f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}.tsv",
                 motif,

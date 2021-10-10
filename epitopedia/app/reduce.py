@@ -19,6 +19,10 @@ def reduce_results(path):
 
     motif_dict = defaultdict(list)
 
+    paramters = data["parameters"]
+
+    data = data["results"]
+
     data = [dat for datum in data for dat in datum if dat]
 
     for hit in data:
@@ -50,6 +54,9 @@ def reduce_results(path):
                         "mmCIF_SEQ Rep Num": motif_type["seqnums"],
                         "mmCIF_SEQ lplddt": motif_type["lplddt"],
                         "mmCIF_SEQ gplddt": motif_type["gplddt"],
+                        "mmCIF_SEQ motif lplddt": motif_type["avg_motif_lplddt"],
+                        "mmCIF_SEQ title": motif_type["pdb_title"],
+                        "mmCIF_SEQ species": motif_type["pdb_species"],
                         "mmCIF_SEQ AF": motif_type["isAF"],
                         "EPI_PDB Rep Res Nums": motif_type["motif_res_nums_target"],
                         "EPI_PDB Input Dice Path": motif_type["query_struc_dice_path"],
@@ -135,4 +142,4 @@ def reduce_results(path):
                 w.writerow(dat)
 
     with open(f"{config.OUTPUT_DIR}/{basename}_best.json", "w") as output_handle:
-        json.dump(motif_dict, output_handle)
+        json.dump({"parameters": paramters, "results": motif_dict}, output_handle)

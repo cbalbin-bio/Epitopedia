@@ -6,17 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript">
-        var query = "{{data["EPI_SEQ Input Structure"]}}" +".cif";
-        var query_nums = {{data["SeqBMM Input Struc Res Nums"]|tojson}};
-        var target_nums = {{data["EPI_PDB Rep Res Nums"]|tojson}};
-        var target = "{{ data["EPI_PDB Rep PDB"]}}" + ".cif";
-        var aln = "{{data["EPI_PDB TMalign PDB"]}}";
+        var data = {{data|tojson}}
     </script>
 
     <link rel="stylesheet" href="static/style.css">
-
+    <script src="static/chroma.js"></script>
     <script src="https://unpkg.com/ngl"></script>
-    <script src="static/index.js"></script>
+    
     
 
     <title>Viz</title>
@@ -61,4 +57,6 @@
 
 </body>
 
+
+<script src="static/index.js"></script>
 </html>

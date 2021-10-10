@@ -12,8 +12,8 @@ RUN apt-get -y update && apt-get install -y \
     autoconf \
     libbz2-dev \
     libboost-all-dev \
-    python3.9 \
-    python3-pip \
+    # python3.9 \
+    # python3-pip \
     sqlite3 \
     wget \
     curl \
@@ -24,12 +24,47 @@ RUN apt-get -y update && apt-get install -y \
     libxml-simple-perl \ 
     libwww-perl \
     libnet-perl \
-    golang
+    golang \
+    checkinstall \
+    libreadline-gplv2-dev \
+    libncursesw5-dev \
+    libsqlite3-dev \
+    tk-dev \
+    libgdbm-dev \
+    libc6-dev \
+    dpkg-dev \
+    python-dev \
+    python3-dev \
+    libncursesw5-dev \
+    libffi-dev \
+    zlib1g-dev \
+    libjpeg-dev \
+    libtiff-dev \
+    libpq-dev \
+    libxml2-dev \
+    libxslt1-dev \
+    libsdl2-dev \
+    libgstreamer-plugins-base1.0-dev \
+    libnotify-dev \
+    freeglut3-dev \
+    libsm-dev \
+    libgtk-3-dev \
+    libxtst-dev
 
-
-RUN python3.9 -m pip install flask gemmi biopython rich dataclasses-json
 
 WORKDIR /app
+
+ADD https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz .
+RUN tar -xzvf Python-3.10.0.tgz
+WORKDIR /app/Python-3.10.0
+RUN ./configure --enable-optimizations --with-lto ;\
+    make ;\
+    make test ;\
+    make install
+
+WORKDIR /app
+
+RUN pip3 install flask gemmi biopython rich dataclasses-json
 
 # Get blast
 RUN wget "https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.12.0+-x64-linux.tar.gz" ;\
@@ -84,7 +119,9 @@ RUN wget ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/xtract.Linux.gz ;\
 WORKDIR /app
 COPY . /app
 
-RUN chmod +x run_epitopedia.py ; chmod +x generate_database.py
+# RUN python3.10 setup.py build ;python3.10 setup.py install
+# RUN python3.10 setup.py develop
+# RUN chmod +x run_epitopedia.py ; chmod +x generate_database.py
 
 ENV PATH=/app/edirect:/app/mmseqs/bin/:/app/ncbi-blast-2.12.0+/bin:/app/:$PATH
 

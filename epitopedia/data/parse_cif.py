@@ -4,6 +4,7 @@
 
 from collections import defaultdict
 from io import TextIOWrapper
+from posix import times_result
 from typing import Union
 
 from gemmi import cif
@@ -33,7 +34,9 @@ protein_3to1 = {
 }
 
 
-def extract_data(path: str, use_auth: bool = True) -> dict[str, dict[str, list[str]]]:
+def extract_data(
+    path: str, use_auth: bool = True, af: bool = False
+) -> tuple[dict[str, dict[str, list[str]]], str, str]:
 
     # Create defaultdict with default type of another defaultdict with list default
     data = defaultdict(lambda: defaultdict(list))
@@ -56,7 +59,42 @@ def extract_data(path: str, use_auth: bool = True) -> dict[str, dict[str, list[s
             for key in scheme.keys():
                 data[asym_id][key].append(scheme[key][index])
 
-    return data
+    if af:
+        species = (
+            list(block.find_values("_ma_target_ref_db_details.organism_scientific"))[0]
+            .replace("\t", "")
+            .replace("\n", "")
+            .replace("'", "")
+            .replace('"', "")
+            .replace(";", "")
+        )
+        title = (
+            list(block.find_values("_entity.pdbx_description"))[0]
+            .replace("\t", "")
+            .replace("\n", "")
+            .replace("'", "")
+            .replace('"', "")
+            .replace(";", "")
+        )
+    else:
+        species = (
+            ", ".join(set(block.find_values("_entity_src_gen.pdbx_gene_src_scientific_name")))
+            .replace("\t", "")
+            .replace("\n", "")
+            .replace("'", "")
+            .replace('"', "")
+            .replace(";", "")
+        )
+        title = (
+            list(block.find_values("_struct.title"))[0]
+            .replace("\t", "")
+            .replace("\n", "")
+            .replace("'", "")
+            .replace('"', "")
+            .replace(";", "")
+        )
+
+    return data, species, title
 
 
 def extract_plddt(path: str) -> tuple[list[str], str]:
@@ -68,17 +106,21 @@ def extract_plddt(path: str) -> tuple[list[str], str]:
 
 
 def write_cif_data_csv(
-    data: dict[str, dict[str, list[str]]],
+    data_s_t: tuple[dict[str, dict[str, list[str]]], str, str],
     handle: TextIOWrapper,
     pdb_id: str,
     plddt: Union[bool, tuple[list[str], str]] = False,
 ):
+
+    data = data_s_t[0]
+    species = data_s_t[1]
+    title = data_s_t[2]
     if plddt:
         # writing af prediction
 
         try:
             handle.write(
-                f'{pdb_id}_A,{pdb_id}_A,{"".join([protein_3to1[res] for res in data["A"]["mon_id"]])},{"".join([protein_3to1[res] for res in data["A"]["mon_id"]])},{" ".join(data["A"]["auth_seq_num"])},{" ".join(data["A"]["asym_id"])},{" ".join(data["A"]["pdb_ins_code"])},{" ".join(plddt[0])},{plddt[1]},TRUE\n'
+                f'{pdb_id}_A\t{pdb_id}_A\t{"".join([protein_3to1[res] for res in data["A"]["mon_id"]])}\t{"".join([protein_3to1[res] for res in data["A"]["mon_id"]])}\t{" ".join(data["A"]["auth_seq_num"])}\t{" ".join(data["A"]["asym_id"])}\t{" ".join(data["A"]["pdb_ins_code"])}\t{" ".join(plddt[0])}\t{plddt[1]}\tTRUE\t{title}\t{species}\n'
             )
         except KeyError:
             return
@@ -87,7 +129,7 @@ def write_cif_data_csv(
         for chain, chain_data in data.items():
             try:
                 handle.write(
-                    f'{pdb_id}_{chain},{pdb_id}_{chain_data["asym_id"][0]},{"".join([protein_3to1[res] for res in chain_data["mon_id"]])},{"".join([protein_3to1[res] for res in chain_data["pdb_mon_id"]])},{" ".join(chain_data["auth_seq_num"])},{" ".join(chain_data["asym_id"])},{" ".join(chain_data["pdb_ins_code"])},NULL,NULL,FALSE\n'
+                    f'{pdb_id}_{chain}\t{pdb_id}_{chain_data["asym_id"][0]}\t{"".join([protein_3to1[res] for res in chain_data["mon_id"]])}\t{"".join([protein_3to1[res] for res in chain_data["pdb_mon_id"]])}\t{" ".join(chain_data["auth_seq_num"])}\t{" ".join(chain_data["asym_id"])}\t{" ".join(chain_data["pdb_ins_code"])}\t\t\tFALSE\t{title}\t{species}\n'
                 )
             except KeyError:
                 continue

@@ -5,7 +5,6 @@
 # For a copy, see <https://opensource.org/licenses/MIT>.
 
 
-import argparse
 import json
 import sqlite3
 import tempfile
@@ -22,22 +21,12 @@ from epitopedia.app.MMCIFSeqs import MMCIFSeqs
 from epitopedia.app.reduce import reduce_results
 from epitopedia.utils.utils import remove_previous_files
 from epitopedia.viz.serve import write_html, serve_html
-
-parser = argparse.ArgumentParser(description="Epitopedia")
-parser.add_argument("--PDB-IDS", type=str, nargs="+", help="List of PDB_IDS formatted as PDBID_CHAIN. e.g. 6xr8_A")
-parser.add_argument("--span", type=int, default=5, help="Minimum span length to consider a mimic")
-parser.add_argument("--rasa", type=float, default=0.20, help="Relative accessible surface area cutoff")
-parser.add_argument("--rasa-span", type=int, default=3, help="Minimum span length for surface accessibility filter")
-parser.add_argument("--taxid-filter", type=str, help="Filter all taxaony at or below the level described by this taxid")
-parser.add_argument("--view", type=str, help="View results from a previous run")
-parser.add_argument("--use-afdb", action="store_true", help="Include AFDB in database generation")
-parser.add_argument("--headless", action="store_true", help="Do not start up webserver")
+from epitopedia.app.args import args
 
 
-args = parser.parse_args()
 
 
-if __name__ == "__main__":
+def main():
 
     if not args.view:
         con = sqlite3.connect(config.SQLITE_DATABASE_DIR)
@@ -100,19 +89,18 @@ if __name__ == "__main__":
                 console.log("Hits filtered by surface accessibility")
                 console.log(f"Number of hits remaining after surface accessibility filter {PDB_INPUT}: {len(hits)}")
 
-            parseHit = partial(
+            parseHitP = partial(
                 parseHit,
                 span=args.span,
                 pdb_seq=query_pdb_seq,
                 query_pdb_base=query_pdb_base,
                 query_pdb_chain=query_pdb_chain,
                 pdb_input_str=pdb_input_str,
-                use_afdb=args.use_afdb,
             )
             with Pool(12) as p:
                 data = list(
                     track(
-                        p.imap(parseHit, hits),
+                        p.imap(parseHitP, hits),
                         total=len(hits),
                         description="Searching and aligning SeqBMM structural representatives",
                     )
@@ -125,7 +113,7 @@ if __name__ == "__main__":
 
         data = [data for data in data_m if data]
         with open(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}.json", "w") as output_handle:
-            json.dump(data, output_handle)
+            json.dump({"parameters": vars(args), "results":data}, output_handle)
 
         config.con.close()
 
@@ -136,9 +124,9 @@ if __name__ == "__main__":
 
         with open(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}_best.json") as input_handle:
             data = json.load(input_handle)
-        
-        write_html(f"{config.OUTPUT_DIR}/Epitopedia_{pdb_input_str}_output.html", data)
 
+        write_html(f"{config.OUTPUT_DIR}/Epitopedia_{pdb_input_str}_output.html", data)
+        print(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}_best.json")
         if not args.headless:
 
             serve_html(data)
@@ -147,3 +135,7 @@ if __name__ == "__main__":
             data = json.load(input_handle)
 
         serve_html(data)
+if __name__ == "epitopedia.run_epitopedia":
+    main()
+elif __name__ == "__main__":
+    main()

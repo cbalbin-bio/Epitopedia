@@ -17,7 +17,7 @@ parser.add_argument("--afdb-dir", type=str, help="Optional path to directory con
 args = parser.parse_args()
 
 mounts = ["-v", f"{args.iedb_path}:/app/iedb", "-v", f"{args.mmcif_dir}:/app/mmcif", "-v", f"{args.data_dir}:/app/data"]
-commands = ["epitopedia:afdb", "generate_database.py"]
+commands = ["epitopedia:afdb", "generate_database"]
 if args.afdb_dir:
     mounts += ["-v", f"{args.afdb_dir}:/app/afdb"]
     commands += ["--use-afdb"]

@@ -22,7 +22,7 @@ mounts = [
     "-v",
     f"{args.data_dir}:/app/data",
 ]
-commands = ["epitopedia:afdb", "run_epitopedia.py"] + args.PDB_IDS
+commands = ["epitopedia:afdb", "run_epitopedia"] + args.PDB_IDS
 
 
 if args.afdb_dir:
