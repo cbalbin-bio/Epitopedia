@@ -13,7 +13,104 @@ var query_selection = `${query_nums.at(0)}-${query_nums.at(-1)}:${query_chain}`
 var mimic_selection = `${mimic_nums.at(0)}-${mimic_nums.at(-1)}:${mimic_chain}`
 
 var mimic_plddt = data["mmCIF_SEQ lplddt"].split(" ").map(Number)
-var scale = chroma.scale(['orange', 'yellow', 'cyan', 'blue']).domain([0.0, 100.0]);
+var afScale = chroma.scale(['orange', 'yellow', 'cyan', 'blue']).domain([0.0, 100.0]);
+
+
+function colorSchemeAln(af, query_selected, mimic_selected) {
+    var nglColorScheme = NGL.ColormakerRegistry.addScheme(function (params) {
+        this.atomColor = function (atom) {
+            rindex = atom.resno;
+
+            // console.log(atom.chainname)
+
+
+
+            if (atom.chainname == "B") {
+                if (af) {
+                    if (rindex == mimic_selected) {
+                        return "0x0000ff"
+                    } else {
+                        return afScale(mimic_plddt[atom.residueIndex]).hex().replace("#", "0x");
+                    }
+                }
+                else {
+                    if (rindex == mimic_selected) {
+                        return "0x0000ff"
+                    } else {
+                        return "0x7899d2"
+                    }
+
+                }
+            }
+            else if (atom.chainname == "A") {
+                if (rindex == query_selected) {
+                    return "0x0000ff"
+                } else {
+                    return "0xcc955d"
+                }
+
+            }
+        }
+    })
+
+
+
+
+    return nglColorScheme
+};
+
+
+
+function colorScheme(start, end, chain, type, af, selected) {
+    var nglColorScheme = NGL.ColormakerRegistry.addScheme(function (params) {
+        this.atomColor = function (atom) {
+            rindex = atom.resno;
+
+            // console.log(atom.chainname)
+            if (af) {
+                if (rindex == selected && atom.chainname == chain) {
+                    return "0x0000ff"
+                } else if (rindex >= start && rindex <= end && atom.chainname == chain) {
+                    return "0x00ff00";
+                } else {
+                    return afScale(mimic_plddt[atom.residueIndex]).hex().replace("#", "0x");
+                }
+
+            } else {
+                if (type == "mimic") {
+                    if (rindex == selected && atom.chainname == chain) {
+                        return "0x0000ff"
+                    } else if (rindex >= start && rindex <= end && atom.chainname == chain) {
+                        return "0x00ff00";
+                    } else {
+                        return "0x7899d2"
+                    }
+
+
+                } else if (type == "input") {
+                    if (rindex == selected && atom.chainname == chain) {
+                        return "0x0000ff"
+                    } else if (rindex >= start && rindex <= end && atom.chainname == chain) {
+                        return "0x00ff00";
+                    } else {
+                        return "0xcc955d"
+
+                    }
+                }
+
+
+
+
+
+            };
+        };
+    });
+    return nglColorScheme
+};
+
+
+
+
 
 
 var schemeIdplddt = NGL.ColormakerRegistry.addScheme(function (params) {
@@ -51,8 +148,8 @@ var schemeIdAln = NGL.ColormakerRegistry.addSelectionScheme([
 
 var stage1 = new NGL.Stage("viewport1", { backgroundColor: "black" });
 stage1.loadFile("cif/" + query).then(function (o) {
-    o.addRepresentation("cartoon", { color: schemeIdQuery });
-    o.addRepresentation("ball+stick", { sele: query_selection, color: schemeIdQuery });
+    o.addRepresentation("cartoon", { color: colorScheme(query_nums.at(0), query_nums.at(-1), query_chain, "input", false, false) });
+    o.addRepresentation("ball+stick", { sele: query_selection, color: colorScheme(query_nums.at(0), query_nums.at(-1), query_chain, "input", false, false) });
     o.autoView(query_selection);
     //o.autoView("22-26:A");
 
@@ -79,14 +176,13 @@ stage1.loadFile("cif/" + query).then(function (o) {
 // stage2.compList[0].reprList[2].setSelection(2-20).setColor("red")
 var stage2 = new NGL.Stage("viewport2", { backgroundColor: "black" });
 stage2.loadFile("cif/" + mimic).then(function (o) {
-    if (data["mmCIF_SEQ AF"]) {
-        o.addRepresentation("cartoon", { color: schemeIdplddt, })
-    } else {
-        o.addRepresentation("cartoon", { color: schemeIdMimic, });
-    }
-    o.addRepresentation("cartoon", { sele: mimic_selection, color: "red" });
-    o.addRepresentation("ball+stick", { sele: mimic_selection, color: "red" });
-    o.reprList.at(-2).toggleVisibility()
+
+    o.addRepresentation("cartoon", { color: colorScheme(mimic_nums.at(0), mimic_nums.at(-1), mimic_chain, "mimic", data["mmCIF_SEQ AF"], false), })
+    o.addRepresentation("ball+stick", { sele: mimic_selection, color: colorScheme(mimic_nums.at(0), mimic_nums.at(-1), mimic_chain, "mimic", data["mmCIF_SEQ AF"], false) });
+
+    // o.addRepresentation("cartoon", { sele: mimic_selection, color: colorScheme(mimic_nums.at(0), mimic_nums.at(-1), mimic_chain, "input", true, false) });
+
+    // o.reprList.at(-2).toggleVisibility()
 
 
     o.autoView(mimic_selection);
@@ -102,7 +198,7 @@ stage2.loadFile("cif/" + mimic).then(function (o) {
 
 var stage3 = new NGL.Stage("viewport3", { backgroundColor: "black" });
 stage3.loadFile("aln/" + aln).then(function (o) {
-    o.addRepresentation("ball+stick", { color: schemeIdAln });  // pass schemeId here
+    o.addRepresentation("ball+stick", { color: colorSchemeAln(data["mmCIF_SEQ AF"], false) });  // pass schemeId here
     o.autoView();
 });
 
@@ -120,36 +216,26 @@ for (const elm of elms) {
     elm.addEventListener("mouseenter", function (event) {
 
         // highlight the mouseleave target
-        event.target.getElementsByTagName("rect")[0].style.fill = "green";
+        event.target.getElementsByTagName("rect")[0].style.fill = "blue";
 
         for (const repr of stage1.compList[0].reprList) {
-            repr.setColor(NGL.ColormakerRegistry.addSelectionScheme([
-                ["green", event.target.dataset.resnumQuery + ":" + event.target.dataset.chainQuery],
-                ["red", query_selection],
-
-                ["#cc955d", `:${query_chain}`]
-            ], "highlight"));
+            repr.setColor(
+                colorScheme(query_nums.at(0), query_nums.at(-1), event.target.dataset.chainQuery, "input", false, event.target.dataset.resnumQuery));
             repr.update({ color: true });
         };
 
         for (const repr of stage2.compList[0].reprList) {
-            repr.setColor(NGL.ColormakerRegistry.addSelectionScheme([
-                ["green", event.target.dataset.resnumMimic + ":" + event.target.dataset.chainMimic],
-                ["red", mimic_selection],
-
-                [schemeIdplddt, `:${mimic_chain}`]
-            ], "highlight"));
+            repr.setColor(
+                colorScheme(mimic_nums.at(0), mimic_nums.at(-1), event.target.dataset.chainMimic, "mimic", data["mmCIF_SEQ AF"], event.target.dataset.resnumMimic));
             repr.update({ color: true });
         };
 
 
         for (const comp of stage3.compList) {
-            comp.reprList[0].setColor(NGL.ColormakerRegistry.addSelectionScheme([
-                ["green", event.target.dataset.resnumQuery + ":A"],
-                ["green", event.target.dataset.resnumMimic + ":B"],
-                ["#cc955d", ":A"],
-                ["#7899d2", ":B"]
-            ], "highlight"));
+            comp.reprList[0].setColor(colorSchemeAln(data["mmCIF_SEQ AF"], event.target.dataset.resnumQuery, event.target.dataset.resnumMimic)
+
+
+            );
             comp.reprList[0].update({ color: true });
         };
 
@@ -165,37 +251,30 @@ for (const elm of elms) {
 
     elm.addEventListener("mouseleave", function (event) {
         // highlight the mouseleave target
-        event.target.getElementsByTagName("rect")[0].style.fill = "blue";
+        event.target.getElementsByTagName("rect")[0].style.fill = "green";
 
         // reset the color after a short delay
         for (const repr of stage1.compList[0].reprList) {
-            repr.setColor(NGL.ColormakerRegistry.addSelectionScheme([
-                ["red", event.target.dataset.resnumQuery + ":" + event.target.dataset.chainQuery],
-                ["red", query_selection],
-
-                ["#cc955d", `:${query_chain}`]
-
-            ], "highlight"));
+            repr.setColor(
+                colorScheme(query_nums.at(0), query_nums.at(-1), event.target.dataset.chainQuery, "input", false, false)
+            );
             repr.update({ color: true });
         };
 
 
         for (const repr of stage2.compList[0].reprList) {
-            repr.setColor(NGL.ColormakerRegistry.addSelectionScheme([
-                ["red", event.target.dataset.resnumMimic + ":" + event.target.dataset.chainMimic],
-                ["red", mimic_selection],
+            repr.setColor(
+                colorScheme(mimic_nums.at(0), mimic_nums.at(-1), event.target.dataset.chainMimic, "mimic", data["mmCIF_SEQ AF"], false))
 
-                [schemeIdplddt, `:${mimic_chain}`]
-            ], "highlight"));
             repr.update({ color: true });
         };
 
 
         for (const repr of stage3.compList[0].reprList) {
-            repr.setColor(NGL.ColormakerRegistry.addSelectionScheme([
-                ["#cc955d", ":A"],
-                ["#7899d2", ":B"]
-            ], "highlight"));
+            repr.setColor(colorSchemeAln(data["mmCIF_SEQ AF"], false))
+
+
+
             repr.update({ color: true });
         };
 

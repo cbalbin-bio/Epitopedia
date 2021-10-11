@@ -272,9 +272,9 @@ def hit_to_pdb(
 
             pdbhit.TMalign_PDB_file = f"{config.TMALIGN_DIR}/{TMalign_prefix}_atm.pdb"
 
-
-            if float(pdbhit.TMalign_RMSD) >= args.rmsd:
-                continue
+            if args.rmsd:
+                if float(pdbhit.TMalign_RMSD) >= args.rmsd:
+                    continue
             hit_to_csv(
                 f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}.tsv",
                 motif,
