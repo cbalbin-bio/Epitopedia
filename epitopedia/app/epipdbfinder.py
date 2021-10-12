@@ -284,6 +284,8 @@ def hit_to_pdb(
                 epitope,
                 hit,
             )
+            # if pdbhit.query_acc_motif == "":
+            #     breakpoint()
             pdbhits.append(pdbhit)
             row_count += 1
 

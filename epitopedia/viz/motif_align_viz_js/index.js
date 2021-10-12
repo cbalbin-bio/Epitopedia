@@ -30,7 +30,7 @@ function colorSchemeAln(af, query_selected, mimic_selected) {
                     if (rindex == mimic_selected) {
                         return "0x0000ff"
                     } else {
-                        return afScale(mimic_plddt[atom.residueIndex]).hex().replace("#", "0x");
+                        return afScale(mimic_plddt[atom.resno - 1]).hex().replace("#", "0x");
                     }
                 }
                 else {

@@ -3,6 +3,7 @@
     padding: 0;
     overflow: hidden;
     background-color: black;
+    color: white;
 }
 
 .container {
@@ -36,9 +37,63 @@
     grid-row: 2;
 }
 
-.sequence {
+.motifdatatop {
     display: flex;
-    margin: 22%;
+    justify-content: space-between;
+    margin-top: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
+    /* align-items: center; */
+}
+
+.motifdata {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    margin-left: 10%;
+    margin-right: 10%;
+    /* align-items: center; */
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.sequence {
+    color: white;
+    display: flex;
+    /* margin: 22%; */
+    margin-top: 5%;
     justify-content: center;
     align-items: center;
+}
+
+
+.querydata {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    border: 3px solid #00ff00;
+
+}
+
+.mimicdata {
+    position: fixed;
+    top: 0;
+    left: 50vw;
+    width: 300px;
+    border: 3px solid #00ff00;
+
+}
+
+.alndata {
+    position: fixed;
+    top: 50vh;
+    left: 0;
+    width: 300px;
+    border: 3px solid #00ff00;
+
 }

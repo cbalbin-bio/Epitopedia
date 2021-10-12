@@ -8,7 +8,7 @@
     <script type="text/javascript">
         var data = {{data|tojson}}
     </script>
-
+    
     <link rel="stylesheet" href="static/style.css">
     <script src="static/chroma.js"></script>
     <script src="https://unpkg.com/ngl"></script>
@@ -19,14 +19,39 @@
 </head>
 
 <body>
-
+    <div class=querydata>
+        Input Structure: {{data["EPI_SEQ Input Structure"]}}
+    </div>
+    <div class=mimicdata>
+        Representative Structure: {{data["EPI_PDB Rep PDB"]}}
+    </div>
+    <div class=alndata>
+        Aligned Motif - RMSD: {{data["EPI_PDB TMalign RMSD"]}}
+    </div>
     <div class="container">
         <div class="viewport" id="viewport1"></div>
         <div class="viewport" id="viewport2"></div>
+
+        
         <div class="viewport" id="viewport3"></div>
+
         <div class="viewport" id="viewport4">
+
+
+            <div class=motifdatatop>
+                <div>Epitope: {{data["IEDB_FILT Source Title"]}} - {{data["IEDB_FILT Source Org"]}}</div>
+                <div>Epitope ID: {{data["EPI_SEQ Epitope ID"][:-2]}}</div>
+
+            </div>
+            <div class=motifdata>
+                <div>Motif Range Input: {{data["SeqBMM Input Struc Res Nums"][0]}}-{{data["SeqBMM Input Struc Res Nums"][-1]}}</div>
+                <div>Motif Range Rep: {{data["EPI_PDB Rep Res Nums"][0]}}-{{data["EPI_PDB Rep Res Nums"][-1]}}</div>
+            </div>
+            
             <div class=sequence>
+                
                 <div>
+                    
 
 
 
@@ -52,6 +77,25 @@
 
                 </div>
             </div>
+            <div class=motifdatatop>
+                <div>Rep. title: {{data["mmCIF_SEQ title"]}}</div>
+                <div>Rep. species: {{data["mmCIF_SEQ species"]}}</div>
+            </div>
+            <div class=motifdata>
+                <div>Rep. % Ident: {{"%.2f"|format(data["EPI_PDB Pident"]|float)}}</div>
+                <div>Rep. Qcov: {{"%.2f"|format(data["EPI_PDB Qcov"]|float)}}</div>
+            </div>
+            <div class=motifdata>
+                <div>RMSD: {{data["EPI_PDB TMalign RMSD"]}}</div>
+                <div>TMscore: {{"%.2f"|format(data["EPI_PDB TMalign TMscore"]|float)}}</div>
+            </div>
+
+            {% if data["mmCIF_SEQ AF"]%}
+            <div class=motifdata>
+                <div>Global pLDDT: {{"%.2f"|format(data["mmCIF_SEQ gplddt"]|float)}}</div>
+                <div>Motif avg local pLDDT: {{"%.2f"|format(data["mmCIF_SEQ motif lplddt"]|float)}}</div>
+            </div>
+            {%endif%} 
         </div>
     </div>
 
