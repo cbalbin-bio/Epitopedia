@@ -119,9 +119,9 @@ RUN wget ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/xtract.Linux.gz ;\
 WORKDIR /app
 COPY . /app
 
-# RUN python3.10 setup.py build ;python3.10 setup.py install
+RUN python3.10 setup.py build ;python3.10 setup.py install
 # RUN python3.10 setup.py develop
-# RUN chmod +x run_epitopedia.py ; chmod +x generate_database.py
+RUN chmod +x docker/run_epitopedia.py ; chmod +x docker/generate_database.py
 
 ENV PATH=/app/edirect:/app/mmseqs/bin/:/app/ncbi-blast-2.12.0+/bin:/app/:$PATH
 

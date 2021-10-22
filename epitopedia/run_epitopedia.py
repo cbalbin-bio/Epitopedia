@@ -1,4 +1,4 @@
-#!/usr/bin/python3.9
+#!/usr/bin/python3.10
 
 # Copyright (c) 2021 Christian Balbin
 # This work is licensed under the terms of the MIT license.
@@ -22,8 +22,6 @@ from epitopedia.app.reduce import reduce_results
 from epitopedia.utils.utils import remove_previous_files
 from epitopedia.viz.serve import write_html, serve_html
 from epitopedia.app.args import args
-
-
 
 
 def main():
@@ -113,7 +111,7 @@ def main():
 
         data = [data for data in data_m if data]
         with open(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}.json", "w") as output_handle:
-            json.dump({"parameters": vars(args), "results":data}, output_handle)
+            json.dump({"parameters": vars(args), "results": data}, output_handle)
 
         config.con.close()
 
@@ -135,6 +133,8 @@ def main():
             data = json.load(input_handle)
 
         serve_html(data)
+
+
 if __name__ == "epitopedia.run_epitopedia":
     main()
 elif __name__ == "__main__":

@@ -9,7 +9,7 @@ from gemmi import cif
 def write_html(output_path, data):
     with open(output_path, "w") as handle:
 
-        env = Environment(loader=FileSystemLoader("/workspaces/Epitopedia/epitopedia/viz/templates"))
+        env = Environment(loader=FileSystemLoader("/app/epitopedia/viz/templates"))
         template = env.get_template("index.html")
         output_from_parsed_template = template.render(data=data["results"].items(), parameters=data["parameters"])
         handle.write(output_from_parsed_template)
@@ -18,9 +18,9 @@ def write_html(output_path, data):
 def serve_html(data):
     app = Flask(
         __name__,
-        template_folder="/workspaces/Epitopedia/epitopedia/viz/templates",
+        template_folder="/app/epitopedia/viz/templates",
         static_url_path="/viz/static",
-        static_folder="/workspaces/Epitopedia/epitopedia/viz/motif_align_viz_js/",
+        static_folder="/app/epitopedia/viz/motif_align_viz_js/",
     )
 
     @app.get("/")
@@ -67,4 +67,4 @@ def serve_html(data):
         response.mimetype = "text/plain"
         return response
 
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0", debug=False)
