@@ -14,13 +14,14 @@ BLAST_DATABASE_DIR = "/app/data/EPI_SEQ.fasta"
 SQLITE_DATABASE_DIR = "/app/data/epitopedia.sqlite3"
 OUTPUT_DIR = "/app/output"
 DICE_DIR = "/app/output/dices"
+FIGURE_DIR = "/app/output/figures"
 TMALIGN_DIR = "/app/output/TMalign_results"
 AFDB_DIR = "/app/afdb"
 
 
 os.makedirs(DICE_DIR, exist_ok=True)
 os.makedirs(TMALIGN_DIR, exist_ok=True)
-
+os.makedirs(FIGURE_DIR, exist_ok=True)
 
 con = sqlite3.connect(SQLITE_DATABASE_DIR)
 

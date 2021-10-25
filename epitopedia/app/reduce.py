@@ -5,10 +5,12 @@
 import csv
 import json
 import os
-import sys
+from scipy import stats
+import numpy as np
 from collections import defaultdict
-
+import pickle
 from epitopedia.app import config
+from epitopedia.viz.figure import plot_dist
 
 
 def reduce_results(path):
@@ -62,7 +64,10 @@ def reduce_results(path):
                         "EPI_PDB Input Dice Path": motif_type["query_struc_dice_path"],
                         "EPI_PDB Rep Dice Path": motif_type["target_struc_dice_path"],
                         "EPI_PDB TMalign RMSD": motif_type["TMalign_RMSD"],
+                        "EPI_PDB Epi Score": (1/float(motif_type["TMalign_RMSD"])*len(motif_type["motif_seq"])),
                         "EPI_PDB TMalign TMscore": motif_type["TMalign_TMscore"],
+                        "EPI_PDB Epi Score Z Score": False,
+                        "EPI_PDB TMalign RMSD Z Score": False,
                         "EPI_PDB TMalign PDB": os.path.basename(motif_type["TMalign_PDB_file"]),
                         "EPI_PDB Rep Acc": motif_type["target_acc_motif"],
                         "EPI_PDB Input Motif Perc Acc": motif_type["query_perc_acc"],
@@ -116,6 +121,11 @@ def reduce_results(path):
                 outhandle.write(f"{motif}\t")
                 w.writerow(dat)
 
+
+
+    with open(f"{config.OUTPUT_DIR}/{basename}.json", "w") as output_handle:
+        json.dump({"parameters": paramters, "results": motif_dict}, output_handle)
+
     for key, instances in motif_dict.items():
         filtered_instacnes = []
         acc_visited = []
@@ -141,5 +151,44 @@ def reduce_results(path):
                 outhandle.write(f"{motif}\t")
                 w.writerow(dat)
 
+
+
+
+
+
+
+
+    #generate viz
+
+    epi_scores = []
+    rmsds = []
+    lens = []
+    for key, instances in motif_dict.items():
+        for instance in instances:
+            epi_scores.append(instance["EPI_PDB Epi Score"])
+            rmsds.append(float(instance["EPI_PDB TMalign RMSD"]))
+            lens.append(len(key))
+
+    epi_scores_z_dist = stats.zscore(epi_scores)
+    rmsds_z_dist = stats.zscore(rmsds)
+
+    # print(epi_scores_z_dist)
+    # print(rmsds_z_dist)
+    with open(f"{config.OUTPUT_DIR}/{basename}_exp.pickle", "wb") as outhandle:
+        pickle.dump({"epi_scores":epi_scores,"rmsds":rmsds,"epi_scores_z_dist":epi_scores_z_dist,"rmsds_z_dist":rmsds_z_dist,"lens":lens},outhandle)
+
+    index = 0
+    for key, instances in motif_dict.items():
+        for index, instance in enumerate(instances):
+            instance["EPI_PDB Epi Score Z Score"] = epi_scores_z_dist[index]
+            instance["EPI_PDB TMalign RMSD Z Score"] = rmsds_z_dist[index]
+            index += 1
+
+            plot_dist(rmsds, rmsds_z_dist[index], f"{config.FIGURE_DIR}/{basename}_rmsd_{key}_{index}.png", label="RMSD (Å)")
+            plot_dist(epi_scores_z_dist, epi_scores_z_dist[index], f"{config.FIGURE_DIR}/{basename}_episcore_{key}_{index}.png", label="Epi Score (residues/Å)")
+            # the more residues you have without reducing the angstrom value the better
+            
+    
+    
     with open(f"{config.OUTPUT_DIR}/{basename}_best.json", "w") as output_handle:
         json.dump({"parameters": paramters, "results": motif_dict}, output_handle)

@@ -54,17 +54,17 @@ RUN apt-get -y update && apt-get install -y \
 
 WORKDIR /app
 
-ADD https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz .
-RUN tar -xzvf Python-3.10.0.tgz
-WORKDIR /app/Python-3.10.0
+ADD https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tar.xz .
+RUN tar -xzvf Python-3.9.7.tar.xz
+WORKDIR /app/Python-3.9.7
 RUN ./configure --enable-optimizations --with-lto ;\
     make ;\
     make test ;\
     make install
 
-WORKDIR /app
+# WORKDIR /app
 
-RUN pip3 install flask gemmi biopython rich dataclasses-json
+RUN pip3 install flask gemmi biopython rich dataclasses-json scipy numpy seaborn
 
 # Get blast
 RUN wget "https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.12.0+-x64-linux.tar.gz" ;\
@@ -119,9 +119,9 @@ RUN wget ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/xtract.Linux.gz ;\
 WORKDIR /app
 COPY . /app
 
-RUN python3.10 setup.py build ;python3.10 setup.py install
+# RUN python3.10 setup.py build ;python3.10 setup.py install
 # RUN python3.10 setup.py develop
-RUN chmod +x docker/run_epitopedia.py ; chmod +x docker/generate_database.py
+# RUN chmod +x docker/run_epitopedia.py ; chmod +x docker/generate_database.py
 
 ENV PATH=/app/edirect:/app/mmseqs/bin/:/app/ncbi-blast-2.12.0+/bin:/app/:$PATH
 
