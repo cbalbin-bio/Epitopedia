@@ -22,6 +22,7 @@ parser.add_argument("--rasa-span", type=int, default=3, help="Minimum span lengt
 parser.add_argument("--taxid-filter", type=str, help="Filter all taxaony at or below the level described by this taxid")
 parser.add_argument("--rmsd", type=float, help="Max RMSD to consider match a structural mimic")
 parser.add_argument("--view", type=str, help="View results from a previous run")
+parser.add_argument("--view", type=str, help="View results from a previous run")
 # parser.add_argument("--use-afdb", action="store_true", help="Include AFDB in database generation")
 parser.add_argument(
     "--gplddt",
@@ -76,7 +77,7 @@ if args.rmsd:
     commands += ["--rmsd", args.rmsd]
 
 
-if args.rmsd:
+if args.view:
     commands += ["--view", args.view]
 
 if args.gplddt:
@@ -90,4 +91,4 @@ if args.headless:
 
 
 print(mounts + [str(command) for command in commands])
-subprocess.run(["docker", "run", "--rm", "-it"] + mounts + [str(command) for command in commands])
+subprocess.run(["docker", "run", "--rm", "-it", "-p", "5000:5000"] + mounts + [str(command) for command in commands])

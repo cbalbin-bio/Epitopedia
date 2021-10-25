@@ -67,4 +67,5 @@ def serve_html(data):
         response.mimetype = "text/plain"
         return response
 
-    app.run(host="0.0.0.0", debug=False)
+    
+    app.run(host="0.0.0.0", debug=False, use_reloader=False)
