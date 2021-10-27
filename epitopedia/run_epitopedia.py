@@ -136,7 +136,7 @@ def main():
         subprocess.run(["flask", "run"])
 
 
-if __name__ == "epitopedia.run_epitopedia":
-    main()
-elif __name__ == "__main__":
-    main()
+# if __name__ == "epitopedia.run_epitopedia":
+#     main()
+# elif __name__ == "__main__":
+#     main()

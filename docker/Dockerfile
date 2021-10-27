@@ -125,7 +125,7 @@ COPY . /app
 
 ENV PATH=/app/edirect:/app/mmseqs/bin/:/app/ncbi-blast-2.12.0+/bin:/app/:$PATH
 
-
-
+ENV FLASK_DEBUG=false
+ENV /app/epitopedia/viz/serve.py
 
 

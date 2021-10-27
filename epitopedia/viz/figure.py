@@ -1,5 +1,6 @@
 import seaborn as sns
 import matplotlib.pyplot as plt
+
 import pickle
 import numpy as np
 
@@ -11,23 +12,28 @@ def zscores(std, mean, score):
 
 def plot_dist(data, data_point, name,label="RMSD (Å)"):
 
+    # fig = plt.figure(figsize=(3,6))
+
     data = np.array(data)
     std = np.std(data)
     mean = np.average(data)
 
-    sns.displot(data, binwidth=.1)#kind="kde", cut=0,bw_adjust=.25)
+    sns.displot(data, binwidth=.1,)#kind="kde", cut=0,bw_adjust=.25)
     plt.xlabel(f"{label} \n Gray lines represent -1, 0 (mean) and 1 Z scores\n Red line represents Z score for hit")
-    plt.tight_layout()
+    
     plt.axvline(x=zscores(std, mean, -1), color='gray')
     plt.axvline(x=mean, color='gray')
     plt.axvline(x=zscores(std, mean, 1), color='gray')
     if data_point:
-        plt.axvline(x=data_point, color='r')
+        plt.axvline(x=data_point + mean, color='r')
 
 
-
+    fig = plt.gcf()
+    fig.set_size_inches( 6, 3)
+    plt.tight_layout()
     plt.savefig(name)
-    plt.close()
+
+    plt.close("all")
 
 def plot_bivariate(lens,rmsds):
     sns.displot(x=lens, y=rmsds, binwidth=(1, .1))

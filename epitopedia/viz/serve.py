@@ -78,6 +78,11 @@ def get_rmsd_figure(hit):
 
     return send_file(f"{config.FIGURE_DIR}/rmsd_{hit[0]}_{hit[1]}.png")
 
-    
+@app.get("/figure/episcore/<hit>")
+def get_episcore_figure(hit):
+    hit = hit.split(",")
+
+    return send_file(f"{config.FIGURE_DIR}/episcore_{hit[0]}_{hit[1]}.png")
+   
     # app.run(host="0.0.0.0", ) # debug=True, use_reloader=True
     # Flask.run(host="0.0.0.0",debug=False)
