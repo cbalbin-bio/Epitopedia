@@ -100,13 +100,13 @@ class HitsDataContainer(list):
                 )
 
         with open(file_path, "a") as output_handle:
-            con = sqlite3.connect('example.db')
+            con = sqlite3.connect(config.SQLITE_DATABASE_DIR)
             cur = con.cursor()
             for hit in self:
-                cur.execute(f'SELECT linear_peptide_seq, source_antigen_accession, starting_position, ending_position, name, organism_name FROM IEDB_FILT where epitope_id = {hit.query_accession}')
+                cur.execute(f'SELECT linear_peptide_seq, source_antigen_accession, starting_position, ending_position, name, organism_name FROM IEDB_FILT where epitope_id = {hit.subject_accession}')
                 row = cur.fetchone()
                 output_handle.write(
-                    f"{hit.query_accession}\t{hit.subject_accession}\t{hit.query_start}\t{hit.query_end}\t{hit.subject_start}\t{hit.subject_end}\t{hit.aln_query_seq}\t{hit.aln_subject_seq}\t{hit.evalue}\t{hit.qcovs}\t{hit.pident}\t{hit.staxid}\t{hit.match_ranges}\t{hit.cigar}\t{hit.match_lengths}\t{hit.submatch_seqs}\t{hit.acc_seq}\t{hit.pdb_seqsolv}\t{hit.pdb_seqnums}\t{row[0]}\t{row[1]}\t{row[2]}\t{row[3]}\t{row[4]}\t{row[6]}\n"
+                    f"{hit.query_accession}\t{hit.subject_accession}\t{hit.query_start}\t{hit.query_end}\t{hit.subject_start}\t{hit.subject_end}\t{hit.aln_query_seq}\t{hit.aln_subject_seq}\t{hit.evalue}\t{hit.qcovs}\t{hit.pident}\t{hit.staxid}\t{hit.match_ranges}\t{hit.cigar}\t{hit.match_lengths}\t{hit.submatch_seqs}\t{hit.acc_seq}\t{hit.pdb_seqsolv}\t{hit.pdb_seqnums}\t{row[0]}\t{row[1]}\t{row[2]}\t{row[3]}\t{row[4]}\t{row[5]}\n"
                 )
             con.close()    
 

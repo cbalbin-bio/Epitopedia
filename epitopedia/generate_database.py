@@ -58,10 +58,12 @@ def main():
         con = sqlite3.connect("/app/data/iedb_public.sqlite3")
         cur = con.cursor()
         # Create Joined tables with required fields
+
+        # INNER JOIN organism ON  epitope_object.source_organism_org_id = organism.organism_id
         cur.execute(
             f"""
 CREATE TABLE epitope_data AS
-SELECT DISTINCT epitope.epitope_id, epitope.description, epitope.linear_peptide_seq, epitope.linear_peptide_modified_seq, epitope.linear_peptide_modification, epitope_object.source_antigen_accession, object.starting_position, object.ending_position, source.database, source.name, source.organism_id, source.organism_name, source.sequence
+SELECT DISTINCT epitope.epitope_id, epitope.description, epitope.linear_peptide_seq, epitope.linear_peptide_modified_seq, epitope.linear_peptide_modification, epitope_object.source_antigen_accession, object.starting_position, object.ending_position, source.database, source.name, epitope_object.source_organism_org_id, source.organism_name, source.sequence
 FROM epitope
 INNER JOIN epitope_object ON  epitope.epitope_id = epitope_object.epitope_id
 INNER JOIN object  ON epitope_object.object_id = object.object_id
@@ -69,11 +71,11 @@ INNER JOIN source ON epitope_object.source_antigen_accession = source.accession
 WHERE epitope.epitope_id IS NOT NULL
 AND epitope.linear_peptide_seq IS NOT NULL
 AND epitope_object.source_antigen_accession IS NOT NULL
+AND epitope_object.source_organism_org_id IS NOT NULL
 AND object.starting_position IS NOT NULL
 AND object.ending_position IS NOT NULL
 AND source.database IS NOT NULL
 AND source.name IS NOT NULL
-AND source.organism_id IS NOT NULL
 AND source.organism_name IS NOT NULL
 ORDER BY epitope.epitope_id DESC;
 """

@@ -4,11 +4,12 @@
 # This work is licensed under the terms of the MIT license.
 # For a copy, see <https://opensource.org/licenses/MIT>.
 
-
+import os
 import json
 import sqlite3
 import tempfile
 from functools import partial
+import subprocess
 from multiprocessing import Pool
 
 from rich.progress import track
@@ -20,7 +21,7 @@ from epitopedia.app.hitparser import parseHit
 from epitopedia.app.MMCIFSeqs import MMCIFSeqs
 from epitopedia.app.reduce import reduce_results
 from epitopedia.utils.utils import remove_previous_files
-from epitopedia.viz.serve import write_html, serve_html
+# from epitopedia.viz.serve import write_html, serve_html
 from epitopedia.app.args import args
 
 
@@ -123,16 +124,16 @@ def main():
         with open(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}_best.json") as input_handle:
             data = json.load(input_handle)
 
-        write_html(f"{config.OUTPUT_DIR}/Epitopedia_{pdb_input_str}_output.html", data)
+        # write_html(f"{config.OUTPUT_DIR}/Epitopedia_{pdb_input_str}_output.html", data)
         print(f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}_best.json")
         if not args.headless:
 
-            serve_html(data)
-    else:
-        with open(args.view) as input_handle:
-            data = json.load(input_handle)
+            os.environ["EPITOPEDIA_DATA_DIR"] = f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}_best.json"
+            subprocess.run(["flask", "run"])
 
-        serve_html(data)
+    else:
+        os.environ["EPITOPEDIA_DATA_DIR"] = args.view
+        subprocess.run(["flask", "run"])
 
 
 if __name__ == "epitopedia.run_epitopedia":

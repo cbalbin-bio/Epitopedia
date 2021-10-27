@@ -54,15 +54,15 @@ RUN apt-get -y update && apt-get install -y \
 
 WORKDIR /app
 
-RUN wget https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tar.xz . ;\
-    tar -xzvf Python-3.9.7.tar.xz
+RUN wget https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz ;\
+    tar -xzvf Python-3.9.7.tgz
 WORKDIR /app/Python-3.9.7
 RUN ./configure --enable-optimizations --with-lto ;\
     make ;\
     make test ;\
     make install
 
-# WORKDIR /app
+WORKDIR /app
 
 RUN pip3.9 install flask gemmi biopython rich dataclasses-json scipy numpy seaborn
 

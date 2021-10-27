@@ -33,7 +33,7 @@ def plot_bivariate(lens,rmsds):
     sns.displot(x=lens, y=rmsds, binwidth=(1, .1))
     plt.savefig("plot_dist.png")
     plt.close()
-    pass
+    
 
 
 

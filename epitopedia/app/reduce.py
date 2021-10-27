@@ -179,13 +179,15 @@ def reduce_results(path):
 
     index = 0
     for key, instances in motif_dict.items():
-        for index, instance in enumerate(instances):
+        for instance_index, instance in enumerate(instances):
             instance["EPI_PDB Epi Score Z Score"] = epi_scores_z_dist[index]
             instance["EPI_PDB TMalign RMSD Z Score"] = rmsds_z_dist[index]
-            index += 1
+            
 
-            plot_dist(rmsds, rmsds_z_dist[index], f"{config.FIGURE_DIR}/{basename}_rmsd_{key}_{index}.png", label="RMSD (Å)")
-            plot_dist(epi_scores_z_dist, epi_scores_z_dist[index], f"{config.FIGURE_DIR}/{basename}_episcore_{key}_{index}.png", label="Epi Score (residues/Å)")
+            plot_dist(rmsds, rmsds_z_dist[index], f"{config.FIGURE_DIR}/rmsd_{key}_{instance_index}.png", label="RMSD (Å)")
+            plot_dist(epi_scores_z_dist, epi_scores_z_dist[index], f"{config.FIGURE_DIR}/episcore_{key}_{instance_index}.png", label="Epi Score (residues/Å)")
+            index += 1
+            
             # the more residues you have without reducing the angstrom value the better
             
     
