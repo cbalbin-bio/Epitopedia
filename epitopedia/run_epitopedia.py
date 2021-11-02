@@ -129,11 +129,11 @@ def main():
         if not args.headless:
 
             os.environ["EPITOPEDIA_DATA_DIR"] = f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}_best.json"
-            subprocess.run(["flask", "run"])
+            subprocess.run(["flask", "run", "--host=0.0.0.0"])
 
     else:
         os.environ["EPITOPEDIA_DATA_DIR"] = args.view
-        subprocess.run(["flask", "run"])
+        subprocess.run(["flask", "run", "--host=0.0.0.0"])
 
 
 # if __name__ == "epitopedia.run_epitopedia":

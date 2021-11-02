@@ -64,7 +64,7 @@ def reduce_results(path):
                         "EPI_PDB Input Dice Path": motif_type["query_struc_dice_path"],
                         "EPI_PDB Rep Dice Path": motif_type["target_struc_dice_path"],
                         "EPI_PDB TMalign RMSD": motif_type["TMalign_RMSD"],
-                        "EPI_PDB Epi Score": (1/float(motif_type["TMalign_RMSD"])*len(motif_type["motif_seq"])),
+                        "EPI_PDB Epi Score": (1/float(motif_type["TMalign_RMSD"])*len(motif_type["motif_seq"]) if float(motif_type["TMalign_RMSD"]) else 1/float(0.01)*len(motif_type["motif_seq"])),
                         "EPI_PDB TMalign TMscore": motif_type["TMalign_TMscore"],
                         "EPI_PDB Epi Score Z Score": False,
                         "EPI_PDB TMalign RMSD Z Score": False,
@@ -177,17 +177,19 @@ def reduce_results(path):
     with open(f"{config.OUTPUT_DIR}/{basename}_exp.pickle", "wb") as outhandle:
         pickle.dump({"epi_scores":epi_scores,"rmsds":rmsds,"epi_scores_z_dist":epi_scores_z_dist,"rmsds_z_dist":rmsds_z_dist,"lens":lens},outhandle)
 
-    index = 0
-    for key, instances in motif_dict.items():
-        for instance_index, instance in enumerate(instances):
-            instance["EPI_PDB Epi Score Z Score"] = epi_scores_z_dist[index]
-            instance["EPI_PDB TMalign RMSD Z Score"] = rmsds_z_dist[index]
-            
 
-            plot_dist(rmsds, rmsds_z_dist[index], f"{config.FIGURE_DIR}/rmsd_{key}_{instance_index}.png", label="RMSD (Å)")
-            plot_dist(epi_scores_z_dist, epi_scores_z_dist[index], f"{config.FIGURE_DIR}/episcore_{key}_{instance_index}.png", label="Epi Score (residues/Å)")
-            index += 1
-            
+    with config.console.status("[bold green]Generating z-dist plots"):
+        index = 0
+        for key, instances in motif_dict.items():
+            for instance_index, instance in enumerate(instances):
+                instance["EPI_PDB Epi Score Z Score"] = epi_scores_z_dist[index]
+                instance["EPI_PDB TMalign RMSD Z Score"] = rmsds_z_dist[index]
+                
+
+                plot_dist(rmsds, rmsds_z_dist[index], f"{config.FIGURE_DIR}/rmsd_{key}_{instance_index}.png", label="RMSD (Å)")
+                plot_dist(epi_scores, epi_scores_z_dist[index], f"{config.FIGURE_DIR}/episcore_{key}_{instance_index}.png", label="Epi Score (residues/Å)")
+                index += 1
+                
             # the more residues you have without reducing the angstrom value the better
             
     

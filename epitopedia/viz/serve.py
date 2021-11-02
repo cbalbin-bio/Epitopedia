@@ -8,6 +8,7 @@ import sys
 import json
 import os
 
+
 # def write_html(output_path, data):
 #     with open(output_path, "w") as handle:
 
@@ -17,15 +18,15 @@ import os
 #         handle.write(output_from_parsed_template)
 
 
-with open(os.environ["EPITOPEDIA_DATA_DIR"]) as input_handle:
+with open("/app/output/" +os.path.basename(os.environ["EPITOPEDIA_DATA_DIR"])) as input_handle:
     data = json.load(input_handle)
 
 
 app = Flask(
     __name__,
-    template_folder="/workspaces/Epitopedia/epitopedia/viz/templates",
+    template_folder="/app/epitopedia/viz/templates",
     static_url_path="/viz/static",
-    static_folder="/workspaces/Epitopedia/epitopedia/viz/motif_align_viz_js/",
+    static_folder="/app/epitopedia/viz/motif_align_viz_js/",
 )
 
 @app.get("/")

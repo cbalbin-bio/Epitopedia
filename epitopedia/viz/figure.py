@@ -25,7 +25,7 @@ def plot_dist(data, data_point, name,label="RMSD (Å)"):
     plt.axvline(x=mean, color='gray')
     plt.axvline(x=zscores(std, mean, 1), color='gray')
     if data_point:
-        plt.axvline(x=data_point + mean, color='r')
+        plt.axvline(zscores(std, mean, data_point), color='r')
 
 
     fig = plt.gcf()
