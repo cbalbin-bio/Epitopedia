@@ -4,34 +4,44 @@
 
 from collections import defaultdict
 from io import TextIOWrapper
-from posix import times_result
 from typing import Union
 
 from gemmi import cif
 
-protein_3to1 = {
-    "ALA": "A",
-    "CYS": "C",
-    "ASP": "D",
-    "GLU": "E",
-    "PHE": "F",
-    "GLY": "G",
-    "HIS": "H",
-    "ILE": "I",
-    "LYS": "K",
-    "LEU": "L",
-    "MET": "M",
-    "ASN": "N",
-    "PRO": "P",
-    "GLN": "Q",
-    "ARG": "R",
-    "SER": "S",
-    "THR": "T",
-    "VAL": "V",
-    "TRP": "W",
-    "TYR": "Y",
-    "?": "?",
-}
+
+class protein_3to1_translate:
+    protein_3to1_dict = {
+        "ALA": "A",
+        "CYS": "C",
+        "ASP": "D",
+        "GLU": "E",
+        "PHE": "F",
+        "GLY": "G",
+        "HIS": "H",
+        "ILE": "I",
+        "LYS": "K",
+        "LEU": "L",
+        "MET": "M",
+        "ASN": "N",
+        "PRO": "P",
+        "GLN": "Q",
+        "ARG": "R",
+        "SER": "S",
+        "THR": "T",
+        "VAL": "V",
+        "TRP": "W",
+        "TYR": "Y",
+        "?": "?",
+    }
+
+    def __getitem__(self, key):
+        try:
+            return self.protein_3to1_dict[key]
+        except KeyError:
+            return "X"
+
+
+protein_3to1 = protein_3to1_translate()
 
 
 def extract_data(
@@ -78,7 +88,9 @@ def extract_data(
         )
     else:
         species = (
-            ", ".join(set(block.find_values("_entity_src_gen.pdbx_gene_src_scientific_name")))
+            ", ".join(
+                set(block.find_values("_entity_src_gen.pdbx_gene_src_scientific_name"))
+            )
             .replace("\t", "")
             .replace("\n", "")
             .replace("'", "")
@@ -100,9 +112,9 @@ def extract_data(
 def extract_plddt(path: str) -> tuple[list[str], str]:
     doc = cif.read_file(path)
     block = doc.sole_block()
-    return list(block.find_values("_ma_qa_metric_local.metric_value")), block.find_value(
-        "_ma_qa_metric_global.metric_value"
-    )
+    return list(
+        block.find_values("_ma_qa_metric_local.metric_value")
+    ), block.find_value("_ma_qa_metric_global.metric_value")
 
 
 def write_cif_data_csv(
