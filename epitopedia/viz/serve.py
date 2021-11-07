@@ -45,7 +45,7 @@ def viz(hit):
         target_chain=hit_data["EPI_PDB Rep PDB"].split("_")[-1],
     )
 
-print("[bold green]View results in browser at http://0.0.0.0:5000[/bold green]")
+
 
 @app.get("/viz/cif/<id>")
 def get_cif(id):

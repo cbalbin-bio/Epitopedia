@@ -21,6 +21,7 @@ from epitopedia.app.hitparser import parseHit
 from epitopedia.app.MMCIFSeqs import MMCIFSeqs
 from epitopedia.app.reduce import reduce_results
 from epitopedia.utils.utils import remove_previous_files
+
 # from epitopedia.viz.serve import write_html, serve_html
 from epitopedia.app.args import args
 
@@ -129,11 +130,13 @@ def main():
         if not args.headless:
 
             os.environ["EPITOPEDIA_DATA_DIR"] = f"{config.OUTPUT_DIR}/EPI_PDB_fragment_pairs_{pdb_input_str}_best.json"
-            subprocess.run(["flask", "run", "--host=0.0.0.0"])
+            print(f"[bold green]View results in browser at http://0.0.0.0:{args.port}[/bold green]")
+            subprocess.run(["flask", "run", "--host=0.0.0.0", f"--port={args.port}"])
 
     else:
         os.environ["EPITOPEDIA_DATA_DIR"] = args.view
-        subprocess.run(["flask", "run", "--host=0.0.0.0"])
+        print(f"[bold green]View results in browser at http://0.0.0.0:{args.port}[/bold green]")
+        subprocess.run(["flask", "run", "--host=0.0.0.0", f"--port={args.port}"])
 
 
 # if __name__ == "epitopedia.run_epitopedia":

@@ -13,16 +13,40 @@ import argparse
 parser = argparse.ArgumentParser(description="Epitopedia")
 parser.add_argument("output_dir", type=str, help="Directory to write output files")
 parser.add_argument("mmcif_dir", type=str, help="Path to directory containing mmcif files")
-parser.add_argument("data_dir", type=str, help="Directory containing epitopedia.sqlite3 and EPI-SEQ.fasta")
-parser.add_argument("--afdb-dir", type=str, help="Optional path to directory containing afdb mmcif files")
-parser.add_argument("--PDB-IDS", type=str, nargs="+", help="List of PDB_IDS formatted as PDBID_CHAIN. e.g. 6xr8_A")
+parser.add_argument(
+    "data_dir",
+    type=str,
+    help="Directory containing epitopedia.sqlite3 and EPI-SEQ.fasta",
+)
+parser.add_argument(
+    "--afdb-dir",
+    type=str,
+    help="Optional path to directory containing afdb mmcif files",
+)
+parser.add_argument(
+    "--PDB-IDS",
+    type=str,
+    nargs="+",
+    help="List of PDB_IDS formatted as PDBID_CHAIN. e.g. 6xr8_A",
+)
 parser.add_argument("--span", type=int, default=5, help="Minimum span length to consider a mimic")
 parser.add_argument("--rasa", type=float, default=0.20, help="Relative accessible surface area cutoff")
-parser.add_argument("--rasa-span", type=int, default=3, help="Minimum span length for surface accessibility filter")
-parser.add_argument("--taxid-filter", type=str,nargs="+", help="Filter all taxaony at or below the level described by this taxid")
+parser.add_argument(
+    "--rasa-span",
+    type=int,
+    default=3,
+    help="Minimum span length for surface accessibility filter",
+)
+parser.add_argument(
+    "--taxid-filter",
+    type=str,
+    nargs="+",
+    help="Filter all taxaony at or below the level described by this taxid",
+)
 parser.add_argument("--rmsd", type=float, help="Max RMSD to consider match a structural mimic")
 parser.add_argument("--view", type=str, help="View results from a previous run")
-parser.add_argument("--view", type=str, help="View results from a previous run")
+
+parser.add_argument("--port", type=int, default=5000, help="Port used by webserver")
 # parser.add_argument("--use-afdb", action="store_true", help="Include AFDB in database generation")
 parser.add_argument(
     "--gplddt",
@@ -51,6 +75,8 @@ mounts = [
     f"{args.data_dir}:/app/data",
 ]
 
+base = ["docker", "run", "--rm", "-it"]
+
 commands = ["cbalbin/epitopedia:beta", "run_epitopedia"]
 
 if args.afdb_dir:
@@ -71,7 +97,7 @@ if args.rasa_span:
     commands += ["--rasa-span", args.rasa_span]
 
 if args.taxid_filter:
-    commands += ["--taxid-filter", args.taxid_filter]
+    commands += ["--taxid-filter", " ".join(list(args.taxid_filter))]
 
 if args.rmsd:
     commands += ["--rmsd", args.rmsd]
@@ -88,7 +114,8 @@ if args.lplddt:
 
 if args.headless:
     commands += ["--headless"]
+else:
+    base += ["-p", f"{args.port}:{args.port}"]
 
 
-print(mounts + [str(command) for command in commands])
-subprocess.run(["docker", "run", "--rm", "-it", "-p", "5000:5000"] + mounts + [str(command) for command in commands])
+subprocess.run(base + mounts + [str(command) for command in commands])
