@@ -1,4 +1,4 @@
-#!/usr/bin/python3.10
+#!/usr/bin/python3
 
 # Copyright (c) 2021 Christian Balbin
 # This work is licensed under the terms of the MIT license.
@@ -85,7 +85,7 @@ if args.afdb_dir:
 
 
 if args.PDB_IDS:
-    commands += ["--PDB-IDS", "".join(args.PDB_IDS)]
+    commands += ["--PDB-IDS", args.PDB_IDS]
 
 if args.span:
     commands += ["--span", args.span]
@@ -97,7 +97,7 @@ if args.rasa_span:
     commands += ["--rasa-span", args.rasa_span]
 
 if args.taxid_filter:
-    commands += ["--taxid-filter", " ".join(list(args.taxid_filter))]
+    commands += ["--taxid-filter", args.taxid_filter]
 
 if args.rmsd:
     commands += ["--rmsd", args.rmsd]
