@@ -118,6 +118,7 @@ if args.headless:
     commands += ["--headless"]
 else:
     base += ["-p", f"{args.port}:{args.port}"]
+    commands += ["--port", args.port]
 
 
 subprocess.run(base + mounts + [str(command) for command in commands])
