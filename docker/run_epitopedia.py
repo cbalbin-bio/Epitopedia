@@ -85,7 +85,7 @@ if args.afdb_dir:
 
 
 if args.PDB_IDS:
-    commands += "--PDB-IDS"
+    commands += ["--PDB-IDS"]
     commands += args.PDB_IDS
 
 if args.span:
@@ -98,7 +98,7 @@ if args.rasa_span:
     commands += ["--rasa-span", args.rasa_span]
 
 if args.taxid_filter:
-    commands += "--taxid-filter"
+    commands += ["--taxid-filter"]
     commands += args.taxid_filter
 
 if args.rmsd:
