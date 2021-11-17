@@ -4,6 +4,8 @@
 
 [![DOI](https://img.shields.io/badge/DOI-10.1101%2F2021.08.26.457577%20-blue)](https://doi.org/10.1101/2021.08.26.457577)
 
+![Epitopedia Screencap Example](example_output/epitopedia_screencap.gif)
+
 
 ## Getting started
 
