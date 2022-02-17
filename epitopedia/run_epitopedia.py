@@ -13,6 +13,7 @@ import subprocess
 from multiprocessing import Pool
 
 from rich.progress import track
+from rich import print
 
 from epitopedia.app import config
 from epitopedia.app.blastparser import BLASTParser

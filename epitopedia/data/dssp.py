@@ -45,24 +45,30 @@ def parseDSSP(path):
             pdb_id = row[3]
 
             chain_acc = []
+            chain_ss = []
             for seq_num, icode, asym_id in zip(seq_nums, icodes, asym_ids):
                 if seq_num != "?":
                     try:
                         if icode != ".":
 
                             chain_acc.append(str(dssp_dict[0][(asym_id, (" ", int(seq_num), icode))][2]))
+                            chain_ss.append(str(dssp_dict[0][(asym_id, (" ", int(seq_num), " "))][1]))
                         else:
                             chain_acc.append(str(dssp_dict[0][(asym_id, (" ", int(seq_num), " "))][2]))
+                            chain_ss.append(str(dssp_dict[0][(asym_id, (" ", int(seq_num), " "))][1]))
                     except KeyError:
                         chain_acc.append("?")  # this should fix issue with weird residues
+                        chain_ss.append("?")
                 else:
                     chain_acc.append("?")
+                    chain_ss.append("?")
 
             chain_acc = " ".join(chain_acc)
+            chain_ss = " ".join(chain_ss)
 
         except:
             continue
 
-        chains_acc.append(f"{pdb_id},{chain_acc}\n")
+        chains_acc.append(f"{pdb_id},{chain_acc},{chain_ss}\n")
 
     return chains_acc

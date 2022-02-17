@@ -402,7 +402,7 @@ CREATE INDEX idx_target ON EPI_PDB(target);"""
             )
             data = [chains for chains in data if chains]
             with open("/app/data/PDB_DSSP.csv", "w") as output_handle:
-                output_handle.write(f"pdb_id,acc\n")
+                output_handle.write(f"pdb_id,acc,ss\n")
                 for chains in data:
                     for chain in chains:
                         output_handle.write(chain)
