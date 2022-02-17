@@ -187,7 +187,7 @@ def reduce_results(path):
                 
 
                 plot_dist(rmsds, rmsds_z_dist[index], f"{config.FIGURE_DIR}/rmsd_{key}_{instance_index}.png", label="RMSD (Å)")
-                plot_dist(epi_scores, epi_scores_z_dist[index], f"{config.FIGURE_DIR}/episcore_{key}_{instance_index}.png", label="Epi Score (residues/Å)")
+                plot_dist(epi_scores, epi_scores_z_dist[index], f"{config.FIGURE_DIR}/episcore_{key}_{instance_index}.png", label="EpiScore (residues/Å)")
                 index += 1
                 
             # the more residues you have without reducing the angstrom value the better

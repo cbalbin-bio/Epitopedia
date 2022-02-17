@@ -1,6 +1,6 @@
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+plt.rcParams.update({'font.size':20})
 import pickle
 import numpy as np
 
@@ -14,12 +14,14 @@ def plot_dist(data, data_point, name,label="RMSD (Å)"):
 
     # fig = plt.figure(figsize=(3,6))
 
+    # sns.set_theme(style='ticks', font_scale=1.75)
+
     data = np.array(data)
     std = np.std(data)
     mean = np.average(data)
 
     sns.displot(data, binwidth=.1,)#kind="kde", cut=0,bw_adjust=.25)
-    plt.xlabel(f"{label} \n Gray lines represent -1, 0 (mean) and 1 Z scores\n Red line represents Z score for hit")
+    plt.xlabel(f"{label}\nGrey lines represent -1, 0 (mean) and 1 Std Dev\nRed line represents value for hit")
     
     plt.axvline(x=zscores(std, mean, -1), color='gray')
     plt.axvline(x=mean, color='gray')
@@ -29,7 +31,9 @@ def plot_dist(data, data_point, name,label="RMSD (Å)"):
 
 
     fig = plt.gcf()
-    fig.set_size_inches( 6, 3)
+    fig.set_size_inches(8, 4)
+
+    
     plt.tight_layout()
     plt.savefig(name)
 

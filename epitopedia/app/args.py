@@ -34,13 +34,13 @@ parser.add_argument(
     "--use-afdb", action="store_true", help="Include AFDB in database generation"
 )
 parser.add_argument(
-    "--gplddt",
+    "--pplddt",
     type=float,
     default=0.70,
     help="Minimum global pLDDT score a structure predicted by alphafold must have to be considered",
 )
 parser.add_argument(
-    "--lplddt",
+    "--mplddt",
     type=float,
     default=0.90,
     help="Minimum average local pLDDT score a region predicted by alphafold must have to be considered",

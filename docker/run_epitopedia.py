@@ -49,13 +49,13 @@ parser.add_argument("--view", type=str, help="View results from a previous run")
 parser.add_argument("--port", type=int, default=5000, help="Port used by webserver")
 # parser.add_argument("--use-afdb", action="store_true", help="Include AFDB in database generation")
 parser.add_argument(
-    "--gplddt",
+    "--pplddt",
     type=float,
     default=0.70,
     help="Minimum global pLDDT score a structure predicted by alphafold must have to be considered",
 )
 parser.add_argument(
-    "--lplddt",
+    "--mplddt",
     type=float,
     default=0.90,
     help="Minimum average local pLDDT score a region predicted by alphafold must have to be considered",
@@ -77,7 +77,7 @@ mounts = [
 
 base = ["docker", "run", "--rm", "-it"]
 
-commands = ["cbalbin/epitopedia:beta", "run_epitopedia"]
+commands = ["cbalbin/epitopedia:nightly", "run_epitopedia"]
 
 if args.afdb_dir:
     mounts += ["-v", f"{args.afdb_dir}:/app/afdb"]
@@ -108,11 +108,11 @@ if args.rmsd:
 if args.view:
     commands += ["--view", args.view]
 
-if args.gplddt:
-    commands += ["--gplddt", args.gplddt]
+if args.pplddt:
+    commands += ["--pplddt", args.pplddt]
 
-if args.lplddt:
-    commands += ["--lplddt", args.lplddt]
+if args.mplddt:
+    commands += ["--mplddt", args.mplddt]
 
 if args.headless:
     commands += ["--headless"]

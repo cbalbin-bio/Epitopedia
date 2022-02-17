@@ -103,7 +103,7 @@ def hit_to_pdb(
         if pdbhit.isAF and not args.use_afdb:
             continue
 
-        if pdbhit.isAF and pdbhit.gplddt < args.gplddt:
+        if pdbhit.isAF and pdbhit.gplddt < args.pplddt:
             continue
 
         hit_to_csv(
@@ -170,7 +170,7 @@ def hit_to_pdb(
                 pdbhit.motif_lplddt = [float(val) for val in pdbhit.motif_lplddt]
                 pdbhit.avg_motif_lplddt = (sum(pdbhit.motif_lplddt) / len(pdbhit.motif_lplddt)) /100
 
-                if pdbhit.avg_motif_lplddt < args.lplddt:
+                if pdbhit.avg_motif_lplddt < args.mplddt:
                     continue
 
             target_base_pdb_name = pdbhit.target.rsplit("_", 1)[0]

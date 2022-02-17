@@ -49,10 +49,10 @@
                 Use AlpfaFold: {{parameters["use_afdb"]}}
             </div>
             <div class="col">
-                AF gPLDDT: {{parameters["gplddt"]}}
+                AF p-pLDDT: {{parameters["pplddt"]}}
             </div>
             <div class="col">
-              AF lPLDDT: {{parameters["lplddt"]}}
+              AF m-pLDDT: {{parameters["mplddt"]}}
             </div>
           </div>
 
@@ -155,10 +155,10 @@
                             <b>Predicted Representative</b>
                         </div>
                         <div>
-                            Global pLDDT: {{"%.2f"|format(instances[0]["mmCIF_SEQ gplddt"]|float)}}
+                            p-pLDDT: {{"%.2f"|format(instances[0]["mmCIF_SEQ gplddt"]|float)}}
                         </div>
                         <div>
-                            Motif avg local pLDDT: {{"%.2f"|format(instances[0]["mmCIF_SEQ motif lplddt"]|float)}}
+                            m-pLDDT: {{"%.2f"|format(instances[0]["mmCIF_SEQ motif lplddt"]|float)}}
                         </div>
 
                         {%endif%}    
@@ -168,14 +168,14 @@
                 <div class="mt-2 d-flex flex-row justify-content-between">
                     <div>
                         <div>
-                            RMSD Z Score: {{"%.2f"|format(instances[0]["EPI_PDB TMalign RMSD Z Score"]|float)}}
+                            RMSD Z-score: {{"%.2f"|format(instances[0]["EPI_PDB TMalign RMSD Z Score"]|float)}}
                             
                         </div>
                         <div>
-                            Epi Score : {{"%.2f"|format(instances[0]["EPI_PDB Epi Score"]|float)}}
+                            EpiScore : {{"%.2f"|format(instances[0]["EPI_PDB Epi Score"]|float)}}
                         </div>
                         <div>
-                            Epi Score Z Score: {{"%.2f"|format(instances[0]["EPI_PDB Epi Score Z Score"]|float)}}
+                            EpiScore Z-score: {{"%.2f"|format(instances[0]["EPI_PDB Epi Score Z Score"]|float)}}
                         </div>
                     </div>
                     <div>
@@ -295,10 +295,10 @@
                                             <b>Predicted Representative</b>
                                         </div>
                                         <div>
-                                            Global pLDDT: {{"%.2f"|format(instance["mmCIF_SEQ gplddt"]|float)}}
+                                            p-pLDDT: {{"%.2f"|format(instance["mmCIF_SEQ gplddt"]|float)}}
                                         </div>
                                         <div>
-                                            Motif avg local pLDDT: {{"%.2f"|format(instance["mmCIF_SEQ motif lplddt"]|float)}}
+                                            m-pLDDT: {{"%.2f"|format(instance["mmCIF_SEQ motif lplddt"]|float)}}
                                         </div>
                 
                                         {%endif%}    
@@ -307,14 +307,14 @@
                                     <div class="mt-2 d-flex flex-row justify-content-between">
                                         <div>
                                             <div>
-                                                RMSD Z Score: {{"%.2f"|format(instance["EPI_PDB TMalign RMSD Z Score"]|float)}}
+                                                RMSD Z-score: {{"%.2f"|format(instance["EPI_PDB TMalign RMSD Z Score"]|float)}}
                                                 
                                             </div>
                                             <div>
-                                                Epi Score : {{"%.2f"|format(instance["EPI_PDB Epi Score"]|float)}}
+                                                EpiScore : {{"%.2f"|format(instance["EPI_PDB Epi Score"]|float)}}
                                             </div>
                                             <div>
-                                                Epi Score Z Score: {{"%.2f"|format(instance["EPI_PDB Epi Score Z Score"]|float)}}
+                                                Epi Score Z-score: {{"%.2f"|format(instance["EPI_PDB Epi Score Z Score"]|float)}}
                                             </div>
                                         </div>
                                         <div>
