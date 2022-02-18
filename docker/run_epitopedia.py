@@ -77,7 +77,7 @@ mounts = [
 
 base = ["docker", "run", "--rm", "-it"]
 
-commands = ["cbalbin/epitopedia:nightly", "run_epitopedia"]
+commands = ["cbalbin/epitopedia", "run_epitopedia"]
 
 if args.afdb_dir:
     mounts += ["-v", f"{args.afdb_dir}:/app/afdb"]

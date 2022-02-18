@@ -125,7 +125,7 @@ def hit_to_pdb(
             # ensure query structure dice has been generated, else generate
             query_pdb_filename = f"{config.DICE_DIR}/{query_structure_basename}_{query_pdb_chain}_{query_pdb_res_nums[0]}-{query_pdb_res_nums[-1]}.pdb"
 
-            # if file doesnt eixist and not locked
+            # if file doesnt exist and not locked
             # obtain lock
             # generate file
             # release lock

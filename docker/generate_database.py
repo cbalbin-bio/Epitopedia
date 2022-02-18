@@ -32,7 +32,7 @@ mounts = [
     "-v",
     f"{args.data_dir}:/app/data",
 ]
-commands = ["cbalbin/epitopedia:nightly", "generate_database"]
+commands = ["cbalbin/epitopedia", "generate_database"]
 if args.afdb_dir:
     mounts += ["-v", f"{args.afdb_dir}:/app/afdb"]
     commands += ["--use-afdb"]

@@ -12,6 +12,8 @@
 The quickest way to start using Epitopedia is by downloading the docker container which contains all the dependencies preinstalled:
 
 ```shell
+git clone https://github.com/cbalbin-bio/Epitopedia.git
+
 docker pull cbalbin/epitopedia
 ```
 
@@ -49,11 +51,12 @@ The output directory is where the output files will be written.
 Replace the the paths on the left side of the colon with the actual **absolute** path on your local system. The paths on the right side of the colon are internal and should not be altered.
 
 ```shell
-docker run --rm -it -p 5000:5000 \
--v /Path/to/Data/Dir/:/app/data \
--v /Path/to/PDBDB/Dir/:/app/mmcif \
--v /Path/to/Output/Dir/:/app/output \
-cbalbin/epitopedia run_epitopedia.py 6VXX_A --taxid_filter 11118
+python3 Epitopedia/docker/run_epitopedia.py \
+/Path/to/Output/Dir/ \
+/Path/to/PDB/Dir/ \
+/Path/to/Data/Dir/ \
+--afdb-dir /Path/to/AlphaFold/Dir/ \
+--taxid-filter 11118 --PDB-IDS 6VXX_A
 ```
 
 NOTE: on some systems you may need to run docker with sudo.
@@ -66,7 +69,7 @@ we could use a taxid_filter of 11118 to prevent finding mimics in other Coronavi
 
 Epitopedia can run on multiple input structures to represent a conformational ensemble. To do so, simply provide a list of structures in the format PDBID_CHAINID as shown below.
 ```shell
-run_epitopedia.py 6VXX_A 6VXX_B 6XR8_A 6XR8_B
+run_epitopedia.py --PDB-IDS 6VXX_A 6VXX_B 6XR8_A 6XR8_B
 ```
 
 Epitopedia defaults to a span length of 5, surface accesbility cutoff of 20% surface accesbility span legnth of 3, and no taxa filter, but these parameters can be set using the follow flags:
@@ -77,8 +80,12 @@ Flag | Description
 --rasa | Cutoff for relative accessible surface area
 --rasa_span | Minimum consecutive accesssible residues to consider a hit a SeqBMM
 --taxid_filter | taxa filter; example to filter out all Coronaviridae --taxid_filter 11118
-
-
+--rmsd | Max RMSD to still be considered a structural mimic
+--view | View results from a previous run
+--port | Port to be used by webserver
+--use-afdb | Include AFDB in search
+--pplddt | Minimum protein pLDDT score a structure predicted by alphafold must have to be considered
+--mplddt | Minimum average local pLDDT score a region predicted by alphafold must have to be considered
 ## Output
 
 Example output files 6VXX_A with a taxid_filt of 11118 as an input can be found [here](example_output).
